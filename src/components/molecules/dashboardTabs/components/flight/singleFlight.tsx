@@ -14,27 +14,29 @@ type Props = {
 };
 
 export const SingleFlightComp = ({ flight }: Props) => {
-  const [open, setOpen] = useState(false);
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  // const [open, setOpen] = useState(false);
+  // const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
-  const handleHover = (e: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(e.currentTarget);
-    setOpen((prev) => !prev);
-  };
+  // const handleHover = (e: React.MouseEvent<HTMLElement>) => {
+  //   setAnchorEl(e.currentTarget);
+  //   setOpen((prev) => !prev);
+  // };
 
-  const reset = () => {
-    setAnchorEl(null);
-    setOpen(false);
-  };
+  // const reset = () => {
+  //   setAnchorEl(null);
+  //   setOpen(false);
+  // };
 
-  const { day, month } = formatFlightDate(flight.itinerary?.segments[0].departure_time_utc);
+  const { day, month } = formatFlightDate(flight.departureTime);
 
   const flightTime = formatFlightTime(flight.departureTime);
   const arrivalTime = formatFlightTime(flight.arrivalTime);
 
+  const { day: returnDay, month: returnMonth } = formatFlightDate(flight?.arrivalTime);
+
   return (
     <FlightHistory>
-      <Grid columns={''} style={{ gridTemplateColumns: '1fr auto 1fr' }} align="center" gap="80px" padding="28px 24px">
+      <Grid columns={''} style={{ gridTemplateColumns: '1fr 200px 1.5fr' }} align="center" gap="80px" padding="28px 24px">
 
         <Flex gap="1.5rem" align="center">
           <Flex direction="column" align="center" justify="flex-start" width="15%">
@@ -51,18 +53,18 @@ export const SingleFlightComp = ({ flight }: Props) => {
             <Flex direction="column" width="max-content">
               <Text
                 type="h3"
-                text={flight.takeOffAirport}
+                text={flight?.takeOffAirport}
                 margin="0px 0px .5rem"
-                onMouseEnter={handleHover}
-                onMouseLeave={reset}
+              // onMouseEnter={handleHover}
+              // onMouseLeave={reset}
               />
-              <SimplePopper open={open} anchorEl={anchorEl}>
+              {/* <SimplePopper open={open} anchorEl={anchorEl}>
                 <Text
                   type="h3"
                   text={flight.takeOffAirport}
                   margin="0px 0px .5rem"
                 />
-              </SimplePopper>
+              </SimplePopper> */}
 
               <Text
                 type="p"
@@ -75,25 +77,45 @@ export const SingleFlightComp = ({ flight }: Props) => {
                 }}
               />
             </Flex>
-            <Text type="p" text={flight.takeOffLocation} color="#929292" />
+            {/* <Text type="p" text={flight?.takeOffLocation} color="#929292" /> */}
           </Flex>
         </Flex>
 
         <Flex direction="column" align="center" gap="1rem">
           <Image src={FlightIcon} alt="" width={119} height={20} />
           <TextContainer>
-            <Text type="p" text={`${flight.numOfStopovers} Stops`} />
+            <Text type="p" text={`${flight?.numOfStopovers} Stops`} />
           </TextContainer>
         </Flex>
 
-        <Flex gap="0rem" align="center">
+        <Flex gap="1.5rem" align="center">
+          <Flex direction="column" align="center" justify="flex-start" width="15%">
+            <Text type="h1" text={returnDay} size={48} weight={600} />
+            <Text
+              type="p"
+              text={returnMonth}
+              size={20}
+              weight={200}
+              styles={{ position: "relative", top: "-10px" }}
+            />
+          </Flex>
+
           <Flex justify="flex-start" gap="18px">
             <Flex direction="column" width="max-content">
               <Text
                 type="h3"
-                text={flight.destinationAirport}
+                text={flight?.destinationAirport}
                 margin="0px 0px .5rem"
+              // onMouseEnter={handleHover}
+              // onMouseLeave={reset}
               />
+              {/* <SimplePopper open={open} anchorEl={anchorEl}>
+                <Text
+                  type="h3"
+                  text={flight?.destinationAirport}
+                  margin="0px 0px .5rem"
+                />
+              </SimplePopper> */}
 
               <Text
                 type="p"
@@ -106,12 +128,12 @@ export const SingleFlightComp = ({ flight }: Props) => {
                 }}
               />
             </Flex>
-            <Text type="p" text={flight.destinationLocation} color="#929292" />
+            {/* <Text type="p" text={flight?.destinationLocation} color="#929292" /> */}
           </Flex>
-          <Flex direction="column" align="flex-start" width="20%">
+          <Flex direction="column" align="flex-start" width="35%">
             <Text
               type="h3"
-              text="DEPART"
+              text="ONE WAY"
               size={28}
               weight={600}
               color="#7BBBD6"
@@ -129,7 +151,7 @@ export const SingleFlightComp = ({ flight }: Props) => {
 
 export const MobileSingleFlightComp = ({ flight }: Props) => {
 
-  const { day, month } = formatFlightDate(flight.itinerary?.segments[0].departure_time_utc);
+  const { day, month } = formatFlightDate(flight?.departureTime);
 
   const flightTime = formatFlightTime(flight.departureTime);
   const arrivalTime = formatFlightTime(flight.arrivalTime);
@@ -163,19 +185,19 @@ export const MobileSingleFlightComp = ({ flight }: Props) => {
                 text={flightTime}
                 color="#606060"
                 weight={600}
-                size={20}
+                size={16}
                 styles={{
                   letterSpacing: "0.1rem",
                 }}
               />
             </Flex>
-            <Text type="p" text={flight.takeOffLocation} color="#929292" />
+            {/* <Text type="p" text={flight.takeOffLocation} color="#929292" /> */}
           </Flex>
 
           <Flex direction="row" align="center" gap="1rem">
             <Image src={FlightIcon} alt="" width={119} height={20} />
             <TextContainer>
-              <Text type="p" text={`${flight.numOfStopovers} Stops`} />
+              <Text type="p" size={12} text={`${flight.numOfStopovers} Stops`} />
             </TextContainer>
           </Flex>
 
@@ -194,13 +216,13 @@ export const MobileSingleFlightComp = ({ flight }: Props) => {
                   text={arrivalTime}
                   color="#606060"
                   weight={600}
-                  size={20}
+                  size={16}
                   styles={{
                     letterSpacing: "0.1rem",
                   }}
                 />
               </Flex>
-              <Text type="p" text={flight.destinationLocation} color="#929292" />
+              {/* <Text type="p" text={flight.destinationLocation} color="#929292" /> */}
             </Flex>
           </Flex>
         </Flex>
@@ -208,12 +230,13 @@ export const MobileSingleFlightComp = ({ flight }: Props) => {
         <Flex direction="column" align="center" justify="center">
           <Text
             type="h3"
-            text="DEPART"
+            text="ONE WAY"
             size={18}
             weight={600}
             color="#7BBBD6"
             styles={{
               transform: "rotate(-90deg)",
+              // width: "100%"
             }}
           />
         </Flex>
