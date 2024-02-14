@@ -20,6 +20,7 @@ import LocationSearchSelectInput from "./locationInputs/KiwiLocationSearchSelect
 import { KiwiLocation } from "@/lib/types/response-models/flight/location.type";
 
 interface flightProps {
+    index: number;
     stops: string;
     flight: OneFlightType;
     length?: number;
@@ -60,6 +61,7 @@ const TravellersDropdownContainer = styled.div`
 `;
 
 function FlightModule({
+    index,
     stops,
     flight,
     handleUpdate,
@@ -223,6 +225,7 @@ function FlightModule({
                                 onClick={handleClick}
                                 placeholder="Click me to open dropdown"
                                 value={defText}
+                                readOnly={index != 0}
                                 styles={{
                                     fontFamily: "poppins",
                                     cursor: "pointer",

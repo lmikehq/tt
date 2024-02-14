@@ -465,7 +465,7 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                 </Flex>
             )}
             {/* Number of Bags */}
-            <Panel
+            {/* <Panel
                 title="Bags"
                 toggle={() => onToggleAcc("bags")}
                 isActive={openAcc.bags}
@@ -565,7 +565,7 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                         />
                     </Flex>
                 </Flex>
-            </Panel>
+            </Panel> */}
 
             {/* Number of Stops */}
             <Panel
