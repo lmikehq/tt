@@ -19,7 +19,7 @@ import VisaProgress from "@/components/molecules/FormProgress/VisaProgress";
 import AllCountryHead from "@organism/AllCountry/allCountryHead";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { BsArrowLeft } from "react-icons/bs";
 import Button from "@atom/button";
 import CustomDrawer from "src/components/molecules/drawers/customDrawer";
@@ -34,6 +34,10 @@ import SectionLayout from "@components/templates/SectionLayout";
 import CustomConfirmationModal from "../visaApplicationModal";
 import Image from "@/components/atoms/image";
 import testPayload from '@/constants/payload.json';
+import { useDebounce } from "use-debounce";
+import { useQueryParams } from "@/hooks/useNext";
+import { findCountry } from "@/lib/extensions/data/COUNTRY_FLAGS";
+import AuthModal from "../auth/AuthModal";
 
 
 const PromoInput = styled.div`
@@ -89,236 +93,251 @@ interface ErrorInterface {
 }
 
 function ApplicationForm() {
-  const { isMobile } = useScreenResolution();
-  const {
-    fetchRecentProgressFromSession,
-    form,
-    fetchDetailsFromURL,
-    prevStep,
-    step,
-    highestStep,
-    setStep,
-    nextStep,
-    createVisaApplication,
-    mode,
-    saveProgress,
-    uploadedDocuments,
-  } = useApplicationFormStore((state) => state);
+    const { isMobile } = useScreenResolution();
+    const {
+        fetchRecentProgressFromSession,
+        form,
+        fetchDetailsFromURL,
+        prevStep,
+        step,
+        highestStep,
+        setStep,
+        nextStep,
+        createVisaApplication,
+        mode,
+        saveProgress,
+        uploadedDocuments,
+    } = useApplicationFormStore((state) => state);
 
-  const {
-    tripDetails,
-    personalInfo,
-    education,
-    employment,
-    familyMembers,
-    guarantorInfo,
-    documents,
-  } = form;
+    const {
+        tripDetails,
+        personalInfo,
+        education,
+        employment,
+        familyMembers,
+        guarantorInfo,
+        documents,
+    } = form;
 
-  const isLoading = mode == Mode.loading;
-  const params = useSearchParams();
-  const router = useRouter();
-  const [showApplicationExistsModal, setShowApplicationExistsModal] =
-    useState(false);
+    const isLoading = mode == Mode.loading;
+    const params = useSearchParams();
+    const router = useRouter();
+    const { queryParams } = useQueryParams()
+    const [showApplicationExistsModal, setShowApplicationExistsModal] = useState(false);
+    const [showAuthModal, setShowAuthModal] = useState(false);
 
-  const detailsFormik = useFormik({
-    initialValues: tripDetails,
-    enableReinitialize: true,
-    validateOnMount: true,
-    validationSchema: detailsSchema,
-    onSubmit: (values: DetailsKeys) => {
-      if (isLoading) return;
-      nextStep({ data: { tripDetails: values } });
-    },
-  });
-
-  const personalInfoFormik: FormikProps<PersonalInfoInterface> = useFormik({
-    initialValues: personalInfo,
-    enableReinitialize: true,
-    validateOnMount: true,
-    validationSchema: personalInfoSchema,
-    onSubmit: (values: PersonalInfoInterface) => {
-      if (isLoading) return;
-      nextStep({ data: { personalInfo: values } });
-    },
-    // validateOnChange: true,
-  });
-
-  const employmentFormik = useFormik({
-    initialValues: { employment },
-    enableReinitialize: true,
-    validateOnMount: true,
-    validationSchema: manyEmploymentSchema,
-    onSubmit: (values, formikHelpers) => {
-      if (isLoading) return;
-      nextStep({ data: { employment: values.employment } });
-    },
-    validateOnChange: true,
-  });
-
-  const educationFormik = useFormik({
-    initialValues: { education },
-    enableReinitialize: true,
-    validateOnMount: true,
-    validationSchema: manyEducationSchema,
-    onSubmit: (values) => {
-      if (isLoading) return;
-      nextStep({ data: { education: values.education } });
-    },
-    validateOnChange: true,
-  });
-
-  const familyMembersFormik = useFormik({
-    initialValues: { familyMembers },
-    enableReinitialize: true,
-    validateOnMount: true,
-    validationSchema: familyInfoSchema,
-    onSubmit: (values, formikHelpers) => {
-      formikHelpers
-        .validateForm()
-        .then((res) => { })
-        .catch((err) => { });
-      if (isLoading) return;
-      nextStep({ data: { familyMembers: values.familyMembers } });
-    },
-    validateOnChange: true,
-  });
-
-
-  const guarantorFormik: FormikProps<GuarantorInfoInterface> = useFormik({
-    initialValues: guarantorInfo,
-    enableReinitialize: true,
-    validateOnMount: true,
-    validationSchema: guarantorSchema,
-    onSubmit: (values: GuarantorInfoInterface) => {
-      // if (isLoading) return;
-      // nextStep({ data: { guarantorInfo: values } });
-    },
-    validateOnChange: true,
-  });
-
-  const documentsFormik = useFormik({
-    initialValues: { documents },
-    enableReinitialize: true,
-    validateOnMount: true,
-    validationSchema: documentsSchema,
-    onSubmit: (values) => {
-      createVisaApplication({
-        data: {
-          // ...form,
-          tripDetails: detailsFormik.values,
-          personalInfo: personalInfoFormik.values,
-          employment: employmentFormik.values.employment,
-          education: educationFormik.values.education,
-          familyMembers: familyMembersFormik.values.familyMembers,
-          guarantorInfo: guarantorFormik.values,
-          documents: values.documents,
-          // ...form,
-          // tripDetails: detailsFormik.values,
-          // personalInfo: personalInfoFormik.values,
-          // employment: employmentFormik.values.employment,
-          // education: educationFormik.values.education,
-          // familyMembers: familyMembersFormik.values.familyMembers,
-          // guarantorInfo: guarantorFormik.values,
-          // documents: values.documents,
+    const detailsFormik = useFormik({
+        initialValues: tripDetails,
+        enableReinitialize: true,
+        validateOnMount: true,
+        validationSchema: detailsSchema,
+        onSubmit: (values: DetailsKeys) => {
+            if (isLoading) return;
+            nextStep({ data: { tripDetails: values } });
         },
-      })
-        .then((_: any) => {
-          toast.success(
-            "Your application has been submitted successfully, please proceed to make payment",
-            {
-              duration: 15000,
-            }
-          );
-        })
-        .catch((error) => {
+    });
 
-          const err = error.response?.data;
-          // console.log(error);
+    const personalInfoFormik: FormikProps<PersonalInfoInterface> = useFormik({
+        initialValues: personalInfo,
+        enableReinitialize: true,
+        validateOnMount: true,
+        validationSchema: personalInfoSchema,
+        onSubmit: (values: PersonalInfoInterface) => {
+            if (isLoading) return;
+            nextStep({ data: { personalInfo: values } });
+        },
+        // validateOnChange: true,
+    });
 
-          if (
-            err?.statusCode === 422 &&
-            err?.errorMessage.includes("already exists")
-          ) {
+    const employmentFormik = useFormik({
+        initialValues: { employment },
+        enableReinitialize: true,
+        validateOnMount: true,
+        validationSchema: manyEmploymentSchema,
+        onSubmit: (values, formikHelpers) => {
+            if (isLoading) return;
+            nextStep({ data: { employment: values.employment } });
+        },
+        validateOnChange: true,
+    });
 
-            setShowApplicationExistsModal(true);
-          } else if (err?.statusCode === 400) {
+    const educationFormik = useFormik({
+        initialValues: { education },
+        enableReinitialize: true,
+        validateOnMount: true,
+        validationSchema: manyEducationSchema,
+        onSubmit: (values) => {
+            if (isLoading) return;
+            nextStep({ data: { education: values.education } });
+        },
+        validateOnChange: true,
+    });
 
-            toast(
-              (t) => (
-                <ErrorToastComponent>
-                  <p style={{ textAlign: "center" }}>
-                    There are errors in your form
-                  </p>{" "}
-                  {/* <br /> */}
-                  {err.data.map((error: ErrorInterface, index: number) => (
-                    <Text
-                      type="p"
-                      text={error.constraints}
-                      color={ttColors.red}
-                      key={index}
-                    />
-                  ))}
-                  <button onClick={() => toast.dismiss(t.id)}>Dismiss</button>
-                </ErrorToastComponent>
-              ),
-              {
-                duration: 100000,
-              }
-            );
-          }
+    const familyMembersFormik = useFormik({
+        initialValues: { familyMembers },
+        enableReinitialize: true,
+        validateOnMount: true,
+        validationSchema: familyInfoSchema,
+        onSubmit: (values, formikHelpers) => {
+            formikHelpers
+                .validateForm()
+                .then((res) => { })
+                .catch((err) => { });
+            if (isLoading) return;
+            nextStep({ data: { familyMembers: values.familyMembers } });
+        },
+        validateOnChange: true,
+    });
+
+
+    const guarantorFormik: FormikProps<GuarantorInfoInterface> = useFormik({
+        initialValues: guarantorInfo,
+        enableReinitialize: true,
+        validateOnMount: true,
+        validationSchema: guarantorSchema,
+        onSubmit: (values: GuarantorInfoInterface) => {
+            // if (isLoading) return;
+            // nextStep({ data: { guarantorInfo: values } });
+        },
+        validateOnChange: true,
+    });
+
+    const documentsFormik = useFormik({
+        initialValues: { documents },
+        enableReinitialize: true,
+        validateOnMount: true,
+        validationSchema: documentsSchema,
+        onSubmit: (values) => {
+            createVisaApplication({
+                data: {
+                    tripDetails: detailsFormik.values,
+                    personalInfo: personalInfoFormik.values,
+                    employment: employmentFormik.values.employment,
+                    education: educationFormik.values.education,
+                    familyMembers: familyMembersFormik.values.familyMembers,
+                    guarantorInfo: guarantorFormik.values,
+                    documents: values.documents,
+                },
+            })
+                .then((_: any) => {
+                    toast.success(
+                        "Your application has been submitted successfully, please proceed to make payment",
+                        {
+                            duration: 15000,
+                        }
+                    );
+                })
+                .catch((error) => {
+                    const err = error.response?.data;
+                    if (err?.statusCode === 422 && err?.errorMessage.includes("already exists")) {
+                        toast.error('An account with this email exists, please login to proceed')
+                        setShowAuthModal(true);
+                    } else if (err?.statusCode === 422 && err?.errorMessage.includes("duplicate")) {
+                        toast.error('This appears to be a duplicate application, please check your dashboard for ongoing visa applications')
+                        setShowApplicationExistsModal(true);
+                    } else if (err?.statusCode === 400) {
+
+                        toast(
+                            (t) => (
+                                <ErrorToastComponent>
+                                    <p style={{ textAlign: "center" }}>
+                                        There are errors in your form
+                                    </p>{" "}
+                                    {/* <br /> */}
+                                    {err.data.map((error: ErrorInterface, index: number) => (
+                                        <Text
+                                            type="p"
+                                            text={error.constraints}
+                                            color={ttColors.red}
+                                            key={index}
+                                        />
+                                    ))}
+                                    <button onClick={() => toast.dismiss(t.id)}>Dismiss</button>
+                                </ErrorToastComponent>
+                            ),
+                            {
+                                duration: 100000,
+                            }
+                        );
+                    }
+                });
+        },
+    });
+
+    const persistForm = (noRedirect?: boolean) => {
+        saveProgress({
+            data: {
+                tripDetails: detailsFormik.values,
+                personalInfo: personalInfoFormik.values,
+                education: educationFormik.values.education,
+                employment: employmentFormik.values.employment,
+                familyMembers: familyMembersFormik.values.familyMembers,
+                guarantorInfo: guarantorFormik.values,
+                documents: documentsFormik.values.documents,
+            },
+            uploadedDocuments,
         });
-    },
-  });
+        !noRedirect && router.push("/");
+    };
 
-  const persistForm = () => {
-    saveProgress({
-      data: {
-        tripDetails: detailsFormik.values,
-        personalInfo: personalInfoFormik.values,
-        education: educationFormik.values.education,
-        employment: employmentFormik.values.employment,
-        familyMembers: familyMembersFormik.values.familyMembers,
-        guarantorInfo: guarantorFormik.values,
-        documents: documentsFormik.values.documents,
-      },
-      uploadedDocuments,
-    });
-    router.push("/");
-  };
+    const steps = getSteps({
+        detailsFormik,
+        personalInfoFormik,
+        educationFormik,
+        employmentFormik,
+        familyMembersFormik,
+        guarantorFormik,
+        documentsFormik,
+        persistForm,
+    }).find((x) => x.id === step);
 
-  const steps = getSteps({
-    detailsFormik,
-    personalInfoFormik,
-    educationFormik,
-    employmentFormik,
-    familyMembersFormik,
-    guarantorFormik,
-    documentsFormik,
-    persistForm,
-  }).find((x) => x.id === step);
+    const coverImage = isMobile
+        ? "/assets/images/visaPageCover.jpg"
+        : "/assets/images/visaDesktopCover.jpg";
 
-  const coverImage = isMobile
-    ? "/assets/images/visaPageCover.jpg"
-    : "/assets/images/visaDesktopCover.jpg";
+    const [bottomDrawerOpen, setBottomDrawerOpen] = useState(false);
 
-  const [bottomDrawerOpen, setBottomDrawerOpen] = useState(false);
+    useEffect(() => {
+        const searchParams = new URLSearchParams(window.location.search);
+        fetchDetailsFromURL({
+            homeCountry: searchParams.get("home") || "",
+            destination: searchParams.get("destination") || "",
+            visaType: searchParams.get("visaType") || "",
+        });
+        fetchRecentProgressFromSession();
+    }, [params]);
 
-  useEffect(() => {
-    const searchParams = new URLSearchParams(window.location.search);
+    
+    const persistFormOnInterval = useCallback(() => {
+        saveProgress({
+            data: {
+                tripDetails: {
+                    homeCountry: findCountry({ name: queryParams?.home }),
+                    destination: findCountry({ name: queryParams?.destination }),
+                    visaType: queryParams?.visaType,
+                    applicationType: detailsFormik.values.applicationType,
+                },
+                personalInfo: personalInfoFormik.values,
+                education: educationFormik.values.education,
+                employment: employmentFormik.values.employment,
+                familyMembers: familyMembersFormik.values.familyMembers,
+                guarantorInfo: guarantorFormik.values,
+                documents: documentsFormik.values.documents,
+            },
+            uploadedDocuments,
+        });
+    }, [detailsFormik.values, personalInfoFormik.values, educationFormik.values, employmentFormik.values, familyMembersFormik.values, guarantorFormik.values, documentsFormik.values])
 
-    fetchDetailsFromURL({
-      homeCountry: searchParams.get("home") || "",
-      destination: searchParams.get("destination") || "",
-      visaType: searchParams.get("visaType") || "",
-    });
-    fetchRecentProgressFromSession();
-  }, [params]);
+    useEffect(() => {
+        const interval = setInterval(() => {
+            persistFormOnInterval()
+        }, 20000);
+        return () => clearInterval(interval);
+    }, [persistFormOnInterval]);
 
-
-  // useEffect(() => {
-  //     saveProgress({ data: testPayload, uploadedDocuments: [] })
-  // }, [])
+    // useEffect(() => {
+        // saveProgress({ data: testPayload, uploadedDocuments: [] })
+    // }, [])
 
 
   return (
@@ -494,7 +513,12 @@ function ApplicationForm() {
             />
           </Section>
         </Flex>
-      </SectionLayout>
+          </SectionLayout>
+          
+            <AuthModal
+                open={showAuthModal}
+                handleClose={() => setShowAuthModal(false)}
+            />
     </>
   );
 }

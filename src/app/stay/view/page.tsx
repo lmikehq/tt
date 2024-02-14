@@ -146,7 +146,6 @@ const StayViewPage = () => {
     const { preFerredCurrency, preferredLanguage } = useUserPreferencesStore((state) => state);
     const { updateStaySearchFilters, staySearchFilters, stayTabInitialSearchQuery, updateStayTabInitialQuery } = useStaySearchStore()
     const { user, authModal, setAuthModal } = useUserStore()
-    console.log('usss', user)
 
     const [modal, setModal] = useState({
         isOpenRefresh: false,
@@ -216,7 +215,7 @@ const StayViewPage = () => {
         const interval = setTimeout(() => {
             setModal((prev) => ({ ...prev, isOpenRefresh: true }));
         }, 600000);
-        return () => clearInterval(interval);
+        return () => clearTimeout(interval);
     }, []);
 
     //This useEffect extracts data from the URL

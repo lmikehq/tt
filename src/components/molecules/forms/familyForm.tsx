@@ -65,11 +65,11 @@ export default function FamilyForm({ formik, count, values, arrayHelpers, isFirs
                         />
                     </Flex>
                     <AddButton
-                        disabled={formik.values.familyMembers.filter((v: any) => v?.section === values?.section).length === (values?.section === 'C' ? 5 : 3)}
+                        disabled={formik.values.familyMembers.filter((v: any) => v?.section === values?.section).length === (values?.section === 'C' ? 10 : 3)}
                         onClick={() => {
                             if (!formik.isValid || !formik.dirty)
                             return toast.error("Please fill the form first");
-                            if (formik.values.familyMembers.filter((v: any) => v?.section === values?.section).length < (values?.section === 'C' ? 5 : 3)) {
+                            if (formik.values.familyMembers.filter((v: any) => v?.section === values?.section).length < (values?.section === 'C' ? 10 : 3)) {
                                 arrayHelpers?.insert(count + 1, {
                                     ...familyInforKeys,
                                     section: values?.section,

@@ -564,28 +564,54 @@ function PersonalInfo({ steps, index, persistForm, formik }: FormProps) {
         </Flex>
 
         <Flex
-          margin="0"
-          justify="space-between"
-          direction={isMobile ? "column" : "row"}
-          gap={isMobile ? "0px" : "1.5rem"}
+            margin="0"
+            justify="space-between"
+            direction={isMobile ? "column" : "row"}
+            gap={isMobile ? "0px" : "1.5rem"}
         >
           <Section>
             <Flex align="center" gap="0.25rem">
-              <Text
-                type="p"
-                text="Status of Current Residence"
-                margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
-                size={15}
-              />
+                <Text
+                    type="p"
+                    text="Status of Current Residence"
+                    margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                    size={15}
+                />
               <Required />
             </Flex>
             <FieldString
-              formik={formik}
-              name="statusOfResidence"
-              placeholder="Select status of current residence"
-              options={["Citizen", "Visitor", "Worker", "Refugee", "Student", "Others"]}
+                formik={formik}
+                name="statusOfResidence"
+                placeholder="Select status of current residence"
+                options={["Citizen", "Visitor", "Resident", "Worker", "Refugee", "Student", "Others"]}
             />
-          </Section>
+            </Section>
+            {formik.values.statusOfResidence === 'Others' && 
+                <Section>
+                    <Flex align="center" gap="0.25rem">
+                        <Text
+                            type="p"
+                            text="Enter Status of Residence"
+                            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+                            size={15}
+                        />
+                        <Required />
+                    </Flex>
+                    <FieldInput
+                        name="statusOfResidenceText"
+                        placeholder="Enter Status of Residence"
+                        formik={formik}
+                    />
+                </Section>
+            }
+        </Flex>
+              
+        <Flex
+            margin="0"
+            justify="space-between"
+            direction={isMobile ? "column" : "row"}
+            gap={isMobile ? "0px" : "1.5rem"}
+        >
           <Section>
             <Flex align="center" gap="0.25rem">
               <Text
