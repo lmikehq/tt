@@ -24,7 +24,10 @@ function withLikeHotel<P extends object>(WrappedComponent: ComponentType<P>) {
         if (refetch && res?.msg !== "hotel liked") {
           refetch();
         }
-      },
+        },
+        onError: (err) => {
+            // toast.error('Error')
+        }
     });
 
 
@@ -33,7 +36,7 @@ function withLikeHotel<P extends object>(WrappedComponent: ComponentType<P>) {
         mutateAsync({ id });
       } else {
         setAuthModal(true);
-        toast.error("Sign up or Log in to like hotels");
+        // toast.error("Sign up or Log in to like hotels");
       }
     };
 

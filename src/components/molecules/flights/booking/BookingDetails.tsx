@@ -188,7 +188,7 @@ function BookingHeader({ booking } : { booking: GetFlightBookingByIdResponse }) 
                 <HeaderDetail name="BOOKING ID" value={booking?.bookingId} />
                 <HeaderDetail name={booking?.itinerary ? "PNR" : "PNR STATUS"} value={booking?.itinerary ? booking?.itinerary?.segments[0]?.pnr : booking?.pnrStatus} />
                 <HeaderDetail name="BOOKING DATE" value={dayjs(booking?.createdAt).format('MMM DD, YYYY')} />
-                <HeaderDetail name="FLIGHT NUMBER" value={`${booking?.airlineIata} ${booking?.flightNum}`} />
+                <HeaderDetail name="FLIGHT NUMBER" value={`${booking?.airlineIata ?? ''} ${booking?.flightNum}`} />
                 {/* <HeaderDetail name="SEAT NUMBER" value={booking?.seatId[0] ?? ''} /> */}
                 <HeaderDetail name="PAYMENT STATUS:" value={paymentComplete ? "SUCCESSFUL" : "PENDING"} />
             </Grid>

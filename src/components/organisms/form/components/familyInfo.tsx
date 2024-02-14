@@ -193,7 +193,7 @@ function FamilyInfo({ steps, index, persistForm, formik, guarantorFormik }: form
                         <Flex align="center" gap="0.25rem">
                             <Text
                                 type="p"
-                                text="Guarantor Net Worth ($)"
+                                text="Guarantor Net Worth (₦)"
                                 margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
                                 size={15}
                             />

@@ -24,7 +24,7 @@ function VoucherForm({ modal = false }: { modal?: boolean; }) {
     deleteVoucher,
   } = useVoucherStore((state) => state);
   return (
-    <Section margin={isMobile ? '3rem 0 0' : "0 0 0"}>
+    <Section margin={isMobile ? '3rem 0 0' : "3rem 0 0"}>
       <Text
         text={"Enter Coupon Code"}
         type={"h3"}

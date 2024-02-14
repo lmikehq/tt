@@ -65,11 +65,11 @@ export default function FamilyForm({ formik, count, values, arrayHelpers, isFirs
                         />
                     </Flex>
                     <AddButton
-                        disabled={formik.values.familyMembers.filter((v: any) => v?.section === values?.section).length === (values?.section === 'C' ? 5 : 3)}
+                        disabled={formik.values.familyMembers.filter((v: any) => v?.section === values?.section).length === (values?.section === 'C' ? 10 : 3)}
                         onClick={() => {
                             if (!formik.isValid || !formik.dirty)
                             return toast.error("Please fill the form first");
-                            if (formik.values.familyMembers.filter((v: any) => v?.section === values?.section).length < (values?.section === 'C' ? 5 : 3)) {
+                            if (formik.values.familyMembers.filter((v: any) => v?.section === values?.section).length < (values?.section === 'C' ? 10 : 3)) {
                                 arrayHelpers?.insert(count + 1, {
                                     ...familyInforKeys,
                                     section: values?.section,
@@ -321,7 +321,7 @@ export default function FamilyForm({ formik, count, values, arrayHelpers, isFirs
               />
             </Section>
             <Section margin="0">
-                <Flex align="center" gap="0.25rem">
+                <Flex align="center" gap="0.25rem" margin="0 0 .5rem">
                     <Text type="p" text="Issued Country" />
                     <Required />
                 </Flex>
@@ -340,7 +340,7 @@ export default function FamilyForm({ formik, count, values, arrayHelpers, isFirs
             </Flex>
                   
           <Flex
-            margin={isMobile ? ".7rem  0 .2rem" : "1rem 0 .5rem"}
+            margin={"0"}
             justify="space-between"
             direction={isMobile ? "column" : "row"}
             gap={isMobile ? "0px" : "1.5rem"}
@@ -351,6 +351,7 @@ export default function FamilyForm({ formik, count, values, arrayHelpers, isFirs
                 name={`familyMembers.${count}.issueYear`}
                 placeholder="Select Issue Year"
                 formik={formik}
+                maxDate={dayjs()}
                 views={["year"]}
               />
             </Section>
@@ -360,6 +361,7 @@ export default function FamilyForm({ formik, count, values, arrayHelpers, isFirs
                 name={`familyMembers.${count}.expiryYear`}
                 placeholder="Select Expiry Year"
                 formik={formik}
+                minDate={dayjs().year(formik.values.familyMembers.count.expiryYear)}
                 views={["year"]}
               />
             </Section>

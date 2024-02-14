@@ -141,7 +141,7 @@ function Page() {
         const interval = setTimeout(() => {
             setModal((prev) => ({ ...prev, isOpenRefresh: true }));
         }, 600000);
-        return () => clearInterval(interval);
+        return () => clearTimeout(interval);
     }, []);
 
 

@@ -23,9 +23,7 @@ export class VisaService {
   };
 
   static async addDependants(query: string, payload: DependantsPayload[]) {
-    console.log('this code is called to query the api');
     return await apiService(`/visa/application/${query}/add-accompanying`, 'POST', payload).then((response) => {
-      console.log('response from the api', response);
       return response;
     }).catch((err) => {
       throw err;

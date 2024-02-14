@@ -188,18 +188,18 @@ function UploadDocuments({ steps, index, persistForm, formik, detailsFormik, per
                 <SearchStringInput
                 options={(() => {
                     const general = [
-                    "International passport",
-                    "Passport photograph",
-                    "Means of ID",
-                    "Bank statement",
-                    "Commitment Letter From Family or employer (if available)",
-                    "Proof of accommodation",
-                    "References from Employer",
-                    "Academic References",
-                    "Official Transcript from school",
-                    "Professsional CV",
-                    "Medical Records",
-                    "Police Character (if available)",
+                        "International passport",
+                        "Passport photograph",
+                        "Means of ID",
+                        "Bank statement",
+                        "Commitment Letter From Family or employer (if available)",
+                        "Proof of accommodation",
+                        "References from Employer",
+                        "Academic References",
+                        "Official Transcript from school",
+                        "Professsional CV",
+                        "Medical Records",
+                        "Police Character (if available)",
                     ];
                     switch (form.tripDetails.visaType) {
                     case "Student Visa":
