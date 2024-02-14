@@ -342,12 +342,16 @@ const SeatSelection = () => {
             particularSeats.length == 0
                 ? {
                       ...saveBookingDetails,
-                      flightType: queryParams?.flightType ?? "",
+                      flightType: queryParams?.flightType.includes("ONE")
+                          ? FlightTypeEnum.one_way
+                          : queryParams?.flightType,
                   }
                 : {
                       ...saveBookingDetails,
                       seatId: collectSeatNames(particularSeats),
-                      flightType: queryParams?.flightType ?? "",
+                      flightType: queryParams?.flightType.includes("ONE")
+                          ? FlightTypeEnum.one_way
+                          : queryParams?.flightType,
                       additional_services: {
                           seating: [...particularSeats],
                       },

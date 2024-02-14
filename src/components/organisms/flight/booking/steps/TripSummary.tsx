@@ -145,7 +145,9 @@ const TripSummary = ({
     };
 
     const contactDetailsFormik = useFormik({
-        initialValues: contactDetails,
+        initialValues: user?._id
+            ? { ...contactDetails, email: user.email }
+            : contactDetails,
         enableReinitialize: true,
         validateOnMount: true,
         validationSchema: contactDetailsSchema,
@@ -237,7 +239,7 @@ const TripSummary = ({
     }: {
         category: string;
     }): { min?: dayjs.Dayjs; max?: dayjs.Dayjs } => {
-        const adult = checkFlightsResponse?.age_category_thresholds.adult ?? 12;
+        const adult = checkFlightsResponse?.age_category_thresholds.adult ?? 17;
         // checkFlightsResponse?.adult_threshold ??
         const child = checkFlightsResponse?.age_category_thresholds.child ?? 2;
 
