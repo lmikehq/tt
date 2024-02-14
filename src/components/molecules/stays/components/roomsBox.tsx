@@ -173,12 +173,11 @@ function RoomBox({ hotel, index, likedHotels = [] }: RoomBoxProps) {
                 <GridLayout isMobile={isMobile}>
                     {!isMobile ? (
                         <ImgBox>
-                            <LargeImg className="img_img" style={{ height: "100%" }}>
+                            <LargeImg className="img_img" style={{ height: '440px' }}>
                                 <img
                                     style={{
                                         width: "23rem",
                                         height: "100%",
-                                        maxHeight: '23rem',
                                         objectFit: "cover",
                                         transform: 'scale(1.3)',
                                         transformOrigin: '50% 50%',

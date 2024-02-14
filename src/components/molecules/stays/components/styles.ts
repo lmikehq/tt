@@ -97,6 +97,7 @@ export const FlexText = styled.div`
 
 export const ImgBox = styled.div`
   width: 100%;
+  height: 440px;
   position: relative;
   overflow: hidden;
   border-radius: 12px;
@@ -117,7 +118,6 @@ export const MobileImageBox = styled.div`
 
 export const LargeImg = styled.div`
   width: 100%;
-  height: 100%;
   // border-top-left-radius: 12.5px;
   // border-bottom-left-radius: 12.5px;
   overflow: hidden;
