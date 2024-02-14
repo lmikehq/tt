@@ -39,7 +39,7 @@ function RegisterPage() {
   const [selectedOption, setSelectedOption] = useState("length");
   const searchParams = useSearchParams();
 
-  const referrer = searchParams.get('ref');
+  const referrer = searchParams.get('refCode');
 
   const validationOptions = [
     { value: "length", label: "8 or more characters" },
@@ -79,7 +79,7 @@ function RegisterPage() {
     phoneNumber: "",
     password: "",
     confirmPassword: "",
-    referrer: typeof referrer === 'string' ? searchParams.get('ref') : "",
+    referrer: typeof referrer === 'string' ? searchParams.get('refCode') : "",
     consent: false,
   });
 
@@ -93,8 +93,11 @@ function RegisterPage() {
       ...registerData,
       email: registerData?.email?.toLowerCase(),
     });
+
     return response;
   }
+
+
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
