@@ -568,7 +568,15 @@ function AvailableFlights() {
     };
 
     const goToFlight = (bookingToken: string) => {
-        const to = `/flight/booking?bnum=${flightReq.bags}&adults=${flightReq.adults}&children=${flightReq.children}&infants=${flightReq.infants}&booking_token=${bookingToken}&flightType=${queryParams?.flightType}`;
+        const to = `/flight/booking?bnum=${flightReq.bags}&adults=${
+            flightReq.adults
+        }&children=${flightReq.children}&infants=${
+            flightReq.infants
+        }&booking_token=${bookingToken}&flightType=${
+            queryParams?.flightType.includes("ONE")
+                ? FlightTypeEnum.one_way
+                : queryParams.flightType
+        }`;
         if (user?.email) {
             router.push(to);
         } else {
