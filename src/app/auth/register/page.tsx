@@ -17,7 +17,7 @@ import sleep from "@lib/extensions/helpers/sleep";
 import Section from "src/components/molecules/section";
 import apiService from "@lib/extensions/hook/apiService";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 import Slider from "react-slick";
@@ -37,6 +37,10 @@ const settings = {
 
 function RegisterPage() {
   const [selectedOption, setSelectedOption] = useState("length");
+  const searchParams = useSearchParams();
+
+  const referrer = searchParams.get('refCode');
+
   const validationOptions = [
     { value: "length", label: "8 or more characters" },
     { value: "uppercaseLowercase", label: "Uppercase & Lowercase" },
@@ -75,7 +79,7 @@ function RegisterPage() {
     phoneNumber: "",
     password: "",
     confirmPassword: "",
-    referralCode: "",
+    referrer: typeof referrer === 'string' ? searchParams.get('refCode') : "",
     consent: false,
   });
 
@@ -89,8 +93,11 @@ function RegisterPage() {
       ...registerData,
       email: registerData?.email?.toLowerCase(),
     });
+
     return response;
   }
+
+
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -106,19 +113,19 @@ function RegisterPage() {
       });
       return alert("Please agree to the terms and conditions");
     }
-if(!validateEmail(registerData.email)){
-  setSubmissionState({
-    ...submissionState,
-    error: [
-      {
-        constraints: "Not a valid email",
-        property: "email",
-      },
-    ],
-    loading: false,
-  });
-  return;
-}
+    if (!validateEmail(registerData.email)) {
+      setSubmissionState({
+        ...submissionState,
+        error: [
+          {
+            constraints: "Not a valid email",
+            property: "email",
+          },
+        ],
+        loading: false,
+      });
+      return;
+    }
     if (registerData.password !== registerData.confirmPassword) {
       setSubmissionState({
         ...submissionState,
@@ -164,7 +171,7 @@ if(!validateEmail(registerData.email)){
     router.push("/auth/login");
   }
   function checkIfFieldHasError(field: string) {
-    const error: { constraints: string } = submissionState?.error?.find(
+    const error: { constraints: string; } = submissionState?.error?.find(
       (err: any) => err.property.includes(field)
     );
     if (error) return error.constraints;
@@ -377,7 +384,7 @@ if(!validateEmail(registerData.email)){
                       setRegisterData({
                         ...registerData,
                         email: e.target.value,
-                      })
+                      });
                       setSubmissionState({
                         ...submissionState,
                         error: [
@@ -568,11 +575,11 @@ if(!validateEmail(registerData.email)){
                   onChange={(e) =>
                     setRegisterData({
                       ...registerData,
-                      referralCode: e.target.value,
+                      referrer: e.target.value,
                     })
                   }
                   height="3rem"
-                  value={registerData.referralCode}
+                  value={registerData?.referrer as string}
                 />
               </section>
 

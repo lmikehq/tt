@@ -6,6 +6,7 @@ import {
     ConfirmPaymentZoozRequestInput,
     SaveBookingRequestInput,
     SearchFlightsRequestQuery,
+    SearchMultiFlightRequestQuery,
     TokenizeDataRequestInput,
 } from "../../types/request-models/flight/booking.type";
 import { toast } from "react-hot-toast";
@@ -13,6 +14,7 @@ import {
     axiosClient,
     kiwiClient,
     kiwiResourceClient,
+    kiwiMultiCityClient,
 } from "../../axios/axios-client";
 import { constructQueryFromParams } from "../../extensions/helpers/constructQuery";
 import {
@@ -23,6 +25,7 @@ import {
 
 import { CheckFlightResponse } from "../../types/response-models/flight/check_flight.type";
 import { CheckSeatingResponse } from "../../types/response-models/flight/check_seating.type";
+import { SearchMultiFlightsResponse } from "@/lib/types/response-models/flight/multi_flight.type";
 
 export class FlightBookingService {
     static searchFlights = async ({
@@ -38,6 +41,20 @@ export class FlightBookingService {
             })
             .catch((error) => {
                 toast.error(error.response?.errorMessage);
+                throw error;
+            });
+    };
+    static searchMultiFlights = async ({
+        data,
+    }: {
+        data: SearchMultiFlightRequestQuery;
+    }) => {
+        return await kiwiMultiCityClient
+            .post<any, SearchMultiFlightsResponse>(`/flights_multi`, data)
+            .then((response) => {
+                return response;
+            })
+            .catch((error) => {
                 throw error;
             });
     };

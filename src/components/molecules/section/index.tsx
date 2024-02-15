@@ -3,7 +3,6 @@ interface sectionProps {
     width?: string;
     maxWidth?: string;
     maxHeight?: string;
-
     margin?: string;
     height?: string;
     padding?: React.CSSProperties["padding"];
@@ -11,6 +10,14 @@ interface sectionProps {
     className?: string;
     background?: string;
     borderRadius?: string;
+    border?: string;
+    borderTop?: string;
+    borderBottom?: string;
+    borderRight?: string;
+    borderLeft?: string;
+    onClick?: () => void;
+    onMouseEnter?: () => void;
+    onMouseLeave?: () => void;
 }
 
 const Section: React.FC<sectionProps> = ({
@@ -25,24 +32,37 @@ const Section: React.FC<sectionProps> = ({
     background,
     borderRadius,
     className,
+    border,
+    borderBottom,
+    borderLeft,
+    borderRight,
+    borderTop,
+    onClick,
+    onMouseEnter,
+    onMouseLeave
 }) => {
-    return (
-        <section
-            style={{
-                width: width ? width : "100%",
-                maxWidth: maxWidth,
-                maxHeight,
-                margin: margin || "0",
-                padding: padding || "0",
-                height: height || "unset",
-                background: background || "unset",
-                borderRadius: borderRadius || "unset",
-                ...styles,
-            }}
-        >
-            {children}
-        </section>
-    );
+  return (
+    <section
+        className={className}
+        onClick={onClick}
+        style={{
+            width: width ? width : "100%",
+            maxWidth: maxWidth,
+            maxHeight,
+            margin: margin || "0",
+            padding: padding || "0",
+            height: height || "unset",
+            background: background || "unset",
+            borderRadius: borderRadius || "unset",
+            border: border,
+            ...styles,
+        }}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
+    >
+      {children}
+    </section>
+  );
 };
 
 export default Section;

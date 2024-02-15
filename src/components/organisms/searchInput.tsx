@@ -59,6 +59,8 @@ const StyledPopper = styled(Popper)(() => ({
   borderRadius: 6,
   fontSize: 16,
   backgroundColor: "#fff",
+  zIndex: "9999 !important",
+  position: 'relative'
 }));
 
 const StyledInput = styled(InputBase)(({ theme }) => ({
@@ -74,7 +76,7 @@ const StyledInput = styled(InputBase)(({ theme }) => ({
     fontSize: 16,
   },
 }));
-export const RoundFlag = styled("div")(({ flag }: { flag: string }) => ({
+export const RoundFlag = styled("div")(({ flag }: { flag: string; }) => ({
   width: " 26px",
   height: "26px",
   borderRadius: "50%",
@@ -82,35 +84,35 @@ export const RoundFlag = styled("div")(({ flag }: { flag: string }) => ({
 }));
 
 interface SearchProps {
-    legend?: string;
-    children?: React.ReactNode;
-    placeholder?: string;
-    height?: string;
-    padding?: string;
-    options: any[];
-    value?: any;
-    border?: string;
-    disabled?: boolean;
-    error?: boolean;
-    onChange: (x: any) => void;
-    onFocus?: (x: any) => void;
-    onBlur?: (x: any) => void;
-    cursor?: CSSProperties['cursor'];
+  legend?: string;
+  children?: React.ReactNode;
+  placeholder?: string;
+  height?: string;
+  padding?: string;
+  options: any[];
+  value?: any;
+  border?: string;
+  disabled?: boolean;
+  error?: boolean;
+  onChange: (x: any) => void;
+  onFocus?: (x: any) => void;
+  onBlur?: (x: any) => void;
+  cursor?: CSSProperties['cursor'];
 }
 
 export default function SearchInput({
-    placeholder,
-    children,
-    options,
-    legend,
-    value,
-    height,
-    padding,
-    error,
-    onChange,
-    disabled = false
+  placeholder,
+  children,
+  options,
+  legend,
+  value,
+  height,
+  padding,
+  error,
+  onChange,
+  disabled = false
 }: SearchProps) {
-    const { isMobile } = useScreenResolution()
+  const { isMobile } = useScreenResolution();
   const [_inputValue, setInputValue] = useState("");
   const handleClick = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -140,23 +142,23 @@ export default function SearchInput({
             width: "100%",
             fontSize: 16,
             "& .MuiInputAdornment-root": {
-                position: "absolute",
-                top: "50%",
-                left: '0',
-                display: "flex",
-                justifyContent: "center",
-                width: "100%",
-                paddingLeft: '14px',
-                paddingRight: '14px',
+              position: "absolute",
+              top: "50%",
+              left: '0',
+              display: "flex",
+              justifyContent: "center",
+              width: "100%",
+              paddingLeft: '14px',
+              paddingRight: '14px',
             },
             "&:hover .MuiOutlinedInput-notchedOutline": {
               borderColor: `${ttColors.primary} !important`,
             },
             "& > .MuiInputBase-root": {
-                paddingRight: '14px',
+              paddingRight: '14px',
             },
             "&:hover .MuiInputBase-root": {
-                color: `${ttColors.primary} !important`,
+              color: `${ttColors.primary} !important`,
             },
             "& .MuiOutlinedInput-notchedOutline": {
               borderColor: error ? "red" : "",
@@ -168,12 +170,13 @@ export default function SearchInput({
               fontSize: "16px!important",
             },
             "& input": {
-                height: height || "45px",
-                padding: padding || "0px",
+              height: height || "45px",
+              padding: padding || "0px",
             },
           }}
           onClick={handleClick}
-          label={legend}
+            label={legend}
+            value=''
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
@@ -190,9 +193,9 @@ export default function SearchInput({
           open={open}
           anchorEl={anchorEl}
           placement="bottom-start"
-            sx={{
-                zIndex: 2,
-                width: getWidth(),
+          sx={{
+            zIndex: 2,
+            width: getWidth(),
           }}
         >
           <ClickAwayListener onClickAway={handleClose}>
@@ -265,18 +268,18 @@ export default function SearchInput({
 }
 
 export function SearchInputAsString({
-    placeholder,
-    children,
-    options,
-    legend,
-    value,
-    error,
-    onChange,
-    onFocus,
-    onBlur,
-    height,
-    padding,
-    border,
+  placeholder,
+  children,
+  options,
+  legend,
+  value,
+  error,
+  onChange,
+  onFocus,
+  onBlur,
+  height,
+  padding,
+  border,
   cursor
 }: SearchProps) {
   const [inputValue, setInputValue] = useState("");
@@ -299,29 +302,29 @@ export function SearchInputAsString({
 
   const open = Boolean(anchorEl);
   const id = open ? "select-service" : undefined;
-  useEffect(() => {}, [inputValue]);
+  useEffect(() => { }, [inputValue]);
   return (
     <>
-    <Box
+      <Box
         width="100%"
         ref={ref}
         sx={{
           border: 0,
         }}
-    >
+      >
         <TextField
           sx={{
             width: "100%",
             fontSize: 16,
             "& .MuiInputAdornment-root": {
-                position: "absolute",
-                top: "50%",
-                left: '0',
-                display: "flex",
-                justifyContent: "center",
-                width: "100%",
-                paddingLeft: '14px',
-                paddingRight: '14px',
+              position: "absolute",
+              top: "50%",
+              left: '0',
+              display: "flex",
+              justifyContent: "center",
+              width: "100%",
+              paddingLeft: '14px',
+              paddingRight: '14px',
               // color: "inherit !important",
             },
             "& fieldset": {
@@ -357,11 +360,12 @@ export function SearchInputAsString({
               padding: padding || "0px",
             },
           }}
-            onClick={handleClick}
-            onFocus={onFocus}
-            onBlur={onBlur}
+          onClick={handleClick}
+          onFocus={onFocus}
+          onBlur={onBlur}
             label={legend}
-            InputProps={{
+            value=''
+          InputProps={{
             startAdornment: (
               <InputAdornment position="start">
                 <Box sx={{ width: "100%" }}>{children}</Box>

@@ -32,7 +32,7 @@ const CustomizedSlider = styled(MuiSlider)(({ theme }) => ({
     },
     "& .MuiSlider-markLabel[data-index='1']": {
         fontSize: "14px",
-        textAlign: 'left'
+        textAlign: "left",
     },
     "& .MuiSlider-rail": {
         color: theme.palette.mode === "dark" ? "#7BBBD6" : "#DAF0F9",
@@ -60,7 +60,7 @@ interface Mark {
 
 interface SliderProps {
     marks: Mark[];
-    defaultValue: number[];
+    defaultValue: number | number[];
     value?: number[];
     onChange?: (event: Event, newValue: number | number[]) => void;
     min?: number;
@@ -81,7 +81,7 @@ export default function CustomSlider({
     leftOffset,
     rightOffset,
 }: SliderProps) {
-    const { isMobile } = useScreenResolution()
+    const { isMobile } = useScreenResolution();
 
     return (
         <CustomizedSlider
@@ -95,13 +95,17 @@ export default function CustomSlider({
             step={step}
             sx={{
                 "& .MuiSlider-markLabel[data-index='0']": {
-                    left: leftOffset ? `${leftOffset} !important` : "14px !important",
+                    left: leftOffset
+                        ? `${leftOffset} !important`
+                        : "14px !important",
                     fontSize: "14px",
                 },
                 "& .MuiSlider-markLabel[data-index='1']": {
-                    right: rightOffset ? `${rightOffset} !important` : "-16% !important",
+                    right: rightOffset
+                        ? `${rightOffset} !important`
+                        : "-16% !important",
                     fontSize: "14px",
-                    textAlign: 'left'
+                    textAlign: "left",
                 },
             }}
         />

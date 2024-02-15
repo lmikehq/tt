@@ -36,51 +36,49 @@ const Wrapper = styled.div`
 `;
 
 function DashboardTabs() {
-    const tabItems = [
-        {
-            label: "All Applications",
-            value: 0,
-            content: <Application />,
-        },
-        {
-            label: "Payment History",
-            value: 1,
-            content: <PaymentHistory />,
-        },
-        {
-            label: "Favourites",
-            value: 2,
-            content: <Favourite />,
-            disabled: true,
-        },
+  const tabItems = [
+    {
+      label: "All Applications",
+      value: 0,
+      content: <Application />,
+    },
+    {
+      label: "Payment History",
+      value: 1,
+      content: <PaymentHistory />,
+    },
+    {
+      label: "Favourites",
+      value: 2,
+      content: <Favourite />,
 
-        {
-            label: "Notifications",
-            value: 3,
-            content: <Notification />,
-            disabled: true,
-        },
+    },
+    {
+      label: "Notifications",
+      value: 3,
+      content: <Notification />,
+      disabled: false,
+    },
+    {
+      label: "Account",
+      value: 4,
+      content: <Account />,
+    },
+    {
+      label: "Referral",
+      value: 5,
+      content: <Referrals />,
+      disabled: false,
+    },
+  ];
 
-        {
-            label: "Account",
-            value: 4,
-            content: <Account />,
-        },
-        {
-            label: "Referral",
-            value: 5,
-            content: <Referrals />,
-            disabled: true,
-        },
-    ];
-
-    return (
-        <Wrapper>
-            <RTQueryClient>
-                <CustomTab shadowShow tabItems={tabItems} variant="fullWidth" />
-            </RTQueryClient>
-        </Wrapper>
-    );
+  return (
+    <Wrapper>
+      <RTQueryClient>
+        <CustomTab shadowShow tabItems={tabItems} variant="fullWidth" />
+      </RTQueryClient>
+    </Wrapper>
+  );
 }
 
 export default DashboardTabs;

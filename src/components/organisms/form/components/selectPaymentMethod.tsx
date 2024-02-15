@@ -13,10 +13,8 @@ import ContinueButton from "@organism/continueButton";
 import { PaymentCompleteSection } from "@organism/paymentConfirmationModal";
 import CustomConfirmationModal from "@organism/visaApplicationModal";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import VoucherForm from "./voucherForm";
-import AuthModal from "../../auth/AuthModal";
-import { useUserStore } from "@/lib/store/useStore";
 
 export interface CurrencyType {
   currency: string;
@@ -26,23 +24,16 @@ export interface CurrencyType {
 
 const SelectPaymentMethod = () => {
     const [modalOpen, setModalOpen] = useState(false);
-    const [authOpen, setAuthOpen] = useState(false);
 
     const router = useRouter();
     const { createFormFeeCharge, createVisaApplicationResponse, mode } = useApplicationFormStore((state) => state);
     const { applied, voucher, useVoucher, useVoucherMode } = useVoucherStore((state) => state);
-    const { user } = useUserStore()
     const [currency, setCurrency] = useState<CurrencyType>({
         currency: "Nigerian Naira",
         flag: COUNTRY_FLAGS.find((el) => el.code == "NG")?.flag ?? "",
         currencyCode: "NGN",
     });
-    
-    useEffect(() => {
-        if (!user?._id){
-            setAuthOpen(true)
-        }
-    }, [])
+
 
   return (
     <>
@@ -62,11 +53,6 @@ const SelectPaymentMethod = () => {
             description="Your application has been submitted successfully, and a travel voucher was used to pay for your application. Thank you for trusting Thrillers Travels."
           />
         }
-        />
-          
-        <AuthModal
-            open={authOpen}
-            handleClose={() => setAuthOpen(false)}
         />
 
       <Section>

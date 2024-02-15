@@ -45,4 +45,13 @@ export class FlightLocationService {
                 throw error;
             });
     };
+
+    static fetchLocationById = async ({ id }: { id: string }) => {
+        return await kiwiClientV1
+            .get<any, FetchLocationsResponse>(`/locations/id?id=${id}&limit=1`)
+            .then((response) => response)
+            .catch((error) => {
+                throw error;
+            });
+    };
 }

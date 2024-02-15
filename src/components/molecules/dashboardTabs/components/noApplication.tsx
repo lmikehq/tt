@@ -22,7 +22,7 @@ export interface NoVisaApplicationProps {
   content: {
     title: string;
     links: LinkItem[];
-  }
+  };
 }
 
 const NoApplication: React.FC<NoVisaApplicationProps> = ({
@@ -45,15 +45,15 @@ const NoApplication: React.FC<NoVisaApplicationProps> = ({
         <Image
           src={noVisaImage}
           alt="no-visa"
-          width={330.89}
-          height={331.03}
+          width={isMobile ? 230 : 330.89}
+          height={isMobile ? 230 : 331.03}
         />
       </Section>
       <Text
         type="p"
         text={content.title}
         weight={600}
-        size={24}
+        size={isMobile ? 18 : 24}
         margin="2.5rem auto 1rem"
         styles={{ lineHeight: "34px" }}
         textAlign={isMobile ? "center" : "left"}

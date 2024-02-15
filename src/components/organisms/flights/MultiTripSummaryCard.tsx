@@ -1,0 +1,306 @@
+"use client";
+
+import Button from "@/components/atoms/button";
+import Text from "@/components/atoms/text";
+import Accordion, { AccordionProps } from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import Flex from "@/components/templates/flex";
+import { styled } from "@mui/material/styles";
+import { ttColors } from "@/lib/theme/colors";
+import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
+import { TripHeader } from "../flight/booking/headers";
+import React, { useContext, useState } from "react";
+import { Flight } from "@/lib/types/response-models/flight/check_flight.type";
+import { formatDate } from "@/lib/utilFns";
+import { Box } from "@mui/material";
+import dayjs from "dayjs";
+import TripSummaryDetails from "./TripSummaryDetails";
+import { FlightContext } from "@/lib/extensions/context";
+import FlightDepartureIcon from "@/components/molecules/flights/components/flightDepartureIcon";
+import { useRouter } from "next/navigation";
+import { Multi_FlightInfo } from "@/lib/types/response-models/flight/multi_flight.type";
+import MultiTripSummaryDetails from "./MultiTripSummaryDetails";
+
+
+const oneFlight = {
+    index: 0,
+    departureCountry: { name: 'Nigeria' },
+    arrivalCountry: { name: 'Netherlands' },
+    departureDate: dayjs(new Date()),
+    adults: 1,
+    children: 0,
+    infants: 0,
+    cabinBaggage: 1,
+    checkedBaggage: 0,
+    flightClass: "Economy",
+};
+
+function LineText({ text }: { text: string }) {
+    return <Text text={text} type="p" size={14} />;
+}
+
+function AirportLocation({
+    datetime,
+    airport,
+    location,
+    shortLocation,
+    order,
+}: {
+    datetime: string;
+    airport: string;
+    location: string;
+    shortLocation: string;
+    order: number;
+}) {
+    const { isMobile } = useScreenResolution();
+    const date = formatDate(dayjs(datetime), "ddd, DD MMM");
+    const time = formatDate(dayjs(datetime), "HH: mm");
+
+    return (
+        <Flex
+            direction="column"
+            gap=".5rem"
+            width={isMobile ? "45%" : "25%"}
+            styles={{ order }}
+        >
+            <Flex gap="1rem">
+                <Text type="p" text={time} size={16} weight={600} />
+                <Text type="p" text={shortLocation} size={16} weight={600} />
+            </Flex>
+            <LineText text={date} />
+            <LineText text={airport} />
+            <LineText text={location} />
+        </Flex>
+    );
+}
+
+const StyledAccordion = styled((props: AccordionProps) => (
+    <Accordion disableGutters elevation={0} {...props} />
+))(() => ({
+    "&::before": {
+        content: '""',
+        border: "none",
+        borderTop: `2px dotted ${ttColors.lightestGray}`,
+        backgroundColor: "transparent",
+    },
+    ".MuiAccordionSummary-root": {
+        paddingLeft: "0px",
+        paddingRight: "0px",
+    },
+}));
+
+
+interface MultiTripSummaryCardProps {
+    departure: Flight;
+    arrival: Flight;
+    flights: Multi_FlightInfo[];
+}
+export default function MultiTripSummaryCard({
+    departure,
+    arrival,
+    flights,
+}: MultiTripSummaryCardProps) {
+    const { isMobile } = useScreenResolution();
+    const { back } = useRouter();
+    const [isOpen, setIsOpen] = useState(false);
+    const flightContext = useContext(FlightContext);
+    const flightState = flightContext?.state;
+
+    const flightStops = Math.max(0, flights?.length - 1);
+    const timeToArrivalMins = dayjs(arrival?.utc_arrival).diff(
+        dayjs(departure?.utc_departure),
+        "minute"
+    );
+    const hoursLeft = Math.floor(timeToArrivalMins / 60);
+    const minsLeft = timeToArrivalMins % 60;
+
+    // const trips = [oneFlight, oneFlight]
+    const trips: typeof oneFlight[] = []
+
+    return (
+        <React.Fragment>
+            <Flex margin="0rem 0" align="center" justify="space-between">
+                {!isMobile && (
+                    <React.Fragment>
+                        <TripHeader />
+                        <Button
+                            width="200px"
+                            color={ttColors.dark}
+                            variant="outline"
+                            styles={{ fontSize: isMobile ? "14px" : "14px" }}
+                            onClick={back}
+                        >
+                            Change Flight
+                        </Button>
+                    </React.Fragment>
+                )}
+            </Flex>
+
+            {trips.map((trip, tripIndex) =>
+                <Flex direction="column" margin="2.5rem 0 0" key={`trip-${tripIndex}`}>
+                    <Text
+                        type='p'
+                        text={`${trip.departureCountry?.name} - ${trip.arrivalCountry?.name}`}
+                        weight={600}
+                    />
+
+                    <Flex margin="0 0 1rem" align="center" justify="space-between">
+                        <Box
+                            display="flex"
+                            alignItems="center"
+                            gap="1rem"
+                            margin="1rem 0"
+                        >
+                            {flightState?.airlines[departure?.airline?.iata_code]
+                                ?.logo ? (
+                                <Box
+                                    style={{
+                                        flex: "none",
+                                        backgroundSize: "cover",
+                                        backgroundPosition: "center",
+                                        borderRadius: "50%",
+                                        border: `1px solid ${ttColors.lightestGray}`,
+                                        width: isMobile ? "40px" : "60px",
+                                        height: isMobile ? "40px" : "60px",
+                                        backgroundImage: `url(${
+                                            flightState?.airlines[
+                                                departure?.airline?.iata_code
+                                            ]?.logo
+                                        })`,
+                                    }}
+                                />
+                            ) : (
+                                <Flex
+                                    height={isMobile ? "40px" : "60px"}
+                                    width={isMobile ? "40px" : "60px"}
+                                    align="center"
+                                    styles={{ flex: "none" }}
+                                    justify="center"
+                                    borderRadius="50%"
+                                    background={ttColors.primary}
+                                >
+                                    <Text
+                                        type="p"
+                                        size={20}
+                                        weight={500}
+                                        color={ttColors.light}
+                                        text={(
+                                            departure?.airline?.iata_code ??
+                                            departure?.airline?.iatacode ??
+                                            []
+                                        ).slice(0, 2)}
+                                    />
+                                </Flex>
+                            )}
+                            <Flex
+                                direction={isMobile ? "column" : "row"}
+                                gap={isMobile ? ".5rem" : "1rem"}
+                            >
+                                <Text text={"Departure"} type="p" weight={600} />
+                                <Text
+                                    text={departure?.airline?.name}
+                                    type="p"
+                                    size={14}
+                                />
+                            </Flex>
+                        </Box>
+                        <Text
+                            text={dayjs(departure?.utc_departure).format("D MMM, YYYY")}
+                            type="p"
+                            size={isMobile ? 14 : 16}
+                        />
+                    </Flex>
+
+                    <Flex
+                        justify="space-between"
+                        align="flex-start"
+                        margin="0 0 3rem"
+                        wrap="wrap"
+                    >
+                        <AirportLocation
+                            datetime={departure?.utc_departure}
+                            airport={departure?.src_station}
+                            shortLocation={departure?.src}
+                            location={`${departure?.src_name} (${departure?.src_country})`}
+                            order={1}
+                        />
+
+                        <Flex
+                            direction="column"
+                            align="center"
+                            padding="0"
+                            styles={{ alignSelf: "center", order: isMobile ? 3 : 2 }}
+                            width={isMobile ? "45%" : "25%"}
+                        >
+                            <FlightDepartureIcon
+                                width={120}
+                                height={30}
+                                horizontal
+                                stops={flightStops}
+                            />
+                            <Text
+                                type="p"
+                                size={14}
+                                text={flightStops > 0 ? `${flightStops} ${flightStops > 1 ? 'stops' : 'stop'}` : "Non-Stop"}
+                            />
+                        </Flex>
+
+                        <AirportLocation
+                            datetime={arrival?.utc_arrival}
+                            airport={arrival?.dst_station}
+                            shortLocation={arrival?.dst}
+                            location={`${arrival?.dst_name} (${arrival?.dst_country})`}
+                            order={isMobile ? 2 : 3}
+                        />
+
+                        <Flex
+                            direction="column"
+                            gap=".5rem"
+                            width={isMobile ? "45%" : "25%"}
+                            margin={isMobile ? "1.5rem 0 0" : "0"}
+                            styles={{ order: 4 }}
+                        >
+                            <Text text={`${hoursLeft}h ${minsLeft}m`} type="p" />
+                            <Text
+                                text="Check-in bag included"
+                                type="p"
+                                size={14}
+                                weight={600}
+                                color={ttColors.primary}
+                            />
+                        </Flex>
+                    </Flex>
+
+                    {flightStops > 0 &&
+                        <StyledAccordion
+                            onChange={(e, isExpanded) => setIsOpen(isExpanded)}
+                        >
+                            <AccordionSummary
+                                expandIcon={<ExpandMoreIcon />}
+                                aria-controls={`flight-details-content-${tripIndex}`}
+                                id={`flight-details-header-${tripIndex}`}
+                            >
+                                <Text
+                                    color={ttColors.primary}
+                                    type="p"
+                                    weight={500}
+                                    size={16}
+                                    text={isOpen ? "Hide Details" : "Show Details"}
+                                />
+                            </AccordionSummary>
+
+                            <AccordionDetails style={{ padding: "0" }}>
+                                <MultiTripSummaryDetails
+                                    parentFlight={flights[tripIndex]}
+                                    flights={flights[tripIndex]?.route}
+                                />
+                            </AccordionDetails>
+                        </StyledAccordion>
+                    }
+                </Flex>
+            )}
+        </React.Fragment>
+    );
+}

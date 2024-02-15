@@ -18,6 +18,7 @@ import { useGoogleLogin } from "@react-oauth/google";
 import apiService from "@/lib/extensions/hook/apiService";
 import toast from "react-hot-toast";
 import Input from "@/components/atoms/input";
+import { rateHawkResourceClient } from "@/lib/axios/axios-client";
 
 interface AuthFormProps {
     setLoginView: (value: boolean) => void;
@@ -31,6 +32,8 @@ const LoginForm = ({ setLoginView, handleClose }: AuthFormProps) => {
         password: "",
         rememberMe: false,
     });
+
+    const [inputType, setInputType] = useState('password')
 
     const [submissionState, setSubmissionState] = useState({
         loading: false,
@@ -91,7 +94,11 @@ const LoginForm = ({ setLoginView, handleClose }: AuthFormProps) => {
                 ...submissionState,
                 loading: true,
             });
+            
             setUser(res?.user);
+            window.localStorage.setItem('user', res?.token)
+            rateHawkResourceClient.defaults.headers.common['Authorization'] = `Bearer ${res?.token}`
+
             toast.success("You have successfully logged in!");
             handleClose();
         } else {
@@ -133,13 +140,13 @@ const LoginForm = ({ setLoginView, handleClose }: AuthFormProps) => {
                 type="h1"
                 text="Log Into your Account"
                 margin={isMobile ? "1rem 0" : "1.75rem 0 0.75rem"}
-                size={isMobile ? "18px" : "28px"}
+                size={isMobile ? "18px" : "24px"}
                 weight={600}
             />
             <Text
                 type="p"
-                text="Log Into your account so you can continue with your visa application"
-                size={isMobile ? "14px" : "17px"}
+                text="Log into your account to explore the world with Thrillers Travels"
+                size={isMobile ? "14px" : "16px"}
                 weight={isMobile ? 300 : 400}
             />
             <Section
@@ -150,7 +157,7 @@ const LoginForm = ({ setLoginView, handleClose }: AuthFormProps) => {
                     <Text
                         type="p"
                         text="Email Address"
-                        size={isMobile ? "14.5px" : "18px"}
+                        size={isMobile ? "14px" : "16px"}
                         styles={{ marginBottom: "18px" }}
                         weight={400}
                     />
@@ -179,7 +186,7 @@ const LoginForm = ({ setLoginView, handleClose }: AuthFormProps) => {
                         type="p"
                         text="Password"
                         styles={{ marginBottom: "18px" }}
-                        size={isMobile ? "14.5px" : "16px"}
+                        size={isMobile ? "14px" : "16px"}
                         weight={400}
                     />
                     <Input
@@ -211,7 +218,7 @@ const LoginForm = ({ setLoginView, handleClose }: AuthFormProps) => {
                         />
                     )}
                 </Section>
-                <Flex align="center" justify="space-between">
+                <Flex align="center" justify="space-between" wrap="wrap" gap='1rem'>
                     <Flex align="center">
                         <CheckBox
                             checked={loginData.rememberMe}

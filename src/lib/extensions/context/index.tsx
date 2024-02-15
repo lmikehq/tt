@@ -1,10 +1,8 @@
 "use client";
 
-import {
-    KiwiLocation,
-} from "@/lib/types/response-models/flight/location.type";
+import { KiwiLocation } from "@/lib/types/response-models/flight/location.type";
 import dayjs from "dayjs";
-import countries from '@/constants/countries.json' 
+import countries from "@/constants/countries.json";
 import {
     createContext,
     useContext,
@@ -30,14 +28,12 @@ airports().forEach((e: AirportInterface) => {
 });
 airlines().forEach((e: AirlineInterface) => {
     if (!NOT_ALLOWED_AIRLINES.includes(e?.IATACode)) {
-        sortedAirlines[e.IATACode] = e
+        sortedAirlines[e.IATACode] = e;
     }
-})
+});
 countries.forEach((e: CountryDetails) => {
-    sortedCountries[e.code] = ({ name: e.name, flag: e.flag, code: e.code })
-})
-
-
+    sortedCountries[e.code] = { name: e.name, flag: e.flag, code: e.code };
+});
 
 export interface OneFlightType {
     index: number;
@@ -85,7 +81,7 @@ interface ContextType {
     countries: typeof sortedCountries;
 }
 
-const oneFlight: OneFlightType = {
+export const oneFlight: OneFlightType = {
     index: 0,
     // departureCountry: undefined,
     // arrivalCountry: undefined,
@@ -102,10 +98,10 @@ const oneFlight: OneFlightType = {
 const initialValues: ContextType = {
     flightType: "international",
     stops: "one-way",
-    fleet: [oneFlight],
+    fleet: [],
     airports: sortedAirports,
     airlines: sortedAirlines,
-    countries : sortedCountries,
+    countries: sortedCountries,
 };
 
 type Action =
@@ -120,7 +116,8 @@ type Action =
           payload: { index: number; data: Partial<OneFlightType> };
       }
     | { type: "REMOVE_MULTI_FLIGHT"; payload: OneFlightType }
-    | { type: "RESET_MULTI_FLIGHT"; payload?: undefined };
+    | { type: "RESET_MULTI_FLIGHT"; payload?: undefined }
+    | { type: "UPDATE_FLIGHT_STATE"; payload: OneFlightType[] };
 
 interface FlightProps {
     state: ContextType;
@@ -183,6 +180,11 @@ const reducer = (state: ContextType, action: Action) => {
             return {
                 ...state,
                 fleet: state.fleet.filter((e) => e.index === 0),
+            };
+        case "UPDATE_FLIGHT_STATE":
+            return {
+                ...state,
+                fleet: action.payload,
             };
         default:
             return state;

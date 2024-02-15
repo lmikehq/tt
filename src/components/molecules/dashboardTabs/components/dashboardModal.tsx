@@ -7,6 +7,7 @@ import React, { useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import styled from "styled-components";
 import { ttColors } from "@lib/theme/colors";
+import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 
 // Styled component for the modal content wrapper
 const StyledModalContent = styled.div<{
@@ -16,13 +17,13 @@ const StyledModalContent = styled.div<{
   maxHeight?: string;
 }>`
   background-color: white;
-  border-radius: 8px;
+  border-radius: 12px;
   padding: 50px;
   max-width: ${({ maxWidth }) => maxWidth || " 647px"};
   width: ${({ width }) => width || "100%"};
   max-height: calc(100vh - 3rem);
   height: ${({ height }) => height || "auto"};
-  overflow-y: scroll;
+  overflow-y: auto;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -34,11 +35,11 @@ const StyledModalContent = styled.div<{
     margin: 1rem 0px;
   }
 
-  // @media screen and (max-width: 900px) {
-  //   padding: 20px;
-  //   width: 100%;
-  //   max-width: 100%;
-  // }
+  @media screen and (max-width: 900px) {
+    padding: 20px;
+    // width: 100%;
+    // max-width: 100%;
+  }
 `;
 
 // Styled component for the modal header
@@ -69,6 +70,7 @@ interface ReusableModalProps {
   onClose: () => void;
   headerText: string;
   description: string;
+  descriptionColor?: string;
   children?: React.ReactNode;
   height?: string;
   width?: string;
@@ -80,6 +82,7 @@ interface ReusableModalProps {
     text: string;
     onClick: () => void;
   };
+  showButton?: boolean;
 }
 // Reusable Modal Component
 const ReusableModal: React.FC<ReusableModalProps> = ({
@@ -87,19 +90,21 @@ const ReusableModal: React.FC<ReusableModalProps> = ({
   onClose,
   headerText,
   description,
+  descriptionColor,
   height,
   width,
   maxWidth,
   maxHeight,
   children,
   loading = false,
-  setLoading = () => {},
+  setLoading = () => { },
   buttonProps = {
     text: "Save",
-    onClick: () => {},
+    onClick: () => { },
   },
+  showButton
 }) => {
-  // const [loading, setLoading] = useState(false);
+  const { isMobile } = useScreenResolution();
   return (
     <Modal open={open} onClose={onClose}>
       <StyledModalContent
@@ -109,27 +114,32 @@ const ReusableModal: React.FC<ReusableModalProps> = ({
         maxWidth={maxWidth}
       >
         <StyledModalHeader>
-          <h2>{headerText}</h2>
+          <Text type="h2" text={headerText} size={isMobile ? 24 : 32} weight={600} />
         </StyledModalHeader>
         <ModalIcon onClick={onClose}>
           <IoMdClose />
         </ModalIcon>
-        {description && <p style={{ textAlign: "center" }}>{description}</p>}
+        {description && <p style={{ textAlign: "center", color: descriptionColor }}>{description}</p>}
         {children}
-        <Button
-          width="100%"
-          background={ttColors.dark}
-          onClick={() => {
-            setLoading(true);
-            buttonProps.onClick();
-          }}
-        >
-          {loading ? (
-            <Spinner size="40px" fill={ttColors.primary} />
-          ) : (
-            <Text type="p" text={buttonProps.text} color="#fff" size="20px" />
-          )}
-        </Button>
+
+        {showButton === false ? null : (
+          <Button
+            type="submit"
+            width="100%"
+            background={ttColors.dark}
+            onClick={() => {
+              setLoading(true);
+              buttonProps.onClick();
+            }}
+          >
+            {loading ? (
+              <Spinner size="40px" fill={ttColors.primary} />
+            ) : (
+              <Text type="p" text={buttonProps.text} color="#fff" size="16px" weight={500} />
+            )}
+          </Button>
+        )}
+
       </StyledModalContent>
     </Modal>
   );

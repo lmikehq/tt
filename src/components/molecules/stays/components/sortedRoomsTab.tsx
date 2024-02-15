@@ -7,8 +7,16 @@ import { styled } from "styled-components";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { ttColors } from "@/lib/theme/colors";
 import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
-import { Span } from "./styles";
 import { HotelBySearchInterface } from "@/lib/types/response-models/stay/search.type";
+import {
+    HotelPropertyTypes,
+    StaySearchSortEnum,
+} from "@/lib/types/request-models/stay/search.type";
+import { useStaySearchStore } from "@/lib/store/stay/search.store";
+import { capCase } from "@/lib/utilFns";
+import { TbStar, TbStarFilled } from "react-icons/tb";
+import { MdAttachMoney } from "react-icons/md";
+import { GrMoney } from "react-icons/gr";
 
 const BootstrapTooltip = styled(({ className, ...props }: TooltipProps) => (
     <Tooltip
@@ -90,6 +98,17 @@ interface Hotel {
 function SortedRoomsTab(props: sortProps) {
     const { isMobile } = useScreenResolution();
     const { hotels } = props;
+    const { staySearchSort, updateStaySearchSort, stayTabInitialSearchQuery, staySearchMeta, updateStaySearchMeta } = useStaySearchStore(
+        (state) => state
+    );
+    const handleUpdateSort = (value: StaySearchSortEnum) => {
+        updateStaySearchSort(value)
+        updateStaySearchMeta({
+            ...staySearchMeta,
+            currentPage: 1
+        })
+    }
+
     return (
         <>
             <Flex
@@ -100,7 +119,7 @@ function SortedRoomsTab(props: sortProps) {
             >
                 <Text
                     type="p"
-                    text={`${hotels?.length} hotels found in london`}
+                    text={`${hotels?.length} hotels found ${stayTabInitialSearchQuery?.location?.region_id  ? '' : `in ${stayTabInitialSearchQuery?.location?.name ?? ''}`}`}
                     styles={{ fontWeight: "600" }}
                 ></Text>
 
@@ -115,143 +134,61 @@ function SortedRoomsTab(props: sortProps) {
                         justify={isMobile ? "center" : "space-between"}
                         styles={{ width: "100%" }}
                     >
-                        <ButtonBox
-                            active={props.sortType === "best"}
-                            onClick={() => props.setSortType("best")}
-                            style={{ position: "relative" }}
-                        >
-                            <Flex
-                                direction="column"
-                                align="center"
-                                justify={isMobile ? "center" : "flex-start"}
-                                padding=".05rem 1.25rem"
-                            >
-                                <Span
+                        {Object.keys(StaySearchSortEnum).map((item, index) => {
+                            const value =
+                                StaySearchSortEnum[
+                                    item as keyof typeof StaySearchSortEnum
+                                ];
+                            return (
+                                <ButtonBox
+                                    key={"sort-" + index}
+                                    active={staySearchSort === value}
+                                    onClick={() => handleUpdateSort(value)}
                                     style={{
-                                        paddingRight: "8px",
+                                        display: "flex",
+                                        alignItems: "center",
                                     }}
                                 >
-                                    <Text
-                                        type="p"
-                                        text="Best"
-                                        styles={{
-                                            position: "relative",
-                                            right: "10px",
-                                        }}
-                                    />
-                                    <Span>
-                                        <BootstrapTooltip
+                                    <Flex
+                                        align={"center"}
+                                        padding=".05rem 1.25rem"
+                                    >
+                                        <Text
+                                            type="p"
+                                            text={capCase(item, '_')}
+                                            styles={{
+                                                position: "relative",
+                                                right: "10px",
+                                            }}
+                                        />
+                                        {StaySearchSortEnum[item as keyof typeof StaySearchSortEnum] == 'HIGHEST_STAR' ? (
+                                            <TbStarFilled size={20} />
+                                        ) : StaySearchSortEnum[item as keyof typeof StaySearchSortEnum] == 'LOWEST_STAR' ? (
+                                            <TbStar size={20} />
+                                        ) : StaySearchSortEnum[item as keyof typeof StaySearchSortEnum] == 'HIGHEST_PRICE' ? (
+                                            <MdAttachMoney size={20} />
+                                        ) : StaySearchSortEnum[item as keyof typeof StaySearchSortEnum] == 'LOWEST_PRICE' ? (
+                                            <GrMoney size={20} />
+                                        ) : (
+                                            <></>
+                                        )}
+                                        {/* <BootstrapTooltip
                                             title="We believe you will like these stays with your preferences in mind, considering factors like location, amenities, reviews, and price, ensuring a stay tailored just for you."
                                             placement="top-start"
+                                            style={{ flex: "none" }}
                                             arrow
                                         >
-                                            <Span
-                                                style={{
-                                                    position: "absolute",
-                                                    top: "19px",
-                                                    right: "20px",
-                                                }}
-                                            >
-                                                {props.sortType === "best" && (
-                                                    <BsInfoCircle
-                                                        size={20}
-                                                        style={{ zIndex: "10" }}
-                                                    />
-                                                )}
-                                            </Span>
-                                        </BootstrapTooltip>
-                                    </Span>
-                                </Span>
-                            </Flex>
-                        </ButtonBox>
-                        <ButtonBox
-                            active={props.sortType === "top"}
-                            onClick={() => props.setSortType("top")}
-                        >
-                            <Flex
-                                direction="column"
-                                justify={isMobile ? "center" : "flex-start"}
-                                padding=".05rem 1.25rem"
-                            >
-                                <Flex
-                                    gap="10px"
-                                    align="center"
-                                    justify={isMobile ? "center" : "flex-start"}
-                                >
-                                    <Text
-                                        type="p"
-                                        text="Top Reviews"
-                                        styles={{ whiteSpace: "nowrap" }}
-                                    />
-                                </Flex>
-                            </Flex>
-                        </ButtonBox>
-                        <ButtonBox
-                            active={props.sortType === "lowest"}
-                            onClick={() => props.setSortType("lowest")}
-                        >
-                            <Flex
-                                direction="column"
-                                justify={isMobile ? "center" : "flex-start"}
-                                padding=".05rem 1.25rem"
-                            >
-                                <Flex
-                                    gap="10px"
-                                    align="center"
-                                    justify={isMobile ? "center" : "flex-start"}
-                                >
-                                    <Text
-                                        type="p"
-                                        text="Lowest Prices"
-                                        styles={{ whiteSpace: "nowrap" }}
-                                    />
-                                </Flex>
-                            </Flex>
-                        </ButtonBox>
-                        <ButtonBox
-                            active={props.sortType === "star"}
-                            onClick={() => props.setSortType("star")}
-                        >
-                            <Flex
-                                direction="column"
-                                justify={isMobile ? "center" : "flex-start"}
-                                padding=".05rem 1.25rem"
-                            >
-                                <Flex
-                                    gap="10px"
-                                    align="center"
-                                    justify={isMobile ? "center" : "flex-start"}
-                                >
-                                    <Text
-                                        type="p"
-                                        text="Star Rating"
-                                        styles={{ whiteSpace: "nowrap" }}
-                                    />
-                                </Flex>
-                            </Flex>
-                        </ButtonBox>
-                        <ButtonBox
-                            active={props.sortType === "distance"}
-                            onClick={() => props.setSortType("distance")}
-                        >
-                            <Flex
-                                direction="column"
-                                justify={isMobile ? "center" : "flex-start"}
-                                padding=".05rem 1.25rem"
-                            >
-                                <Flex
-                                    gap="10px"
-                                    align="center"
-                                    justify={isMobile ? "center" : "flex-start"}
-                                >
-                                    <Text type="p" text="Distance" />
-                                </Flex>
-                            </Flex>
-                        </ButtonBox>
+                                        </BootstrapTooltip> */}
+                                    </Flex>
+                                </ButtonBox>
+                            );
+                        })}
+
                         {isMobile && (
                             <ButtonBox
                                 active={props.sortType === "best"}
                                 onClick={() => props.setSortType("best")}
+                                className="hellloooooo"
                             >
                                 <Flex
                                     direction="column"

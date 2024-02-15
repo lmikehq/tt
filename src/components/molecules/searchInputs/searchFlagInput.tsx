@@ -27,12 +27,12 @@ const SearchFlagInput = ({
 }: SearchFlagInputProps) => {
   return (
     <SearchInput
-        value={value}
-        options={options}
-        height="45px"
-        onChange={onChange}
-        disabled={disabled}
-        error={error}
+      value={value}
+      options={options}
+      height="45px"
+      onChange={onChange}
+      disabled={disabled}
+      error={error}
     >
       <Flex justify="space-between" cursor="pointer" align="center" width="100%">
         <Text
@@ -42,15 +42,15 @@ const SearchFlagInput = ({
           weight={400}
           size={size}
           styles={{
-                cursor: "pointer",
-                maxWidth: "85%",
-                textOverflow: "clip",
-                overflow: "hidden",
+            cursor: "pointer",
+            maxWidth: "85%",
+            textOverflow: "clip",
+            overflow: "hidden",
           }}
         />
         {value?.name ? (
-            <IoIosArrowDown size={18} />
-        //   <AiOutlineCheck color="#3BB98E" />
+          <IoIosArrowDown size={18} />
+          //   <AiOutlineCheck color="#3BB98E" />
         ) : (
           <IoIosArrowDown size={18} />
         )}

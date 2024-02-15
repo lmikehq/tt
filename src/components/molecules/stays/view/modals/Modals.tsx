@@ -5,12 +5,9 @@ import Flex from "@/components/templates/flex";
 import Section from "../../../section";
 import { BsChevronBarLeft } from "react-icons/bs";
 import Text from "@/components/atoms/text";
-import Button from "@/components/atoms/button";
 import { ttColors } from "@/lib/theme/colors";
 import { CustomRadioGroup } from "../../../radio";
-import CheckBox from "../../../checkbox";
 import { Span } from "../styles";
-import MapBox from "./components/MapBox";
 import CloseIcon from "@mui/icons-material/Close";
 import AmenitiesBox from "./components/AmenitiesBox";
 import SearchBox from "./components/SearchBox";
@@ -18,6 +15,12 @@ import GalleryBox from "./components/GalleryBox";
 import SectionLayout from "@/components/templates/SectionLayout";
 import ReviewListBox from "./components/ReviewListBox";
 import FilterBox from "./components/FilterBox";
+import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
+import { AmenityGroup, Rate, ViewSingleStayResponse } from "@/lib/types/response-models/stay/search.type";
+import { ViewTripAdvisorStayReviewsResponse } from "@/lib/types/request-models/stay/search.type";
+import GoogleMap from "../GoogleMap";
+import { FiltersInterface } from "../ChooseYourRoom";
+
 
 const ModalCenter = styled.div`
   display: flex;
@@ -75,7 +78,7 @@ const ModalWrapper = styled.div`
 
   &.map_wrapper,
   &.gallery_modal {
-    height: 100%;
+    height: 100vh;
   }
   &.review_wrapper,
   &.gallery_modal {
@@ -93,11 +96,15 @@ const ModalWrapper = styled.div`
 `;
 
 export const GalleryModal = ({
-  open,
-  handleClose,
+    stayResponse,
+    images = [],
+    open,
+    handleClose,
 }: {
-  open: boolean;
-  handleClose: () => void;
+    stayResponse: ViewSingleStayResponse;
+    images: string[];
+    open: boolean;
+    handleClose: () => void;
 }) => {
   useEffect(() => {
     const handleBodyOverflow = () => {
@@ -116,14 +123,14 @@ export const GalleryModal = ({
       <ModalCenter>
         <ModalScroll className="gallery">
           <ModalWrapper className="gallery_modal">
-            <SectionLayout>
+            <SectionLayout className="scroll-custom" style={{ height: '100vh', overflowY: 'auto' }}>
               <Flex
-                padding="1rem 0"
+                padding="1rem 0 0"
                 align="center"
                 gap="20px"
                 justify="space-between"
               >
-                <Text type="h2" text="The Ritz London Hotel" weight={600} />
+                <Text type="h2" text={stayResponse?.name ?? "Hotel"} weight={600} />
                 <Flex
                   align="center"
                   justify="center"
@@ -138,7 +145,9 @@ export const GalleryModal = ({
                 </Flex>
               </Flex>
               <Span>
-                <GalleryBox />
+                <GalleryBox
+                    images={images}
+                />
               </Span>
             </SectionLayout>
           </ModalWrapper>
@@ -147,169 +156,166 @@ export const GalleryModal = ({
     </Modal>
   );
 };
+
+
 export const MapModal = ({
-  open,
-  handleClose,
-}: {
-  open: boolean;
-  handleClose: () => void;
+    open,
+    handleClose,
+    stayResponse,
+    lat,
+    lng,
+} : {
+    open: boolean;
+    handleClose: () => void;
+    stayResponse?: ViewSingleStayResponse;
+    lat: string | number;
+    lng: string | number;
 }) => {
-  useEffect(() => {
-    const handleBodyOverflow = () => {
-      document.documentElement.style.overflow = open ? "hidden" : "auto";
-      document.body.style.overflow = open ? "hidden" : "auto";
-    };
-    handleBodyOverflow();
-    return () => {
-      document.documentElement.style.overflow = "auto";
-      document.body.style.overflow = "auto";
-    };
-  }, [open]);
-  return (
-    <Modal open={open} onClose={handleClose}>
-      <ModalCenter>
-        <ModalScroll className="map_scroll">
-          <ModalWrapper className="map_wrapper">
-            <Flex padding="1rem" align="center" gap="20px">
-              <CloseIcon
-                style={{ fontSize: "19px", cursor: "pointer" }}
-                onClick={handleClose}
-              />
-              <Text
-                type="h4"
-                text="The Ritz London, United Kingdom"
-                weight={600}
-              />
+    const { isMobile } = useScreenResolution()
+//   useEffect(() => {
+//     const handleBodyOverflow = () => {
+//       document.documentElement.style.overflow = open ? "hidden" : "auto";
+//       document.body.style.overflow = open ? "hidden" : "auto";
+//     };
+//     handleBodyOverflow();
+//     return () => {
+//       document.documentElement.style.overflow = "auto";
+//       document.body.style.overflow = "auto";
+//     };
+//   }, [open]);
+    return (
+        <Modal open={open} onClose={handleClose}>
+            <Flex
+                direction="column"
+                align="flex-start"
+                background="white"
+                padding="2rem"
+                gap="2rem"
+                width={isMobile ? "95vw" : "60vw"}
+                height={isMobile ? "95vh" : "95vh"}
+                borderRadius="16px"
+                margin="0 auto"
+                overflowY="scroll"
+                className="scroll-custom"
+            >
+                <Flex padding="1rem" align="center" gap="20px">
+                    <CloseIcon
+                        style={{ fontSize: "24px", cursor: "pointer" }}
+                        onClick={handleClose}
+                    />
+                    <Text
+                        type="h4"
+                        text={stayResponse?.address ?? 'Address'}
+                        weight={600}
+                    />
+                </Flex>
+                <GoogleMap
+                    lat={lat}
+                    lng={lng}
+                    zoom={20}
+                    containerStyles={{ height: '90%' }}
+                />
             </Flex>
-            <Span style={{ padding: "15px" }}>
-              <MapBox />
-            </Span>
-          </ModalWrapper>
-        </ModalScroll>
-      </ModalCenter>
-    </Modal>
-  );
+        </Modal>
+    );
 };
 export const AmenitiesModal = ({
-  open,
-  handleClose,
+    open,
+    handleClose,
+    amenities,
+    sortedAmenities,
 }: {
-  open: boolean;
-  handleClose: () => void;
+    open: boolean;
+    handleClose: () => void;
+    amenities: AmenityGroup[];
+    sortedAmenities: string[];
 }) => {
-  useEffect(() => {
-    const handleBodyOverflow = () => {
-      document.documentElement.style.overflow = open ? "hidden" : "auto";
-      document.body.style.overflow = open ? "hidden" : "auto";
-    };
-    handleBodyOverflow();
-    return () => {
-      document.documentElement.style.overflow = "auto";
-      document.body.style.overflow = "auto";
-    };
-  }, [open]);
+    const { isMobile } = useScreenResolution()
+//   useEffect(() => {
+//     const handleBodyOverflow = () => {
+//       document.documentElement.style.overflow = open ? "hidden" : "auto";
+//       document.body.style.overflow = open ? "hidden" : "auto";
+//     };
+//     handleBodyOverflow();
+//     return () => {
+//       document.documentElement.style.overflow = "auto";
+//       document.body.style.overflow = "auto";
+//     };
+//   }, [open]);
 
-  return (
-    <Modal disableScrollLock={true} open={open} onClose={handleClose}>
-      <ModalCenter className="amenities">
-        <ModalScroll className="amenities_scroll">
-          <ModalWrapper className="amenities_modal">
-            <Flex
-              padding="10px 35px"
-              align="center"
-              justify="space-between"
-              gap="20px"
-              styles={{ marginTop: "20px" }}
-            >
-              <Text type="h1" size={23} text="Hotel Amenities" weight={600} />
-              <CloseIcon
-                style={{ fontSize: "29px", cursor: "pointer" }}
-                onClick={handleClose}
-              />
+return (
+    <Modal open={open} onClose={handleClose}>
+        <Flex
+            direction="column"
+            align="flex-start"
+            background="white"
+            padding="2rem 2rem 3rem 2.5rem"
+            gap="2rem"
+            width={isMobile ? "95vw" : "60vw"}
+            height={isMobile ? "95vh" : "95vh"}
+            borderRadius="16px"
+            margin="0 auto"
+            overflowY="scroll"
+            className="scroll-custom"
+          >
+            <Flex justify="space-between">
+                <Text type="h1" size={23} text="Hotel Amenities" weight={600} />
+                <CloseIcon
+                    style={{ fontSize: "24px", cursor: "pointer" }}
+                    onClick={handleClose}
+                />
             </Flex>
-            <Span style={{ padding: "15px" }}>
-              <AmenitiesBox />
-            </Span>
-          </ModalWrapper>
-        </ModalScroll>
-      </ModalCenter>
+            <AmenitiesBox
+                amenities={amenities}
+                sortedAmenities={sortedAmenities}
+            />
+        </Flex>
     </Modal>
   );
 };
 
-interface FilterItem {
-  name: string;
-  images: string[];
-  //Other properties here
-}
-
+type OptionType = { value: string, label: string };
 // FILTER MODAL
 interface FilterModalProps {
-  open: boolean;
-  handleClose: () => void;
-  beds: string;
-  setBeds: React.Dispatch<React.SetStateAction<string>>;
-  bedsOptions: { value: string; label: string }[];
-  selectedMealCheckboxValues: string[];
-  setSelectedMealCheckboxValues: React.Dispatch<React.SetStateAction<string[]>>;
-  mealOptions: { value: string; displayValue: string }[];
-  cancellation: string;
-  setCancellation: React.Dispatch<React.SetStateAction<string>>;
-  cancellationOptions: { value: string; label: string }[];
-  selectedPaymentCheckboxValues: string[];
-  setSelectedPaymentCheckboxValues: React.Dispatch<
-    React.SetStateAction<string[]>
-  >;
-  paymentOptions: { value: string; displayValue: string }[];
-  submissionState: {
+    filters: FiltersInterface;
+    setFilters: React.Dispatch<React.SetStateAction<FiltersInterface>>;
+    bedsOptions: OptionType[];
+    mealOptions: OptionType[];
+    cancellationOptions: OptionType[];
+    paymentOptions: OptionType[];
+    open: boolean;
+    handleClose: () => void;
+    handleSubmit: () => void;
+    resetFilters: () => void;
     loading: boolean;
-    //MORE PROPERTIES
-  };
-  setSubmissionState: React.Dispatch<
-    React.SetStateAction<{
-      loading: boolean;
-      //MORE PROPERTIES
-    }>
-  >;
-  handleSubmit: () => void;
-  // resetAllFilters: () => void;
-  // totalSelectedOptions: number;
-  filterItems: FilterItem[];
+    items: Rate[];
 }
 
 export const FilterModal = ({
-  open,
-  handleClose,
-  beds,
-  setBeds,
-  bedsOptions,
-  selectedMealCheckboxValues,
-  setSelectedMealCheckboxValues,
-  mealOptions,
-  cancellation,
-  setCancellation,
-  cancellationOptions,
-  selectedPaymentCheckboxValues,
-  setSelectedPaymentCheckboxValues,
-  paymentOptions,
-  submissionState,
-  setSubmissionState,
-  handleSubmit,
-  // resetAllFilters,
-  // totalSelectedOptions,
-  filterItems,
+    filters,
+    setFilters,
+    open,
+    handleClose,
+    bedsOptions,
+    mealOptions,
+    cancellationOptions,
+    paymentOptions,
+    handleSubmit,
+    resetFilters,
+    loading,
+    items,
 }: FilterModalProps) => {
-  useEffect(() => {
-    const handleBodyOverflow = () => {
-      document.documentElement.style.overflow = open ? "hidden" : "auto";
-      document.body.style.overflow = open ? "hidden" : "auto";
-    };
-    handleBodyOverflow();
-    return () => {
-      document.documentElement.style.overflow = "auto";
-      document.body.style.overflow = "auto";
-    };
-  }, [open]);
+    useEffect(() => {
+        const handleBodyOverflow = () => {
+        document.documentElement.style.overflow = open ? "hidden" : "auto";
+        document.body.style.overflow = open ? "hidden" : "auto";
+        };
+        handleBodyOverflow();
+        return () => {
+        document.documentElement.style.overflow = "auto";
+        document.body.style.overflow = "auto";
+        };
+    }, [open]);
   return (
     <Modal open={open} onClose={handleClose}>
       <ModalCenter>
@@ -328,29 +334,18 @@ export const FilterModal = ({
               />
             </Flex>
             <Span style={{ padding: "15px" }}>
-              {/* Pass down the props to FilterBox */}
-              <FilterBox
-                beds={beds}
-                setBeds={setBeds}
-                bedsOptions={bedsOptions}
-                selectedMealCheckboxValues={selectedMealCheckboxValues}
-                setSelectedMealCheckboxValues={setSelectedMealCheckboxValues}
-                mealOptions={mealOptions}
-                cancellation={cancellation}
-                setCancellation={setCancellation}
-                cancellationOptions={cancellationOptions}
-                selectedPaymentCheckboxValues={selectedPaymentCheckboxValues}
-                setSelectedPaymentCheckboxValues={
-                  setSelectedPaymentCheckboxValues
-                }
-                paymentOptions={paymentOptions}
-                submissionState={submissionState}
-                setSubmissionState={setSubmissionState}
-                handleSubmit={handleSubmit}
-                // resetAllFilters={resetAllFilters}
-                // totalSelectedOptions={totalSelectedOptions}
-                filterItems={filterItems}
-              />
+                <FilterBox
+                    filters={filters}
+                    setFilters={setFilters}
+                    bedsOptions={bedsOptions}
+                    mealOptions={mealOptions}
+                    cancellationOptions={cancellationOptions}
+                    paymentOptions={paymentOptions}
+                    handleSubmit={handleSubmit}
+                    resetFilters={resetFilters}
+                    loading={loading}
+                    items={items}
+                />
             </Span>
           </ModalWrapper>
         </ModalScroll>
@@ -369,55 +364,59 @@ function truncateText(text: string, maxWords: number): string {
 }
 
 export const ChangeSearchModal = ({
-  open,
-  handleClose,
+    open,
+    handleClose,
 }: {
-  open: boolean;
-  handleClose: () => void;
+    open: boolean;
+    handleClose: () => void;
 }) => {
-  let HotelName = "Hotels available in New York from 24 - 25 October 2023";
-  useEffect(() => {
-    const handleBodyOverflow = () => {
-      document.documentElement.style.overflow = open ? "hidden" : "auto";
-      document.body.style.overflow = open ? "hidden" : "auto";
-    };
-    handleBodyOverflow();
-    return () => {
-      document.documentElement.style.overflow = "auto";
-      document.body.style.overflow = "auto";
-    };
-  }, [open]);
-  return (
-    <Modal open={open} onClose={handleClose}>
-      <ModalCenter>
-        <ModalScroll className="search_box">
-          <ModalWrapper className="search_wrapper">
-            <Flex
-              padding="10px 35px"
-              align="center"
-              justify="space-between"
-              gap="20px"
-              styles={{ marginTop: "20px" }}
-            >
-              <Text
-                type="h1"
-                size={23}
-                text={`${truncateText(HotelName, 5)}`}
-                weight={600}
-              />
-              <CloseIcon
-                style={{ fontSize: "29px", cursor: "pointer" }}
-                onClick={handleClose}
-              />
-            </Flex>
-            <Span style={{ padding: "15px" }}>
-              <SearchBox />
-            </Span>
-          </ModalWrapper>
-        </ModalScroll>
-      </ModalCenter>
-    </Modal>
-  );
+    const { isMobile } = useScreenResolution()
+    let HotelName = "Hotels available";
+
+    useEffect(() => {
+        const handleBodyOverflow = () => {
+            document.documentElement.style.overflow = open ? "hidden" : "auto";
+            document.body.style.overflow = open ? "hidden" : "auto";
+            };
+            handleBodyOverflow();
+        return () => {
+            document.documentElement.style.overflow = "auto";
+            document.body.style.overflow = "auto";
+        };
+    }, [open]);
+
+
+    return (
+        <Modal open={open} onClose={handleClose}>
+            <ModalCenter>
+                <ModalScroll className="search_box" style={{ marginTop: isMobile ? '' : '-30vh' }}>
+                <ModalWrapper className="search_wrapper">
+                    <Flex
+                    padding="10px 35px"
+                    align="center"
+                    justify="space-between"
+                    gap="20px"
+                    styles={{ marginTop: "20px" }}
+                    >
+                    <Text
+                        type="h1"
+                        size={23}
+                        text={`${truncateText(HotelName, 5)}`}
+                        weight={600}
+                    />
+                    <CloseIcon
+                        style={{ fontSize: "29px", cursor: "pointer" }}
+                        onClick={handleClose}
+                    />
+                    </Flex>
+                    <Span style={{ padding: "15px" }}>
+                    <SearchBox onClose={handleClose} />
+                    </Span>
+                </ModalWrapper>
+                </ModalScroll>
+            </ModalCenter>
+        </Modal>
+    );
 };
 
 interface Reviews {
@@ -438,14 +437,7 @@ interface Reviews {
 interface ReviewModalProps {
   open: boolean;
   handleClose: () => void;
-  reviews: Reviews[];
-  hiddenReviews: number[];
-  toggleReviewVisibility: (index: number) => void;
-}
-interface ReviewModalProps {
-  open: boolean;
-  handleClose: () => void;
-  reviews: Reviews[];
+  reviews: ViewTripAdvisorStayReviewsResponse['data'];
   hiddenReviews: number[];
   toggleReviewVisibility: (index: number) => void;
 }

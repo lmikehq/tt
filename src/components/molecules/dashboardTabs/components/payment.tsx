@@ -4,21 +4,35 @@ import Image from "@atom/image";
 import Text from "@atom/text";
 import Flex from "@components/templates/flex";
 import currencyFormatter from "@lib/extensions/data/currencyFormatter";
-import apiService from "@lib/extensions/hook/apiService";
+// import apiService from "@lib/extensions/hook/apiService";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import { ttColors } from "@lib/theme/colors";
 import CustomDrawer from "@molecule/drawers/customDrawer";
-import { useQuery } from "@tanstack/react-query";
+// import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
-import { useRef, useState } from "react";
-import { BiDotsVerticalRounded } from "react-icons/bi";
+import { useState } from "react";
+import { BiDotsVerticalRounded, BiWallet } from "react-icons/bi";
 import { GrFormClose } from "react-icons/gr";
 import { PiEyeLight } from "react-icons/pi";
 import Section from "src/components/molecules/section";
 import styled from "styled-components";
 import VisaDashboardHeader from "./visaDashboardHeader";
-import { useDetectOutsideClick } from "@/lib/extensions/hook/useDetectOutsideClick";
 import Spinner from "../../icons/spinner";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import Center from "@/components/templates/center";
+import NoApplication from "./noApplication";
+import NoPaymentImg from 'public/assets/icons/dashboard/no-payment.svg';
+import { ClickAwayListener } from "@mui/material";
+import { IoEyeOutline } from "react-icons/io5";
+import VisaPaymentModal from "../visaPayment";
+import { useDashboardPayment } from "@/lib/hooks/dashboard/payment.hook";
+import { DashboardPaymentInfo, PaymentProp } from "@/lib/types/response-models/dashboard";
+// import CustomTab from "@/components/atoms/tabs";
+import PaginationCtrl from "../../pagination";
+import { useDashboardStore } from "@/lib/store/dashboard/index.store";
+import CustomPagination from "../../pagination/customPagination";
+import useHandlePagination from "@/lib/extensions/hook/useHandlePagination";
 
 const SectionTitle = styled.div`
     display: flex;
@@ -43,7 +57,7 @@ const History = styled.div`
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
-
+    margin: 10px 0;
     width: 100%;
     height: fit-content;
     padding: 0px 10px;
@@ -86,7 +100,7 @@ const PaymentStatus = styled.div`
     padding: 14px 18px;
     border-radius: 24px;
     height: 45px;
-    width: 25%;
+    // width: 25%;
 
     @media screen and (max-width: 900px) {
         width: 92px;
@@ -112,7 +126,8 @@ const PaymentWrapper = styled.div`
 
 const DropdownContent = styled.div`
     position: absolute;
-    top: calc(78.5% + 5px);
+    // top: 5px;
+    // top: calc(78.5% + 5px);
     right: 33px;
     background-color: #ffffff;
     border: 1px solid #e7e7e7;
@@ -120,480 +135,585 @@ const DropdownContent = styled.div`
     // box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     width: 274px;
     height: max-content;
-    z-index: 09999999;
+    z-index: 9999999;
     overflow-y: scroll;
     font-size: 16px;
     line-height: 19.2px;
 `;
 
-const StyledOption = styled.div<{ hovered: boolean; lastChild: boolean }>`
+const StyledOption = styled.div<{ hovered: boolean; lastChild: boolean; }>`
     display: flex;
     align-items: center;
     padding: 24px 18px;
     cursor: pointer;
     background-color: ${({ hovered }) => (hovered ? "#F3FAFD" : "transparent")};
     border-bottom: ${({ lastChild }) =>
-        lastChild ? "none" : "1px solid #dedee3"};
+    lastChild ? "none" : "1px solid #dedee3"};
 `;
 
-const OptionText = styled.div<{ hovered: boolean }>`
+const OptionText = styled.div<{ hovered: boolean; }>`
     color: ${({ hovered }) => (hovered ? "#6092A7" : "#101010")};
     font-weight: 400;
     flex: 1;
 `;
+interface ISortOptions { value: string, label: string, icon: React.ReactNode, action: () => void; }
 
 const PaymentHistory = () => {
-    const { isMobile } = useScreenResolution();
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const [hoveredOption, setHoveredOption] = useState<number | null>(null);
-    const [bottomDrawerOpen, setBottomDrawerOpen] = useState(false);
+  const { isMobile } = useScreenResolution();
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [hoveredOption, setHoveredOption] = useState<number | null>(null);
+  const [_bottomDrawerOpen, setBottomDrawerOpen] = useState(false);
+  const router = useRouter();
+  const { param, search, setPage, page, limit, startDate, endDate, updatePage } = useDashboardStore((state) => state);
+  const [openModal, setOpenModal] = useState(false);
+  const [selected, setSelected] = useState({
+    intent: '',
+    id: '',
+    accompanying: 0,
+    refetch: () => { }
+  });
+  // HANDLE PAGINATION
+  const { onPageChange } = useHandlePagination();
 
-    function PaymentIcon() {
-        return (
-            <Image
-                src="/assets/images/dashboard/payment.png"
-                alt=""
-                width={17.2}
-                height={12.4}
-            />
-        );
-    }
+  const handleClose = () => {
+    setOpenModal(false);
+  };
 
-    async function getAllPayments() {
-        return await apiService("/payment", "GET");
-    }
-    const {
-        data: fetchedPayment,
-        isLoading,
-        error,
-    } = useQuery(["payments"], getAllPayments) as any;
-    if (isLoading)
-        return (
-            <Flex height="450px" align="center" justify="center">
-                <Spinner size="60px" fill={ttColors.blackishBlue} />
-            </Flex>
-        );
-    if (error) return <div>error loading payments, please try again</div>;
-    const { data: payments } = fetchedPayment;
 
-    const toggleDropdown = () => {
-        setIsDropdownOpen(!isDropdownOpen);
-        setHoveredOption(null);
-    };
+  const content = {
+    title: `You've got no Payment History - Make Payment for a Flight, Visa or Stay`,
+    links: []
+  };
 
-    const sortOptions = [
-        // {
-        //   value: "Option 1",
-        //   label: "Make Payment",
-        //   icon: <PaymentIcon />,
-        //   action: () => {},
-        // },
-        {
-            value: "Option 2",
-            label: "View More Details",
-            icon: <PiEyeLight size="1rem" />,
-            action: () => {
-                setBottomDrawerOpen(true);
-                setIsDropdownOpen(false);
-            },
-        },
-    ];
-
-    // const ref = useRef(null);
-    // useDetectOutsideClick(ref, () => setIsDropdownOpen(false))
+  function PaymentIcon() {
     return (
-        <Section
-            margin="2rem 0"
-            styles={{
-                background: "#fff",
-                borderRadius: "14px",
-                padding: isMobile ? ".5rem" : "1rem 1.5rem",
-            }}
-        >
-            <VisaDashboardHeader headerText="Payment History" />
-
-            <PaymentWrapper>
-                {isMobile ? (
-                    payments?.length > 0 ? (
-                        payments.map((payment: any, i: number) => (
-                            <History key={i}>
-                                <Flex
-                                    justify="space-between"
-                                    width="100%"
-                                    align="center"
-                                    padding="18px 14px"
-                                >
-                                    <Flex direction="column" gap="1rem">
-                                        <Text
-                                            type="p"
-                                            text={`${
-                                                payment?.paymentIntent
-                                            } - ${currencyFormatter(
-                                                payment?.totalAmount
-                                            )} `}
-                                            size={14}
-                                            weight={400}
-                                        />
-                                        <Flex
-                                            gap="1.5rem"
-                                            align="center"
-                                            justify="flex-start"
-                                        >
-                                            <Text
-                                                type="p"
-                                                text={
-                                                    payment?.updatedAt
-                                                        ? format(
-                                                              new Date(
-                                                                  payment?.updatedAt
-                                                              ),
-                                                              "dd MMM, yyyy"
-                                                          )
-                                                        : "n/a"
-                                                }
-                                                color="#112211"
-                                                size={12}
-                                                styles={{ opacity: "75%" }}
-                                            />
-                                            <PaymentStatus
-                                                style={{
-                                                    background: "#FFFEEF",
-                                                }}
-                                            >
-                                                <Text
-                                                    type="p"
-                                                    text={payment?.status}
-                                                    styles={{
-                                                        width: isMobile
-                                                            ? "100%"
-                                                            : "20%",
-                                                    }}
-                                                    whiteSpace="nowrap"
-                                                    size={12}
-                                                />
-                                            </PaymentStatus>
-                                        </Flex>
-                                    </Flex>
-                                    <BiDotsVerticalRounded
-                                        color="#040404"
-                                        size="1.5rem"
-                                        // onClick={toggleDropdown}
-                                    />
-                                    {isDropdownOpen && (
-                                        <DropdownContent>
-                                            {sortOptions.map(
-                                                (option, index) => (
-                                                    <StyledOption
-                                                        key={option.value}
-                                                        hovered={
-                                                            hoveredOption ===
-                                                            index
-                                                        }
-                                                        lastChild={
-                                                            index ===
-                                                            sortOptions.length -
-                                                                1
-                                                        }
-                                                        onMouseEnter={() =>
-                                                            setHoveredOption(
-                                                                index
-                                                            )
-                                                        }
-                                                        onMouseLeave={() =>
-                                                            setHoveredOption(
-                                                                null
-                                                            )
-                                                        }
-                                                        onClick={option.action}
-                                                    >
-                                                        <OptionText
-                                                            hovered={
-                                                                hoveredOption ===
-                                                                index
-                                                            }
-                                                        >
-                                                            <Flex
-                                                                gap="1rem"
-                                                                align="center"
-                                                            >
-                                                                {option.icon}
-                                                                {option.label}
-                                                            </Flex>
-                                                        </OptionText>
-                                                    </StyledOption>
-                                                )
-                                            )}
-                                        </DropdownContent>
-                                    )}
-                                    <CustomDrawer
-                                        anchor="bottom"
-                                        open={bottomDrawerOpen}
-                                        onClose={() =>
-                                            setBottomDrawerOpen(false)
-                                        }
-                                    >
-                                        <Section
-                                            height="unset"
-                                            padding={
-                                                "1.125rem 1.125rem 3.5rem 1.125rem"
-                                            }
-                                            styles={{
-                                                background: ttColors.light,
-                                            }}
-                                        >
-                                            <Flex
-                                                justify="space-between"
-                                                align="center"
-                                            >
-                                                <Flex
-                                                    justify="flex-start"
-                                                    gap="1rem"
-                                                    align="center"
-                                                >
-                                                    <Text
-                                                        type="h3"
-                                                        text="Application fee for Canada - Employment visa"
-                                                        size={16}
-                                                        weight={600}
-                                                        width="max-content"
-                                                        color="#112211"
-                                                        styles={{
-                                                            width: "80%",
-                                                        }}
-                                                    />
-                                                </Flex>
-                                                <GrFormClose />
-                                            </Flex>
-                                            <Divider
-                                                direction="horizontal"
-                                                margin="0px 0px 1rem"
-                                            />
-                                            <Flex gap="1rem" direction="column">
-                                                <Flex
-                                                    justify="space-between"
-                                                    align="center"
-                                                >
-                                                    <Text
-                                                        type="h3"
-                                                        text="Email"
-                                                        size={16}
-                                                        weight={500}
-                                                        width="max-content"
-                                                        color="#000000"
-                                                    />
-                                                    <Text
-                                                        type="h3"
-                                                        text="Jonathanadah @gmail.com"
-                                                        size={
-                                                            isMobile ? 14 : 16
-                                                        }
-                                                        weight={400}
-                                                        width="max-content"
-                                                        color="#5C5C5C"
-                                                    />
-                                                </Flex>
-
-                                                <Flex
-                                                    justify="space-between"
-                                                    align="center"
-                                                >
-                                                    <Text
-                                                        type="h3"
-                                                        text="Date"
-                                                        size={16}
-                                                        weight={500}
-                                                        width="max-content"
-                                                        color="#000000"
-                                                    />
-                                                    <Text
-                                                        type="h3"
-                                                        text="Date"
-                                                        size={
-                                                            isMobile ? 14 : 16
-                                                        }
-                                                        weight={400}
-                                                        width="max-content"
-                                                        color="#5C5C5C"
-                                                    />
-                                                </Flex>
-
-                                                <Flex
-                                                    justify="space-between"
-                                                    align="center"
-                                                >
-                                                    <Text
-                                                        type="h3"
-                                                        text="Amount"
-                                                        size={16}
-                                                        weight={500}
-                                                        width="max-content"
-                                                        color="#000000"
-                                                    />
-                                                    <Text
-                                                        type="h3"
-                                                        text="NGN 20,000"
-                                                        size={
-                                                            isMobile ? 14 : 16
-                                                        }
-                                                        weight={400}
-                                                        width="max-content"
-                                                        color="#5C5C5C"
-                                                    />
-                                                </Flex>
-
-                                                <Flex
-                                                    justify="space-between"
-                                                    align="center"
-                                                >
-                                                    <Text
-                                                        type="h3"
-                                                        text="Referral Status"
-                                                        size={16}
-                                                        weight={500}
-                                                        width="max-content"
-                                                        color="#000000"
-                                                    />
-                                                    <Button
-                                                        width="max-content"
-                                                        height="48px"
-                                                        padding="5px 20px"
-                                                        styles={{
-                                                            marginLeft: "55px",
-                                                            background:
-                                                                "#FFF1C2",
-                                                            borderRadius:
-                                                                "24px",
-                                                            color: "#614909",
-                                                            display: isMobile
-                                                                ? "block"
-                                                                : "none",
-                                                        }}
-                                                    >
-                                                        <Text
-                                                            type="p"
-                                                            text="PENDING"
-                                                            size={14}
-                                                            weight={600}
-                                                        />
-                                                    </Button>
-                                                </Flex>
-                                            </Flex>
-                                        </Section>
-                                    </CustomDrawer>
-                                </Flex>
-                            </History>
-                        ))
-                    ) : (
-                        "No payment history"
-                    )
-                ) : (
-                    <Flex direction="column" gap="1rem">
-                        {payments?.length > 0 ? (
-                            payments?.map((payment: any, i: number) => (
-                                <History key={i}>
-                                    <Flex
-                                        justify="space-between"
-                                        width="100%"
-                                        align="center"
-                                        padding="28px 24px"
-                                        direction={isMobile ? "column" : "row"}
-                                        gap="1rem"
-                                    >
-                                        <Flex
-                                            gap=".3rem"
-                                            direction="column"
-                                            width={isMobile ? "100%" : "50%"}
-                                        >
-                                            <Text
-                                                type="p"
-                                                text={format(
-                                                    new Date(
-                                                        payment?.updatedAt
-                                                    ),
-                                                    "dd MMM, yyyy"
-                                                )}
-                                                color="#112211"
-                                                size={14}
-                                                styles={{ opacity: "75%" }}
-                                            />
-                                            <Flex gap=".5rem">
-                                                <Text
-                                                    type="h3"
-                                                    size={18}
-                                                    text={
-                                                        payment?.paymentIntent
-                                                    }
-                                                    color="#112211"
-                                                />
-                                                {payment?.isPartPayment && (
-                                                    <Text
-                                                        type="h3"
-                                                        size={14}
-                                                        text={` - part payment`}
-                                                        color="#112211"
-                                                    />
-                                                )}
-                                            </Flex>
-                                        </Flex>
-
-                                        <Text
-                                            type="p"
-                                            text={currencyFormatter(
-                                                payment?.totalAmount
-                                            )}
-                                            styles={{
-                                                width: isMobile
-                                                    ? "100%"
-                                                    : "20%",
-                                            }}
-                                        />
-                                        <PaymentStatus
-                                            style={{ background: "#FFFEEF" }}
-                                        >
-                                            <Text
-                                                type="p"
-                                                text={payment.status}
-                                                styles={{ width: "100%" }}
-                                                whiteSpace="nowrap"
-                                            />
-                                        </PaymentStatus>
-
-                                        <Button
-                                            // width="176px"
-                                            height="48px"
-                                            styles={{
-                                                marginLeft: isMobile
-                                                    ? 0
-                                                    : "55px",
-                                            }}
-                                            disabled
-                                        >
-                                            no action
-                                        </Button>
-                                    </Flex>
-                                </History>
-                            ))
-                        ) : (
-                            <Flex
-                                justify="space-between"
-                                width="100%"
-                                align="center"
-                                padding="28px 24px"
-                            >
-                                <Text
-                                    type="p"
-                                    text="No payment history"
-                                    color="#112211"
-                                    size={14}
-                                    styles={{ opacity: "75%" }}
-                                />
-                            </Flex>
-                        )}
-                    </Flex>
-                )}
-            </PaymentWrapper>
-        </Section>
+      <Image
+        src="/assets/images/dashboard/payment.png"
+        alt=""
+        width={17.2}
+        height={12.4}
+      />
     );
+  }
+
+
+  const { data, isLoading, isError, refetch } = useDashboardPayment({
+    query: { status: param, search: search, currentPage: page, limit: limit, startDate, endDate },
+    options: {
+      retry: 2
+    }
+  });
+
+  const response = data as { payments: DashboardPaymentInfo[], totalCount: number, filteredCount: number; };
+
+  const payments: DashboardPaymentInfo[] = response?.payments as DashboardPaymentInfo[] || [];
+  const filteredCount: number = response?.filteredCount;
+  const totalCount: number = response?.totalCount;
+
+  if (isError) return <div>error loading payments, please try again</div>;
+
+
+  const toggleDropdown = () => {
+    // console.log('clicked')
+    setIsDropdownOpen(!isDropdownOpen);
+    setHoveredOption(null);
+  };
+
+
+  const sortOptions: ISortOptions[] = [
+    {
+      value: "Option 1",
+      label: "Make Payment",
+      icon: <PaymentIcon />,
+      action: () => { },
+    },
+    {
+      value: "Option 2",
+      label: "View More Details",
+      icon: <PiEyeLight size="1rem" />,
+      action: () => {
+        setBottomDrawerOpen(true);
+        setIsDropdownOpen(false);
+      },
+    },
+  ];
+
+  return (
+    <Section
+      margin="2rem 0"
+      styles={{
+        background: "#fff",
+        borderRadius: "14px",
+        padding: isMobile ? ".5rem" : "1rem 1.5rem",
+      }}
+    >
+      <VisaDashboardHeader headerText="Payment History" type="radio" />
+
+      {isLoading ? (
+        <Flex height="450px" align="center" justify="center">
+          <Spinner size="60px" fill={ttColors.blackishBlue} />
+        </Flex>
+      ) : (
+        <PaymentWrapper>
+          {
+            isMobile ? (
+              payments?.length > 0 ? (
+                <>
+                  {payments.map((payment: any, i: number) => (
+                    <History key={i}>
+                      <Flex
+                        justify="space-between"
+                        width="100%"
+                        align="center"
+                        padding="18px 14px"
+                      >
+                        <MobileComp
+                          payment={payment}
+                          sortOptions={sortOptions}
+                        />
+
+                      </Flex>
+                    </History>
+                  ))}
+
+                  {/* custom pagination button */}
+                  <Flex justify="flex-end" align="center">
+                    <CustomPagination count={Math.ceil(filteredCount / limit)} onChange={onPageChange} page={page} />
+                  </Flex>
+                </>
+              ) : (
+                <>
+                  <Center margin={isMobile ? "3.5rem 0px" : "10rem 0"} height="25rem">
+                    <NoApplication noVisaImage={NoPaymentImg} content={content} />
+                  </Center>
+                </>
+              )
+            ) : (
+              <Flex direction="column" gap="1rem">
+                {payments?.length > 0 ? (
+                  <>
+                    {payments?.map((payment: PaymentProp, i: number) => (
+                      <History key={i}>
+                        <Flex
+                          justify="space-between"
+                          width="100%"
+                          align="center"
+                          padding="28px 24px"
+                          direction={isMobile ? "column" : "row"}
+                          gap="1rem"
+                        >
+                          <Flex
+                            gap=".3rem"
+                            direction="column"
+                            width={isMobile ? "100%" : "50%"}
+                          >
+                            <Text
+                              type="p"
+                              text={format(
+                                new Date(
+                                  payment?.updatedAt
+                                ),
+                                "dd MMM, yyyy"
+                              )}
+                              color="#112211"
+                              size={14}
+                              styles={{ opacity: "75%" }}
+                            />
+                            <Flex gap=".5rem">
+                              <Text
+                                type="h3"
+                                size={18}
+                                text={
+                                  payment?.paymentIntent
+                                }
+                                color="#112211"
+                              />
+                              {payment?.isPartPayment && (
+                                <Text
+                                  type="h3"
+                                  size={14}
+                                  text={` - part payment`}
+                                  color="#112211"
+                                />
+                              )}
+                            </Flex>
+                          </Flex>
+
+                          <Text
+                            type="p"
+                            text={currencyFormatter(
+                              payment?.totalAmount
+                            )}
+                            styles={{
+                              width: isMobile
+                                ? "100%"
+                                : "20%",
+                            }}
+                          />
+                          <PaymentStatus
+                            style={{
+                              background: payment.status === 'SUCCESS' ? ttColors.successGreen100 : payment.status === 'PENDING' ? ttColors.pendingYellow100 : ttColors.errorRed100,
+                            }}
+                          >
+                            <Text
+                              type="p"
+                              text={payment.status}
+                              styles={{ width: "100%" }}
+                              whiteSpace="nowrap"
+                              color={payment.status === 'SUCCESS' ? ttColors.successGreen200 : payment.status === 'PENDING' ? ttColors.pendingYellow200 : ttColors.red}
+                              weight={500}
+                            />
+                          </PaymentStatus>
+
+                          {payment.status !== 'SUCCESS' ? (
+                            <Button
+                              disabled={true}
+                              background={ttColors.dark}
+                              height="48px"
+                              styles={{
+                                marginLeft: isMobile
+                                  ? 0
+                                  : "55px",
+                              }}
+                            >
+                              <Text type="p" text='Print Receipt' weight={500} color={ttColors.defaultColor} />
+                            </Button>
+                          ) : (
+                            <Link href={`/payment-receipt/${payment._id}`} target="_blank" rel="noopener noreferrer">
+                              <Button
+                                // width="176px"
+                                background={ttColors.dark}
+                                height="48px"
+                                styles={{
+                                  marginLeft: isMobile
+                                    ? 0
+                                    : "55px",
+                                }}
+                              >
+                                <Text type="p" text='Print Receipt' weight={500} color={ttColors.defaultColor} />
+                              </Button>
+                            </Link>
+                          )}
+
+                        </Flex>
+                      </History>
+                    ))}
+                    {/* pagination buttons */}
+                    {/* <PaginationCtrl
+                      page={page}
+                      setPage={setPage}
+                      data={payments}
+                      filteredCount={filteredCount}
+                      totalCount={totalCount}
+                    /> */}
+
+                    {/* custom pagination button */}
+                    <Flex justify="flex-end" align="center">
+                      <CustomPagination count={Math.ceil(filteredCount / limit)} onChange={onPageChange} page={page} />
+                    </Flex>
+                  </>
+                ) : (
+                  <>
+                    <Center margin={isMobile ? "3.5rem 0px" : "10rem 0"} height="25rem">
+                      <NoApplication noVisaImage={NoPaymentImg} content={content} />
+                    </Center>
+                    {/* pagination buttons */}
+                    {/* <PaginationCtrl<DashboardPaymentInfo> page={page} setPage={setPage} data={payments} /> */}
+                  </>
+                )}
+              </Flex>
+            )}
+        </PaymentWrapper>
+      )}
+      {/* {openModal && (<VisaPaymentModal open={openModal} onClose={handleClose} visaDetails={selected} />)} */}
+    </Section>
+  );
 };
 
+
 export default PaymentHistory;
+
+
+type Props = {
+  payment: PaymentProp;
+  sortOptions: ISortOptions[];
+};
+
+export const MobileComp = ({ payment, sortOptions }: Props) => {
+  const { isMobile } = useScreenResolution();
+  const [bottomDrawerOpen, setBottomDrawerOpen] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  const handleClickAway = () => {
+    setShowDropdown(false);
+  };
+
+  const handleClose = () => {
+    setOpenModal(false);
+  };
+
+  const VisaDetail = {
+    intent: '',
+    id: '',
+    accompanying: 0,
+    refetch: () => { }
+  };
+
+  return (
+    <>
+      <Flex
+        justify="space-between"
+        width="100%"
+        align="center"
+        padding="18px 14px"
+      >
+        <Flex direction="column" gap="1rem">
+          <Text
+            type="p"
+            text={`${payment?.paymentIntent
+              } - ${currencyFormatter(
+                payment?.totalAmount
+              )} `}
+            size={14}
+            weight={400}
+          />
+          <Flex
+            gap="1.5rem"
+            align="center"
+            justify="flex-start"
+          >
+            <Text
+              type="p"
+              text={
+                payment?.updatedAt
+                  ? format(
+                    new Date(
+                      payment?.updatedAt
+                    ),
+                    "dd MMM, yyyy"
+                  )
+                  : "n/a"
+              }
+              color="#112211"
+              size={12}
+              styles={{ opacity: "75%" }}
+            />
+            <PaymentStatus
+              style={{
+                background: payment.status === 'SUCCESS' ? ttColors.successGreen100 : payment.status === 'PENDING' ? ttColors.pendingYellow100 : ttColors.errorRed100,
+              }}
+            >
+              <Text
+                type="p"
+                text={payment?.status}
+                styles={{
+                  width: isMobile
+                    ? "100%"
+                    : "20%",
+                }}
+                whiteSpace="nowrap"
+                size={12}
+                color={payment.status === 'SUCCESS' ? ttColors.successGreen200 : payment.status === 'PENDING' ? ttColors.pendingYellow200 : ttColors.red}
+                weight={500}
+              />
+            </PaymentStatus>
+          </Flex>
+        </Flex>
+        <ClickAwayListener onClickAway={handleClickAway}>
+          <div style={{ position: 'relative' }}>
+            <div>
+              <BiDotsVerticalRounded
+                color="#040404"
+                size="1.5rem"
+                style={{ height: '1.5rem', cursor: 'pointer' }}
+                onClick={() => setShowDropdown(!showDropdown)}
+              />
+            </div>
+            {showDropdown && (
+              <div style={{ position: 'absolute', width: 'auto', left: '-200px', backgroundColor: '#FFF', boxShadow: '0px 0px 4px 0px rgba(0, 0, 0, 0.06), 0px 2px 4px 0px rgba(0, 0, 0, 0.25)', borderRadius: '12px', padding: '4px 6px', zIndex: 99 }}>
+                <>
+                  {/* <Flex align="center" gap="10px" padding="20px 18px" cursor="pointer" onClick={() => {
+                    setOpenModal(true);
+                  }}>
+                    <BiWallet />
+                    <Text type='p' text="Make Payment" />
+                  </Flex>
+                  <Divider
+                    direction="horizontal"
+                    margin="0px 10px 0"
+                  /> */}
+                  <Flex align="center" gap="10px" padding="20px 18px" cursor="pointer" onClick={() => {
+                    sortOptions[1].action();
+                    setBottomDrawerOpen(true);
+                  }}>
+                    <IoEyeOutline />
+                    <Text type="p" text="View More Details" />
+                  </Flex>
+                </>
+              </div>
+            )}
+          </div>
+        </ClickAwayListener>
+
+        <CustomDrawer
+          anchor="bottom"
+          open={bottomDrawerOpen}
+          onClose={() =>
+            setBottomDrawerOpen(false)
+          }
+        >
+          <Section
+            height="unset"
+            padding={
+              "1.125rem 1.125rem 3.5rem 1.125rem"
+            }
+            styles={{
+              background: ttColors.light,
+            }}
+          >
+            <Flex
+              justify="space-between"
+              align="center"
+            >
+              <Flex
+                justify="flex-start"
+                gap="1rem"
+                align="center"
+              >
+                <Text
+                  type="h3"
+                  text={payment.paymentIntent}
+                  size={16}
+                  weight={600}
+                  width="max-content"
+                  color="#112211"
+                  styles={{
+                    width: "80%",
+                  }}
+                />
+              </Flex>
+              <GrFormClose onClick={() => setBottomDrawerOpen(false)} style={{ cursor: 'pointer' }} />
+            </Flex>
+            <Divider
+              direction="horizontal"
+              margin="0px 0px 1rem"
+            />
+            <Flex gap="1rem" direction="column">
+              <Flex
+                justify="space-between"
+                align="center"
+              >
+                <Text
+                  type="h3"
+                  text="Reference"
+                  size={16}
+                  weight={500}
+                  width="max-content"
+                  color="#000000"
+                />
+                <Text
+                  type="h3"
+                  text={payment.reference}
+                  size={
+                    isMobile ? 14 : 16
+                  }
+                  weight={400}
+                  width="max-content"
+                  color="#5C5C5C"
+                />
+              </Flex>
+
+              <Flex
+                justify="space-between"
+                align="center"
+              >
+                <Text
+                  type="h3"
+                  text="Date"
+                  size={16}
+                  weight={500}
+                  width="max-content"
+                  color="#000000"
+                />
+                <Text
+                  type="h3"
+                  text={format(new Date(payment.updatedAt), 'dd-MM-yyyy')}
+                  size={
+                    isMobile ? 14 : 16
+                  }
+                  weight={400}
+                  width="max-content"
+                  color="#5C5C5C"
+                />
+              </Flex>
+
+              <Flex
+                justify="space-between"
+                align="center"
+              >
+                <Text
+                  type="h3"
+                  text="Amount"
+                  size={16}
+                  weight={500}
+                  width="max-content"
+                  color="#000000"
+                />
+                <Text
+                  type="h3"
+                  text={payment.totalAmount.toString()}
+                  size={
+                    isMobile ? 14 : 16
+                  }
+                  weight={400}
+                  width="max-content"
+                  color="#5C5C5C"
+                />
+              </Flex>
+
+              <Flex
+                justify="space-between"
+                align="center"
+              >
+                <Text
+                  type="h3"
+                  text="Referral Status"
+                  size={16}
+                  weight={500}
+                  width="max-content"
+                  color="#000000"
+                />
+                <Button
+                  width="max-content"
+                  height="48px"
+                  padding="5px 20px"
+                  background={payment.status === 'SUCCESS' ? ttColors.successGreen100 : payment.status === 'PENDING' ? ttColors.pendingYellow100 : ttColors.errorRed100}
+                  styles={{
+                    marginLeft: "55px",
+                    borderRadius:
+                      "24px",
+                    color: "#614909",
+                    display: isMobile
+                      ? "block"
+                      : "none",
+                  }}
+                >
+                  <Text
+                    type="p"
+                    text={payment.status}
+                    size={14}
+                    weight={600}
+                    color={payment.status === 'SUCCESS' ? ttColors.successGreen200 : payment.status === 'PENDING' ? ttColors.pendingYellow200 : ttColors.red}
+                  />
+                </Button>
+              </Flex>
+            </Flex>
+          </Section>
+        </CustomDrawer>
+      </Flex>
+      {/* {openModal && (<VisaPaymentModal open={openModal} onClose={handleClose} visaDetails={VisaDetail} />)} */}
+    </>
+  );
+};
+

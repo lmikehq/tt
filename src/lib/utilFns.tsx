@@ -63,22 +63,15 @@ export async function fetchHTMLContent(country: string) {
 export function allCaps(text: string | number) {
     return String(text ?? "").toUpperCase();
 }
-export function capCase(text = "", splitter = " ") {
-    let newStr = String(text ?? "").split(splitter);
-    if (!text) {
-        return "";
-    } else {
-        return (
-            newStr
-                .map(
-                    (e) =>
-                        `${String(e[0]).toUpperCase()}${String(
-                            e.slice(1)
-                        ).toLowerCase()}`
-                )
-                .join(" ") ?? ""
-        );
+export function allLower(text: string | number) {
+    return String(text ?? '').toLowerCase()
+}
+export function capCase(text: string = '', splitter: string = ' ', replace?: string) {
+    if (text === '' || text == null || text == 'null') {
+        return ''
     }
+    let newStr = String(text).split(splitter)
+    return newStr.map(e => `${allCaps(e[0])}${allLower(e.slice(1))}`).join(replace ?? ' ')
 }
 
 export function cleanObject(obj: { [k: string]: any }) {
@@ -93,7 +86,7 @@ export function cleanObject(obj: { [k: string]: any }) {
 
 export function numSort(
     arr: any[] = [],
-    keyToCompare: string,
+    keyToCompare?: string,
     order?: "asc" | "desc"
 ) {
     if (order === "asc") {
@@ -166,4 +159,8 @@ export function reverseCabin(x?: string) {
         default:
             return "Economy";
     }
+}
+
+export function keyValues(obj: object) {
+    return Object.values(obj ?? {}).filter(e => !!e)
 }

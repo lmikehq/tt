@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo, useState } from "react";
 import {
   BtnDetails,
   BtnText,
@@ -14,48 +14,122 @@ import {
   getCurrency,
 } from "@/lib/extensions/helpers/formatPrice";
 import ErrorOutlineOutlinedIcon from "@mui/icons-material/ErrorOutlineOutlined";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { ttColors } from "@/lib/theme/colors";
-import WifiIcon from "@mui/icons-material/Wifi";
-import CropFreeIcon from "@mui/icons-material/CropFree";
-import BathtubOutlinedIcon from "@mui/icons-material/BathtubOutlined";
-import BedIcon from "@mui/icons-material/Bed";
-import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
-import ApartmentIcon from "@mui/icons-material/Apartment";
+// import WifiIcon from "@mui/icons-material/Wifi";
+// import CropFreeIcon from "@mui/icons-material/CropFree";
+// import BathtubOutlinedIcon from "@mui/icons-material/BathtubOutlined";
+// import BedIcon from "@mui/icons-material/Bed";
+// import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
+// import ApartmentIcon from "@mui/icons-material/Apartment";
 import Link from "@/components/atoms/link";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { useRouter } from "next/navigation";
 import { Checkbox } from "@mui/material";
+import { Rate, ViewSingleStayResponse } from "@/lib/types/response-models/stay/search.type";
+import { pickIcon } from "./modals/components/AmenitiesBox";
+import { capCase } from "@/lib/utilFns";
+import dayjs from "dayjs";
+import { useQueryParams } from "@/hooks/useNext";
+import { extractRoomForGuestsFromString } from "@/lib/types/request-models/stay/search.type";
+import Button from "@/components/atoms/button";
+import { useUserPreferencesStore } from "@/lib/store/preferences.store";
+import { useConversionRate } from "@/hooks/useConversionRate";
 
-interface Hotel {
-  name: string;
-  images: string[];
-  price: number;
+interface OneOptionProps {
+    label: string,
+    subLabel?: string,
+    price: string,
+    name: string,
+    value: string,
+    active: boolean,
+    onChange: (name: string, val: string) => void;
+}
+function OneOption({ label, subLabel, price, name, value, onChange, active }: OneOptionProps) {
+    return (
+        <Flex justify="space-between" align="center">
+            <FormControlLabel
+                value="refundable"
+                control={
+                    <Checkbox
+                        disableFocusRipple
+                        disableRipple
+                        onChange={(e, val) => onChange(name, value)}
+                        checked={active}
+                        sx={{
+                            color: ttColors.gray,
+                            "&.Mui-checked": {
+                                color: ttColors.primary,
+                            },
+                            "&.MuiSvgIcon-root": {
+                                // fontSize: 20,
+                            },
+                        }}
+                    />
+                }
+                label={
+                    <Flex direction="column" width="100%">
+                        <Flex
+                            width="100%"
+                            styles={{ whiteSpace: "nowrap" }}
+                            className="wrap_text"
+                        >
+                            <Text
+                                size={14}
+                                weight={500}
+                                type="p"
+                                // styles={{ minWidth: "210px" }}
+                                // whiteSpace="nowrap"
+                                text={label}
+                            ></Text>
+                        </Flex>
+                        {subLabel && 
+                            <Text
+                                size={12}
+                                type="p"
+                                text={subLabel}
+                            ></Text>
+                        }
+                    </Flex>
+                }
+            />
+            <Flex justify="flex-end">
+                <Text
+                type="h4"
+                weight={"bold"}
+                whiteSpace="nowrap"
+                styles={{ marginLeft: "3px" }}
+                text={`+${getCurrency()}${formatPriceWithoutCurrency(parseInt(price))}`}
+                ></Text>
+            </Flex>
+        </Flex>
+    )
 }
 
-interface HotelListProps {
-  hotels: Hotel[];
+interface OneHotelProps {
+    stayImages: string[];
+    hotel: Rate;
+    index: number;
+    onClick: VoidFunction;
+    cancelOptions: { value: string; label: string; price: string; }[]
 }
 
-function ChooseYourRoomList(props: HotelListProps) {
-  const { hotels } = props;
-  const { isMobile } = useScreenResolution();
+function OneHotel({ hotel, index, onClick, cancelOptions, stayImages }: OneHotelProps) {
+    const { preFerredCurrency, conversionRate } = useUserPreferencesStore((state) => state);
+    const { isMobile } = useScreenResolution();
+    const { convertCurrency } = useConversionRate()
 
-  const router = useRouter();
+    const selectedPrice = hotel.payment_options.payment_types.find(e => e.currency_code === 'USD') ?? hotel.payment_options.payment_types.find(e => e.currency_code === 'EUR') ?? hotel.payment_options.payment_types[0]
+    const displayPrice = {
+        currencyCode: selectedPrice?.currency_code ?? preFerredCurrency,
+        amount: selectedPrice?.amount ?? convertCurrency({ convertFrom: selectedPrice?.currency_code, convertTo: preFerredCurrency, amount: selectedPrice?.amount }).amount,
+    }
 
-  const handleClick = () => {
-    router.push("/stay/booking");
-  };
 
-  return (
-    <>
-      <Span style={{ marginTop: "60px" }}>
-        {hotels.map((hotel, index) => (
-          <Span key={index} style={{ marginBottom: "60px" }}>
-            <GridLayout className="choose_room_list">
+    return (
+        <Span key={index} style={{ marginBottom: "60px" }}>
+            <GridLayout className="choose_room_list" style={{ gap: '3rem' }}>
               <Span style={{ overflow: "hidden" }}>
                 <Flex direction="column" gap="10px">
                   <Flex
@@ -66,59 +140,64 @@ function ChooseYourRoomList(props: HotelListProps) {
                     <ChooseRoomImg>
                       <img
                         style={{
-                          width: "100%",
-                          height: "100%",
-                          minWidth: "260px",
-                          objectFit: "cover",
-                          borderRadius: "12px",
+                            width: "100%",
+                            height: "255px",
+                            minWidth: "260px",
+                            objectFit: "cover",
+                            borderRadius: "12px",
                         }}
-                        src={hotel.images[0]}
-                        alt={hotel.name}
+                        src={stayImages[0] ?? ''}
+                        alt={hotel.room_name}
                       />
                     </ChooseRoomImg>
                     <Span>
-                      {isMobile && (
-                        <Text type="h2" weight={600} text={hotel.name}></Text>
-                      )}
-                      <Span>
+                    {isMobile && (
+                        <React.Fragment>
+                            <Text type="h2" weight={600} text={capCase(hotel.room_data_trans?.main_name)}></Text>
+                            <Text type="p" text={capCase(hotel.room_data_trans?.bedding_type)}></Text>
+                        </React.Fragment>
+                    )}
+                      <Span style={{ margin: '1rem 0 .6rem'}}>
                         <Flex align="center" gap="0">
                           <Flex gap="5px" align="center">
                             <Text
-                              type="p"
-                              size={24}
-                              whiteSpace="nowrap"
-                              weight={600}
-                              text={getCurrency()}
+                                type="p"
+                                size={24}
+                                whiteSpace="nowrap"
+                                weight={600}
+                                text={displayPrice?.currencyCode}
                             />{" "}
                             <Text
-                              type="p"
-                              size={30}
-                              weight={600}
-                              text={formatPriceWithoutCurrency(81500)}
+                                type="p"
+                                whiteSpace="wrap"
+                                size={30}
+                                weight={600}
+                                text={formatPriceWithoutCurrency(parseFloat(parseFloat(displayPrice?.amount).toFixed(2)))}
                             />
                             <Text
                               type="p"
                               className="truncate"
                               color="var(--text-gray-color)"
-                              text="/Per night"
+                              text="/per night"
                             ></Text>
                           </Flex>
                         </Flex>
                       </Span>
-                      <Span>
+                      <Span style={{ margin: '0 0 .6rem'}}>
                         <Flex gap="5px" align="center">
                           <Text
                             type="p"
                             size={20}
                             weight={600}
-                            text={getCurrency()}
+                            text={displayPrice?.currencyCode}
+                            styles={{ minWidth: 'max-content' }}
                           />
                           <Flex align="center">
                             <Text
                               type="p"
                               size={20}
                               weight={600}
-                              text={formatPriceWithoutCurrency(815000)}
+                              text={formatPriceWithoutCurrency(parseFloat(parseFloat(displayPrice?.amount).toFixed(2)))}
                             />
                             <Text
                               type="p"
@@ -128,148 +207,57 @@ function ChooseYourRoomList(props: HotelListProps) {
                           </Flex>
                         </Flex>
                       </Span>
-                      <Text type="p" text="2 travellers"></Text>
-                      <Text type="p" text="Including taxes and fees"></Text>
+                        <Text type="p" text={`For ${hotel.rg_ext?.capacity} travellers`} size={15} styles={{ margin: '0 0 .6rem'}}></Text>
+                        <Text type="p" text="Including taxes and fees" size={15}></Text>
                     </Span>
                   </Flex>
-                  {!isMobile && (
-                    <Span style={{ marginTop: "20px" }}>
-                      <ButtonBtn onClick={handleClick}>
-                        <BtnText>Reserve Room</BtnText>
-                      </ButtonBtn>
-                    </Span>
-                  )}
                 </Flex>
               </Span>
               <Span>
-                <Flex direction="column">
-                  {!isMobile && (
-                    <Text type="h2" weight={600} text={hotel.name}></Text>
-                  )}
-                  <Span style={{ margin: "15px 0px" }}>
+                <Flex direction="column" gap=".5rem">
+                {!isMobile &&
+                    <React.Fragment>
+                        <Text type="h2" weight={600} size={28}  text={hotel.room_data_trans?.main_name}></Text>
+                        <Text type="p" size={16} text={capCase(hotel.room_data_trans?.bedding_type)}></Text>
+                    </React.Fragment>
+                  }
+                  <Span style={{ margin: isMobile ? "1rem 0px" : "1rem 0px 3.5rem", gap: "1rem" }}>
                     <Flex wrap="wrap" gap="8px" align="center">
-                      <BtnDetails
-                        style={{ backgroundColor: ttColors.grayishAsh }}
-                      >
-                        <Flex align="center" gap="5px">
-                          <CropFreeIcon style={{ fontSize: "17px" }} />
-                          <Text
-                            weight={500}
-                            size={15}
-                            type="p"
-                            text="300sq feet"
-                          ></Text>
-                        </Flex>
-                      </BtnDetails>
-                      <BtnDetails
-                        style={{ backgroundColor: ttColors.grayishAsh }}
-                      >
-                        <Flex align="center" gap="5px">
-                          <WifiIcon style={{ fontSize: "17px" }} />
-                          <Text
-                            weight={500}
-                            size={15}
-                            type="p"
-                            text="Free Wifi"
-                          ></Text>
-                        </Flex>
-                      </BtnDetails>
-                      <BtnDetails
-                        style={{ backgroundColor: ttColors.grayishAsh }}
-                      >
-                        <Flex align="center" gap="5px">
-                          <BathtubOutlinedIcon style={{ fontSize: "17px" }} />
-                          <Text
-                            weight={500}
-                            size={15}
-                            type="p"
-                            text="Bathroom"
-                          ></Text>
-                        </Flex>
-                      </BtnDetails>
-                      <BtnDetails
-                        style={{ backgroundColor: ttColors.grayishAsh }}
-                      >
-                        <Flex align="center" gap="5px">
-                          <BedIcon style={{ fontSize: "17px" }} />
-                          <Text
-                            weight={500}
-                            size={15}
-                            type="p"
-                            text="1 King Bed OR 2 Twin Beds"
-                          ></Text>
-                        </Flex>
-                      </BtnDetails>
-                      <BtnDetails
-                        style={{ backgroundColor: ttColors.grayishAsh }}
-                      >
-                        <Flex align="center" gap="5px">
-                          <BathtubOutlinedIcon style={{ fontSize: "17px" }} />
-                          <Text
-                            weight={500}
-                            size={15}
-                            type="p"
-                            text="Bathroom"
-                          ></Text>
-                        </Flex>
-                      </BtnDetails>
-                      <BtnDetails
-                        style={{ backgroundColor: ttColors.grayishAsh }}
-                      >
-                        <Flex align="center" gap="5px">
-                          <PeopleAltIcon style={{ fontSize: "17px" }} />
-                          <Text
-                            weight={500}
-                            size={15}
-                            type="p"
-                            text="2 persons"
-                          ></Text>
-                        </Flex>
-                      </BtnDetails>
-                      <BtnDetails
-                        style={{ backgroundColor: ttColors.grayishAsh }}
-                      >
-                        <Flex align="center" gap="5px">
-                          <ApartmentIcon style={{ fontSize: "17px" }} />
-                          <Text
-                            weight={500}
-                            size={15}
-                            type="p"
-                            text="City View"
-                          ></Text>
-                        </Flex>
-                      </BtnDetails>
-
-                      <BtnDetails
-                        style={{ backgroundColor: ttColors.grayishAsh }}
-                      >
-                        <Flex align="center" gap="5px">
-                          <PeopleAltIcon style={{ fontSize: "17px" }} />
-                          <Text
-                            weight={500}
-                            size={15}
-                            type="p"
-                            text="2 persons"
-                          ></Text>
-                        </Flex>
-                      </BtnDetails>
-
-                      <Link
-                        href="/stay/booking"
-                        style={{ width: "fit-content" }}
-                      >
-                        <Flex
-                          align="center"
-                          gap="8px"
-                          styles={{ color: "#7bbbd6" }}
-                        >
-                          <Text size={15} type="p" text="More Details"></Text>
-                          <ArrowForwardIosIcon style={{ fontSize: "14px" }} />
-                        </Flex>
-                      </Link>
+                        {[...hotel.amenities_data, ...hotel.serp_filters].map((am, index) =>
+                            <BtnDetails
+                                style={{ backgroundColor: ttColors.grayishAsh }}
+                                key={`amenity-${index}`}
+                            >
+                                <Flex align="center" gap="5px">
+                                {pickIcon(am, { fontSize: "17px" })}
+                                <Text
+                                    weight={500}
+                                    size={15}
+                                    type="p"
+                                    text={am.includes('_') ? capCase(am, '_') : capCase(am, '-')}
+                                ></Text>
+                                </Flex>
+                            </BtnDetails>
+                        )}
                     </Flex>
-                  </Span>
-                  <Span>
+                    <Flex
+                        align="center"
+                        gap="8px"
+                        styles={{ color: "#7bbbd6", margin: "1rem 0 0" }}
+                        onClick={onClick}
+                    >
+                        <Text size={15} type="p" text="More Details"></Text>
+                        <ArrowForwardIosIcon style={{ fontSize: "14px" }} />
+                    </Flex>
+                    </Span>
+                    {!isMobile && (
+                        <Span style={{ marginTop: "20px", maxWidth: isMobile ? '' : '20rem' }}>
+                            <Button width='100%' padding='1.5rem 2rem' background={ttColors.dark} onClick={onClick}>
+                                <BtnText>Reserve Room</BtnText>
+                            </Button>
+                        </Span>
+                  )}
+                  {/* <Span>
                     <Flex direction="column" styles={{ margin: "10px 0px" }}>
                       <Text
                         type="h5"
@@ -299,102 +287,17 @@ function ChooseYourRoomList(props: HotelListProps) {
                     </Flex>
 
                     <Flex direction="column">
-                      <Flex justify="space-between" align="center">
-                        <FormControlLabel
-                          value="non-refundable"
-                          control={
-                            <Checkbox
-                              disableFocusRipple
-                              disableRipple
-                              sx={{
-                                color: ttColors.gray,
-                                "&.Mui-checked": {
-                                  color: ttColors.primary,
-                                },
-                                "&.MuiSvgIcon-root": {
-                                  // fontSize: 20,
-                                },
-                              }}
+                        {cancelOptions.map((opt, index) => 
+                            <OneOption
+                                key={`opt-${index}`}
+                                label={opt.label}
+                                value={opt.value}
+                                active={selected.cancellation == index}
+                                price={opt.price}
+                                name="cancellation"
+                                onChange={onSelectCancel}
                             />
-                          }
-                          label={
-                            <Flex
-                              width="100%"
-                              styles={{ whiteSpace: "nowrap" }}
-                              className="wrap_text"
-                            >
-                              <Text
-                                size={14}
-                                weight={500}
-                                // whiteSpace="nowrap"
-                                width={"100%"}
-                                type="p"
-                                text="Non-Refundable"
-                              ></Text>
-                            </Flex>
-                          }
-                        />
-                        <Flex justify="flex-end">
-                          <Text
-                            type="h4"
-                            weight={"bold"}
-                            whiteSpace="nowrap"
-                            text="+$0"
-                          ></Text>
-                        </Flex>
-                      </Flex>
-                      <Flex justify="space-between" align="center">
-                        <FormControlLabel
-                          value="refundable"
-                          control={
-                            <Checkbox
-                              disableFocusRipple
-                              disableRipple
-                              sx={{
-                                color: ttColors.gray,
-                                "&.Mui-checked": {
-                                  color: ttColors.primary,
-                                },
-                                "&.MuiSvgIcon-root": {
-                                  // fontSize: 20,
-                                },
-                              }}
-                            />
-                          }
-                          label={
-                            <Flex direction="column" width="100%">
-                              <Flex
-                                width="100%"
-                                styles={{ whiteSpace: "nowrap" }}
-                                className="wrap_text"
-                              >
-                                <Text
-                                  size={14}
-                                  weight={500}
-                                  type="p"
-                                  // styles={{ minWidth: "210px" }}
-                                  // whiteSpace="nowrap"
-                                  text="Fully refundable before Oct 19"
-                                ></Text>
-                              </Flex>
-                              <Text
-                                size={12}
-                                type="p"
-                                text="Reserve now, pay later"
-                              ></Text>
-                            </Flex>
-                          }
-                        />
-                        <Flex justify="flex-end">
-                          <Text
-                            type="h4"
-                            weight={"bold"}
-                            whiteSpace="nowrap"
-                            styles={{ marginLeft: "3px" }}
-                            text={`+$${140}`}
-                          ></Text>
-                        </Flex>
-                      </Flex>
+                        )}
                     </Flex>
                   </Span>
                   <Span>
@@ -534,21 +437,69 @@ function ChooseYourRoomList(props: HotelListProps) {
                         </Flex>
                       </Flex>
                     </Flex>
-                  </Span>
+                  </Span> */}
                 </Flex>
               </Span>
             </GridLayout>
             {isMobile && (
               <Span style={{ marginTop: "20px" }}>
-                <ButtonBtn>
+                <Button width='100%' padding='1.5rem 2rem' background={ttColors.dark} onClick={onClick}>
                   <BtnText>Reserve Room</BtnText>
-                </ButtonBtn>
+                </Button>
               </Span>
             )}
-          </Span>
-        ))}
-      </Span>
-    </>
+        </Span>
+    )
+}
+
+interface HotelListProps {
+    stayResponse?: ViewSingleStayResponse;
+    stayImages: string[];
+    hotels: Rate[];
+}
+
+function ChooseYourRoomList(props: HotelListProps) {
+    const { stayResponse, stayImages, hotels } = props;
+    const { queryParams } = useQueryParams()
+
+    const router = useRouter();
+
+    const handleClick = (hotel: Rate) => {
+        router.push(`/stay/booking?hotelId=${queryParams?.id}&bookHash=${hotel?.book_hash}&guests=${queryParams?.guests}&checkIn=${queryParams?.checkIn}&checkOut=${queryParams?.checkOut}`);
+    };
+
+    const formatPolicy = (start: string | null, end: string | null) => {
+        if (start && end) {
+            return `Cancel from ${dayjs(start).format('MMM DD')} to ${dayjs(end).format('MMM DD')}`
+        } else if (start && !end) {
+            return `Cancel from ${dayjs(start).format('MMM DD')}`
+        } else if (!start && end) {
+            return `Cancel before ${dayjs(end).format('MMM DD')}`
+        } else return ''
+    }
+
+    return (
+        <React.Fragment>
+            <Span style={{ marginTop: "60px" }}>
+                {hotels.map((hotel, index) => {
+                    const cancelOptions = hotel.payment_options.payment_types[0].cancellation_penalties.policies.map((pol, index) => ({
+                        value: `${index}`,
+                        label: formatPolicy(pol.start_at, pol.end_at),
+                        price: pol.amount_show,
+                    }))
+                    return (
+                        <OneHotel
+                            stayImages={stayImages}
+                            key={`hotel-${index}`}
+                            hotel={hotel}
+                            index={index}
+                            onClick={() => handleClick(hotel)}
+                            cancelOptions={cancelOptions}
+                        />
+                    )}
+                )}
+            </Span>
+        </React.Fragment>
   );
 }
 

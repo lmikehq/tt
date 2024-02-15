@@ -123,7 +123,7 @@ interface DocumentInterface {
 }
 export interface VisaApplicationFormInterface
   extends DetailsKeys,
-    PersonalInfoInterface {
+  PersonalInfoInterface {
   education: EducationDetailsInterface[];
   employment: EmploymentDetailsInterface[];
   familyMembers: FamilyInfoInterface[];
@@ -132,7 +132,7 @@ export interface VisaApplicationFormInterface
 
 export interface PrimaryTravellerInterface
   extends PersonalInfoInterface,
-    Omit<DetailsKeys, "applicationType" | "visaType"> {
+  Omit<DetailsKeys, "applicationType" | "visaType"> {
   education: EducationDetailsInterface[];
   employment: EmploymentDetailsInterface[];
 }
@@ -145,3 +145,30 @@ export interface ApplicationFormRequestInput
   user?: string;
 }
 declare module "@paystack/inline-js";
+
+export interface IUser {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  email: string;
+  accountType: string;
+  role: string;
+  resetPasswordExpires: string;
+  isEmailVerified: boolean;
+  isPhoneVerified: boolean;
+  isDeleted: boolean;
+  accountStatus: string;
+  signUpMedium: string;
+  createdAt: string;
+  updatedAt: string;
+  profilePicture: string;
+  devices: {
+    status: string;
+  };
+  address: string;
+  errorMessage?: string;
+  statusCode?: number;
+}
+
+export type RefetchProp = (options?: RefetchOptions | undefined) => Promise<QueryObserverResult<any, Error>>;

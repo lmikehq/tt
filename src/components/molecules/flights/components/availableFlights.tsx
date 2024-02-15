@@ -6,7 +6,6 @@ import FlightBox from "./flightBox";
 import Button from "@atom/button";
 import Flex from "@components/templates/flex";
 import Text from "@atom/text";
-import SortedFlightsTab from "./sortedFlightsTab";
 import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
 import { FlightInfo } from "@/lib/types/response-models/flight/booking.type";
 import SkeletonLoader from "@/components/organisms/SkeletonLoader/Skeleton";
@@ -26,11 +25,16 @@ import { FaQuestion } from "react-icons/fa";
 import Spinner from "../../icons/spinner";
 import { cleanObject, dateSort, numSort } from "@/lib/utilFns";
 import { useQueryParams } from "@/hooks/useNext";
-import { SearchFlightsRequestQuery } from "@/lib/types/request-models/flight/booking.type";
+import {
+    FlightTypeEnum,
+    SearchFlightsRequestQuery,
+} from "@/lib/types/request-models/flight/booking.type";
 import { IoShareSocial } from "react-icons/io5";
 import Image from "next/image";
 import { useClipboard } from "@/lib/extensions/helpers/copyToClipboard";
 import AuthModal from "@/components/organisms/auth/AuthModal";
+import { useUserPreferencesStore } from "@/lib/store/preferences.store";
+import SortedFlightsTab from "./sortedFlightsTab";
 var advancedFormat = require("dayjs/plugin/advancedFormat");
 dayjs.extend(advancedFormat);
 
@@ -459,6 +463,7 @@ function AvailableFlights() {
         updateSearchQuery,
         searchQuery,
     } = useFlightBookingStore((state) => state);
+    const { preFerredCurrency } = useUserPreferencesStore((state) => state);
 
     const { isMobile } = useScreenResolution();
     const [showAuthModal, setShowAuthModal] = useState(false);
@@ -563,7 +568,15 @@ function AvailableFlights() {
     };
 
     const goToFlight = (bookingToken: string) => {
-        const to = `/flight/booking?bnum=${flightReq.bags}&adults=${flightReq.adults}&children=${flightReq.children}&infants=${flightReq.infants}&booking_token=${bookingToken}`;
+        const to = `/flight/booking?bnum=${flightReq.bags}&adults=${
+            flightReq.adults
+        }&children=${flightReq.children}&infants=${
+            flightReq.infants
+        }&booking_token=${bookingToken}&flightType=${
+            queryParams?.flightType.includes("ONE")
+                ? FlightTypeEnum.one_way
+                : queryParams.flightType
+        }`;
         if (user?.email) {
             router.push(to);
         } else {
@@ -678,12 +691,13 @@ function AvailableFlights() {
             sanitizedQuery?.date_from &&
             sanitizedQuery?.adults
         ) {
+            console.log("handleSearchResults", sanitizedQuery);
             handleSearchResults({ ...cleanObject(sanitizedQuery) });
         }
-    }, [queryParams]);
+    }, [queryParams, preFerredCurrency]);
 
     useEffect(() => {
-        const interval = setTimeout(() => {
+        const interval = setInterval(() => {
             setModal((prev) => ({ ...prev, isOpenStillSearching: true }));
         }, 900000);
         return () => clearInterval(interval);
@@ -756,7 +770,8 @@ function AvailableFlights() {
                         />
                     ))}
 
-                    {(searchQuery?.limit ?? 10) < flightsResults.total && (
+                    {((searchQuery?.limit as number) ?? 10) <
+                        flightsResults.total && (
                         <Flex justify="center">
                             <Button
                                 width="100%"

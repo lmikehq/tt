@@ -26,6 +26,7 @@ const StyledInput = styled.input`
   &::placeholder {
     color: #929292 !important;
     font-weight: 400 !important;
+    font-family: poppins;
   }
 `;
 
@@ -64,15 +65,15 @@ export interface InputProps {
   padding?: CSSProperties["padding"];
   touchedError?: boolean;
   type?:
-    | "text"
-    | "number"
-    | "file"
-    | "textArea"
-    | "password"
-    | "email"
-    | "tel"
-    | "address"
-    | "checkbox";
+  | "text"
+  | "number"
+  | "file"
+  | "textArea"
+  | "password"
+  | "email"
+  | "tel"
+  | "address"
+  | "checkbox";
   value?: string;
   defaultValue?: string;
   name?: string;
@@ -132,9 +133,7 @@ const Input = ({
   ref,
   autoFocus
 }: InputProps) => {
-  const [miniType, setMiniType] = useState(
-    type === "password" ? "password" : ""
-  );
+  const [miniType, setMiniType] = useState(type)
   if (type === "textArea") {
     return (
       <textarea
@@ -157,6 +156,7 @@ const Input = ({
       ></textarea>
     );
   }
+
   return (
     <div style={{ position: "relative", flexGrow, width: parentWidth }}>
       <StyledInput
@@ -165,7 +165,7 @@ const Input = ({
         onClick={onClick}
         onFocus={onFocus}
         className={`custom-form-input ${error ? "error" : ""}`}
-        type={miniType || type}
+        type={miniType}
         onBlur={onBlur}
         placeholder={placeholder}
         onPaste={onPaste}
@@ -250,6 +250,8 @@ export const TextField = ({
         type={type || "text"}
         // onBlur={onBlur}
         placeholder={placeholder}
+        autoComplete="new-password"
+        autoCorrect="off"
         // onPaste={onPaste}
         // value={value}
         onChange={onChange}

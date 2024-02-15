@@ -13,7 +13,10 @@ import { Box, Grid } from "@mui/material";
 import FlightDepartureIcon from "./flightDepartureIcon";
 import StopsPill from "./stopsPill";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
-import { FlightInfo, FlightInterface } from "@/lib/types/response-models/flight/booking.type";
+import {
+    FlightInfo,
+    FlightInterface,
+} from "@/lib/types/response-models/flight/booking.type";
 import React, { ReactElement, useContext, useState } from "react";
 import { FlightContext } from "@/lib/extensions/context";
 import { formatPrice } from "@/lib/extensions/helpers/formatPrice";
@@ -21,6 +24,10 @@ import { useUserPreferencesStore } from "@/lib/store/preferences.store";
 import SimplePopper from "@/components/organisms/SimplePopper/SimplePopper";
 import { IoTicket, IoTicketOutline } from "react-icons/io5";
 import { IoMdStar } from "react-icons/io";
+import {
+    Multi_FlightInfo,
+    Multi_SingleFlightInfo,
+} from "@/lib/types/response-models/flight/multi_flight.type";
 
 type flightProps = {
     departureCountryCode: string;
@@ -48,18 +55,18 @@ const FlightContainer = styled.div`
     border-radius: 12.5px;
     width: 100%;
     &:hover {
-        box-shadow: 0px 0px 15px rgba(0,0,0,0.07)
+        box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.07);
     }
 `;
 
-const IconBorders = styled.div`
-  padding: 0.5rem 0.6rem;
-  border: 1px solid ${ttColors.primary};
-  display: flex;
-  align-items: center;
-  flex-direction: row-reverse;
-  border-radius: 8px;
-  gap: 0.5rem;
+export const IconBorders = styled.div`
+    padding: 0.5rem 0.6rem;
+    border: 1px solid ${ttColors.primary};
+    display: flex;
+    align-items: center;
+    flex-direction: row-reverse;
+    border-radius: 8px;
+    gap: 0.5rem;
 `;
 
 const LabelBox = styled.div`
@@ -73,10 +80,23 @@ const LabelBox = styled.div`
     justify-content: center;
 `;
 
-function SeatsPopper({ flight, open, anchorEl }: { flight: FlightInfo; open: boolean; anchorEl: HTMLElement | null; }) {
+export function SeatsPopper({
+    flight,
+    open,
+    anchorEl,
+}: {
+    flight: FlightInfo | Multi_SingleFlightInfo;
+    open: boolean;
+    anchorEl: HTMLElement | null;
+}) {
     return (
         <SimplePopper open={open} anchorEl={anchorEl} placement="top-start">
-            <Flex direction="column" background={ttColors.darkBg} borderRadius="8px" padding="1.5rem 2rem">
+            <Flex
+                direction="column"
+                background={ttColors.darkBg}
+                borderRadius="8px"
+                padding="1.5rem 2rem"
+            >
                 <Text
                     type="p"
                     text="Seats still left at this rate according to our most recent search."
@@ -93,10 +113,18 @@ function SeatsPopper({ flight, open, anchorEl }: { flight: FlightInfo; open: boo
                 />
             </Flex>
         </SimplePopper>
-    )
+    );
 }
 
-function PriceBreakdownPopper({ flight, open, anchorEl }: { flight: FlightInfo; open: boolean; anchorEl: HTMLElement | null; }) {
+export function PriceBreakdownPopper({
+    flight,
+    open,
+    anchorEl,
+}: {
+    flight: FlightInfo | Multi_SingleFlightInfo;
+    open: boolean;
+    anchorEl: HTMLElement | null;
+}) {
     const { preFerredCurrency } = useUserPreferencesStore((state) => state);
 
     const ticketPrice = formatPrice({
@@ -104,12 +132,17 @@ function PriceBreakdownPopper({ flight, open, anchorEl }: { flight: FlightInfo; 
         currency: preFerredCurrency,
     });
 
-    const hasHandBag = flight?.baglimit?.hand_weight
-    const hasHoldBag = flight?.baglimit?.hold_weight
+    const hasHandBag = flight?.baglimit?.hand_weight;
+    const hasHoldBag = flight?.baglimit?.hold_weight;
 
     return (
         <SimplePopper open={open} anchorEl={anchorEl} placement="left">
-            <Flex direction="column" background={ttColors.darkBg} borderRadius="8px" padding="1.5rem 2rem">
+            <Flex
+                direction="column"
+                background={ttColors.darkBg}
+                borderRadius="8px"
+                padding="1.5rem 2rem"
+            >
                 <Text
                     type="p"
                     text="Price Breakdown"
@@ -117,7 +150,12 @@ function PriceBreakdownPopper({ flight, open, anchorEl }: { flight: FlightInfo; 
                     size={22}
                     weight={600}
                 />
-                <Flex direction="column" gap="1.5rem" padding="2.5rem 0 2.5rem" borderBottom="1px solid white">
+                <Flex
+                    direction="column"
+                    gap="1.5rem"
+                    padding="2.5rem 0 2.5rem"
+                    borderBottom="1px solid white"
+                >
                     <Flex justify="space-between" align="flex-end" gap="2.5rem">
                         <Flex gap="1rem">
                             <IoTicketOutline color="white" size={20} />
@@ -134,8 +172,8 @@ function PriceBreakdownPopper({ flight, open, anchorEl }: { flight: FlightInfo; 
                             color="white"
                             size={18}
                             weight={600}
-                            styles={{ minWidth: 'max-content' }}
-                        />      
+                            styles={{ minWidth: "max-content" }}
+                        />
                     </Flex>
                     <Flex justify="space-between" align="flex-end">
                         <Flex gap="1rem">
@@ -152,7 +190,7 @@ function PriceBreakdownPopper({ flight, open, anchorEl }: { flight: FlightInfo; 
                             text={hasHandBag ? "Included" : "None"}
                             color="white"
                             size={15}
-                            styles={{ minWidth: 'max-content' }}
+                            styles={{ minWidth: "max-content" }}
                         />
                     </Flex>
                     <Flex justify="space-between" align="flex-end">
@@ -170,65 +208,86 @@ function PriceBreakdownPopper({ flight, open, anchorEl }: { flight: FlightInfo; 
                             text={hasHoldBag ? "Included" : "None"}
                             color="white"
                             size={15}
-                            styles={{ minWidth: 'max-content' }}
-                        />      
+                            styles={{ minWidth: "max-content" }}
+                        />
                     </Flex>
                 </Flex>
 
                 <Flex justify="space-between" align="flex-end" padding="1rem 0">
-                    <Text
-                        type="p"
-                        text="Total"
-                        color="white"
-                        size={15}
-                    />
+                    <Text type="p" text="Total" color="white" size={15} />
                     <Text
                         type="p"
                         text={ticketPrice}
                         color="white"
                         size={18}
                         weight={600}
-                        styles={{ minWidth: 'max-content' }}
-                    />      
+                        styles={{ minWidth: "max-content" }}
+                    />
                 </Flex>
             </Flex>
         </SimplePopper>
-    )
+    );
 }
 
-function FlightRoutes({ flight }: { flight: FlightInfo }) {
-    const routes = flight?.route
+export function FlightRoutes({
+    flight,
+}: {
+    flight: FlightInfo | Multi_SingleFlightInfo;
+}) {
+    const routes = flight?.route;
     return (
-        <Flex direction="column" background={ttColors.darkBg} borderRadius="8px" padding=".8rem 2rem">
-            {routes.map((e, index, arr) => {
-                const currentFlight = e
-                const nextFlight = arr[index + 1]
-                const layoverMins = nextFlight ? dayjs(nextFlight?.utc_departure).diff(dayjs(currentFlight?.utc_arrival), 'minute') : 0
-                const layoverHoursLeft = Math.floor(layoverMins / 60)
-                const layoverMinsLeft = layoverMins % 60
-                const isLast = index === arr.length - 2
-                return (
-                    <Flex borderBottom={isLast ? 'none' : `1px solid white`} key={`flight-route-${index}`} align="center" gap="1rem" padding=".5rem 0">
-                        <Text
-                            text={`${layoverHoursLeft}h ${layoverMinsLeft}m layover`}
-                            type="p"
-                            weight={600}
-                        />
-                        <Flex width="8px" height="8px" background="white" borderRadius="50%">
+        <Flex
+            direction="column"
+            background={ttColors.darkBg}
+            borderRadius="8px"
+            padding=".8rem 2rem"
+        >
+            {routes
+                .map((e, index, arr) => {
+                    const currentFlight = e;
+                    const nextFlight = arr[index + 1];
+                    const layoverMins = nextFlight
+                        ? dayjs(nextFlight?.utc_departure).diff(
+                              dayjs(currentFlight?.utc_arrival),
+                              "minute"
+                          )
+                        : 0;
+                    const layoverHoursLeft = Math.floor(layoverMins / 60);
+                    const layoverMinsLeft = layoverMins % 60;
+                    const isLast = index === arr.length - 2;
+                    return (
+                        <Flex
+                            borderBottom={isLast ? "none" : `1px solid white`}
+                            key={`flight-route-${index}`}
+                            align="center"
+                            gap="1rem"
+                            padding=".5rem 0"
+                        >
+                            <Text
+                                text={`${layoverHoursLeft}h ${layoverMinsLeft}m layover`}
+                                type="p"
+                                weight={600}
+                            />
+                            <Flex
+                                width="8px"
+                                height="8px"
+                                background="white"
+                                borderRadius="50%"
+                            ></Flex>
+                            <Text
+                                text={`${currentFlight?.cityTo} (${currentFlight?.cityCodeTo})`}
+                                type="p"
+                                weight={600}
+                            />
                         </Flex>
-                        <Text
-                            text={`${currentFlight?.cityTo} (${currentFlight?.cityCodeTo})`}
-                            type="p"
-                            weight={600}
-                        />
-                    </Flex>  
-                )
-            }).slice(0, routes.length - 1)}
+                    );
+                })
+                .slice(0, routes.length - 1)}
         </Flex>
-    )
+    );
 }
 
-function OneIcon({ iata } : { iata: string }) {
+export function OneIcon({ iata }: { iata: string }) {
     const flightContext = useContext(FlightContext);
     const flightState = flightContext?.state;
     const { isMobile } = useScreenResolution();
@@ -278,7 +337,11 @@ function OneIcon({ iata } : { iata: string }) {
                 )}
             </Flex>
             <SimplePopper open={open} anchorEl={anchorEl}>
-                <Flex borderRadius='8px' background={ttColors.darkBg} padding="1rem 2rem">
+                <Flex
+                    borderRadius="8px"
+                    background={ttColors.darkBg}
+                    padding="1rem 2rem"
+                >
                     <Text
                         type="p"
                         text={flightState?.airlines[iata]?.Airline ?? ""}
@@ -289,31 +352,28 @@ function OneIcon({ iata } : { iata: string }) {
                 </Flex>
             </SimplePopper>
         </React.Fragment>
-    )
+    );
 }
-function AirlineIcons({ airlines = [] }: { airlines: string[] }) {
+
+export function AirlineIcons({ airlines = [] }: { airlines: string[] }) {
     return (
         <Flex width="auto" gap=".4rem">
-            {airlines.map((e, index) =>
-                <OneIcon
-                    iata={e}
-                    key={`airline-${index}`}
-                />
-            )}
+            {airlines.map((e, index) => (
+                <OneIcon iata={e} key={`airline-${index}`} />
+            ))}
         </Flex>
     );
 }
 
-
 function FlightBox(props: flightProps) {
-  const { isMobile } = useScreenResolution();
-  const flightContext = useContext(FlightContext);
-  const flightState = flightContext?.state;
-  const { preFerredCurrency } = useUserPreferencesStore((state) => state);
+    const { isMobile } = useScreenResolution();
+    const flightContext = useContext(FlightContext);
+    const flightState = flightContext?.state;
+    const { preFerredCurrency } = useUserPreferencesStore((state) => state);
 
-  function formatDate(day: Dayjs, short?: boolean) {
-    return day.format(short ? "ddd, MMMM D" : "dddd, MMMM D");
-  }
+    function formatDate(day: Dayjs, short?: boolean) {
+        return day.format(short ? "ddd, MMMM D" : "dddd, MMMM D");
+    }
 
     const timeDifference = (utcDeparture: string, utcArrival: string) => {
         const differenceMins = dayjs(utcArrival).diff(
@@ -336,7 +396,9 @@ function FlightBox(props: flightProps) {
     const isRoundTrip = props.flightStop === "round";
 
     const [anchorEl, setAnchorEl] = React.useState<{
-        price: null | HTMLElement; seats: null | HTMLElement; best: null | HTMLElement
+        price: null | HTMLElement;
+        seats: null | HTMLElement;
+        best: null | HTMLElement;
     }>({
         price: null,
         seats: null,
@@ -349,23 +411,27 @@ function FlightBox(props: flightProps) {
     });
 
     const handlePriceHover = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorEl(prev => ({ ...prev, price: event.currentTarget }));
-        setPopperOpen(prev => ({ ...prev, price: !prev.price }));
+        setAnchorEl((prev) => ({ ...prev, price: event.currentTarget }));
+        setPopperOpen((prev) => ({ ...prev, price: !prev.price }));
     };
 
     const handleSeatsHover = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorEl(prev => ({ ...prev, seats: event.currentTarget }));
-        setPopperOpen(prev => ({ ...prev, seats: !prev.seats }));
+        setAnchorEl((prev) => ({ ...prev, seats: event.currentTarget }));
+        setPopperOpen((prev) => ({ ...prev, seats: !prev.seats }));
     };
 
     const handleBestHover = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorEl(prev => ({ ...prev, best: event.currentTarget }));
-        setPopperOpen(prev => ({ ...prev, best: !prev.best }));
+        setAnchorEl((prev) => ({ ...prev, best: event.currentTarget }));
+        setPopperOpen((prev) => ({ ...prev, best: !prev.best }));
     };
 
-
     return (
-        <FlightContainer style={{ cursor: 'pointer' }} onClick={() => props.selectFlight({ bookingToken: props.bookingToken })}>
+        <FlightContainer
+            style={{ cursor: "pointer" }}
+            onClick={() =>
+                props.selectFlight({ bookingToken: props.bookingToken })
+            }
+        >
             <Box
                 sx={{
                     display: isMobile ? "flex" : "grid",
@@ -379,38 +445,67 @@ function FlightBox(props: flightProps) {
                 <Flex
                     direction="column"
                     gap=".6rem"
-                    padding={isMobile ? "1rem 1rem 1rem 0" : "1.5rem 2rem 3rem 1rem"}
+                    padding={
+                        isMobile ? "1rem 1rem 1rem 0" : "1.5rem 2rem 3rem 1rem"
+                    }
                     height="100%"
                     justify="center"
                 >
                     {props.label.length > 0 && (
                         <Flex padding="0 0 0 1rem" gap="1rem">
-                            {props.label.slice(0, 2).map((e, index) =>
+                            {props.label.slice(0, 2).map((e, index) => (
                                 <React.Fragment key={`label-${index}`}>
-                                    <LabelBox onMouseEnter={e === 'Best' ? handleBestHover : undefined} onMouseLeave={e === 'Best' ? handleBestHover : undefined}>
-                                        {e === 'Best' && <IoMdStar color={ttColors.dark} size={20} />}
+                                    <LabelBox
+                                        onMouseEnter={
+                                            e === "Best"
+                                                ? handleBestHover
+                                                : undefined
+                                        }
+                                        onMouseLeave={
+                                            e === "Best"
+                                                ? handleBestHover
+                                                : undefined
+                                        }
+                                    >
+                                        {e === "Best" && (
+                                            <IoMdStar
+                                                color={ttColors.dark}
+                                                size={20}
+                                            />
+                                        )}
                                         <Text
                                             type="p"
                                             text={e}
                                             color="#4A7181"
                                         />
                                     </LabelBox>
-                                    {e === 'Best' &&
-                                        <SimplePopper open={popperOpen.best} anchorEl={anchorEl.best} placement="bottom-end">
-                                            <Flex direction="column" borderRadius='8px' background={ttColors.darkBg} padding="1rem 2rem">
+                                    {e === "Best" && (
+                                        <SimplePopper
+                                            open={popperOpen.best}
+                                            anchorEl={anchorEl.best}
+                                            placement="bottom-end"
+                                        >
+                                            <Flex
+                                                direction="column"
+                                                borderRadius="8px"
+                                                background={ttColors.darkBg}
+                                                padding="1rem 2rem"
+                                            >
                                                 <Text
                                                     type="p"
                                                     text="We believe you will like these flights based on their duration, price, number of stops and carrier type."
                                                     color="white"
                                                     size={15}
                                                     weight={500}
-                                                    styles={{ maxWidth: "20rem" }}
+                                                    styles={{
+                                                        maxWidth: "20rem",
+                                                    }}
                                                 />
                                             </Flex>
                                         </SimplePopper>
-                                    }
+                                    )}
                                 </React.Fragment>
-                            )}
+                            ))}
                         </Flex>
                     )}
 
@@ -467,10 +562,7 @@ function FlightBox(props: flightProps) {
                                     ).format("HH: mm")}
                                     styles={{ minWidth: "max-content" }}
                                 />
-                                <Flex
-                                    wrap="wrap"
-                                    justify="flex-start"
-                                >
+                                <Flex wrap="wrap" justify="flex-start">
                                     <Text
                                         type="p"
                                         size={isMobile ? 14 : 16}
@@ -490,7 +582,11 @@ function FlightBox(props: flightProps) {
                                     color={ttColors.lighterGray}
                                 />
                             </Grid>
-                            <Flex align={"center"} gap={isMobile ? "1rem" : "1.5rem"} wrap="wrap">
+                            <Flex
+                                align={"center"}
+                                gap={isMobile ? "1rem" : "1.5rem"}
+                                wrap="wrap"
+                            >
                                 <Text
                                     type="p"
                                     size={isMobile ? 14 : 15}
@@ -510,7 +606,9 @@ function FlightBox(props: flightProps) {
                                         numberOfStops={props.stops}
                                         isMobile={isMobile}
                                         popperContent={
-                                            <FlightRoutes flight={props.flight} />
+                                            <FlightRoutes
+                                                flight={props.flight}
+                                            />
                                         }
                                     />
                                 )}
@@ -544,8 +642,8 @@ function FlightBox(props: flightProps) {
                                         text={
                                             flightState?.airports[
                                                 isRoundTrip
-                                                ? startRoute.flyTo
-                                                : endRoute.flyTo
+                                                    ? startRoute.flyTo
+                                                    : endRoute.flyTo
                                             ]?.name ?? props.flight.flyTo
                                         }
                                     />
@@ -642,7 +740,11 @@ function FlightBox(props: flightProps) {
                                             styles={{ minWidth: "max-content" }}
                                         />
                                     </Grid>
-                                    <Flex align={"center"} gap={isMobile ? "1rem" : "1.5rem"} wrap="wrap">
+                                    <Flex
+                                        align={"center"}
+                                        gap={isMobile ? "1rem" : "1.5rem"}
+                                        wrap="wrap"
+                                    >
                                         <Text
                                             type="p"
                                             size={isMobile ? 14 : 16}
@@ -660,7 +762,9 @@ function FlightBox(props: flightProps) {
                                                 numberOfStops={props.stops}
                                                 isMobile={isMobile}
                                                 popperContent={
-                                                    <FlightRoutes flight={props.flight} />
+                                                    <FlightRoutes
+                                                        flight={props.flight}
+                                                    />
                                                 }
                                             />
                                         )}
@@ -716,7 +820,11 @@ function FlightBox(props: flightProps) {
                     height="100%"
                     gap={isMobile ? "2rem" : "0rem"}
                 >
-                    <Flex align="center" height={isMobile ? "" : "100%"} margin={isMobile ? "0" : "0 0 1rem"}>
+                    <Flex
+                        align="center"
+                        height={isMobile ? "" : "100%"}
+                        margin={isMobile ? "0" : "0 0 1rem"}
+                    >
                         <Flex gap=".5rem">
                             <IconBorders>
                                 <Text
@@ -743,7 +851,16 @@ function FlightBox(props: flightProps) {
                                 />
                             </IconBorders>
                         </Flex>
-                        {true && <BsShare size={23} onClick={(e) => { e?.stopPropagation(); props.openShareModal(props.flight) }} cursor="pointer"/>}
+                        {true && (
+                            <BsShare
+                                size={23}
+                                onClick={(e) => {
+                                    e?.stopPropagation();
+                                    props.openShareModal(props.flight);
+                                }}
+                                cursor="pointer"
+                            />
+                        )}
                     </Flex>
                     <Flex
                         direction={isMobile ? "row" : "column"}
@@ -810,7 +927,7 @@ function FlightBox(props: flightProps) {
                 </Flex>
             </Box>
         </FlightContainer>
-  );
+    );
 }
 
 export default FlightBox;

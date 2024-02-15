@@ -13,7 +13,7 @@ import { toast } from "react-hot-toast";
 import { BiSolidErrorCircle } from "react-icons/bi";
 import { BsFillCheckCircleFill, BsTrash } from "react-icons/bs";
 
-function VoucherForm({ modal = false }: { modal?: boolean }) {
+function VoucherForm({ modal = false }: { modal?: boolean; }) {
   const { isMobile } = useScreenResolution();
   const [promoCode, setPromoCode] = useState("");
   const {
@@ -24,23 +24,25 @@ function VoucherForm({ modal = false }: { modal?: boolean }) {
     deleteVoucher,
   } = useVoucherStore((state) => state);
   return (
-    <Section margin="5rem  0 0">
+    <Section margin={isMobile ? '3rem 0 0' : "3rem 0 0"}>
       <Text
-        text={"Enter Travel Voucher"}
+        text={"Enter Coupon Code"}
         type={"h3"}
         weight={600}
         size={20}
         margin={"0 0 0.75rem 0"}
+        textAlign={isMobile ? 'center' : 'left'}
       />
       <Text
         text={
-          "Enter a travel voucher to unlock a free ticket to complete your visa application "
+          "Enter a coupon code to unlock a free ticket to complete your visa application."
         }
         weight={400}
         size={15}
         color="#606060"
         type={"p"}
         margin={""}
+        textAlign={isMobile ? 'center' : 'left'}
       />
       <form onSubmit={(e) => e.preventDefault()}>
         <Flex
@@ -54,9 +56,8 @@ function VoucherForm({ modal = false }: { modal?: boolean }) {
             flexGrow={1}
             onChange={(e) => setPromoCode(e.target.value)}
             value={promoCode}
-            border={`1px solid ${
-              voucherMode == Mode.error ? "#A0001D" : "#bdbdbd"
-            }`}
+            border={`1px solid ${voucherMode == Mode.error ? "#A0001D" : "#bdbdbd"
+              }`}
             height="50px"
             styles={{ outline: "none" }}
           />

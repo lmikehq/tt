@@ -23,7 +23,8 @@ interface DropdownProps {
   padding?: string | number;
   color?: string;
   border?: string;
-  borderColor?: string;
+    borderColor?: string;
+    disabled?: boolean;
 }
 
 const Dropdown: React.FC<DropdownProps> = ({
@@ -39,7 +40,8 @@ const Dropdown: React.FC<DropdownProps> = ({
   padding,
   color,
   border,
-  borderColor,
+    borderColor,
+  disabled,
 }) => {
   const handleChange = (selectedOption: any) => {
     setSelectedValue(selectedOption.value);
@@ -54,18 +56,25 @@ const Dropdown: React.FC<DropdownProps> = ({
         options={options}
         onChange={handleChange}
         className={className}
+        isDisabled={disabled}
         styles={{
-          container: (provided) => ({
-            ...provided,
-            width: width,
-            minWidth: minWidth,
-            height: height,
-            minHeight: minHeight,
-            padding: padding,
-            border: border,
-            color: color,
-            borderColor: borderColor,
-          }),
+            container: (provided) => ({
+                ...provided,
+                width: width,
+                minWidth: minWidth,
+                height: height,
+                minHeight: minHeight,
+                padding: padding,
+                border: border,
+                color: color,
+                borderColor: borderColor,
+            }),
+            control: (provided) => ({
+                ...provided,
+                height: height,
+                minHeight: minHeight,
+            }),
+            
         }}
         aria-labelledby="react_select_label"
       />

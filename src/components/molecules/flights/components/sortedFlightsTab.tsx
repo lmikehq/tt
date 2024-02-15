@@ -44,7 +44,8 @@ export const ButtonBox = styled.div<{
     padding: 1rem 1.5rem;
     border-radius: 12px;
     cursor: pointer;
-    width: ${(props) => props.width || props.isMobile ? "max-content" : "24.6%"};
+    width: ${(props) =>
+        props.width || props.isMobile ? "max-content" : "24.6%"};
     min-width: ${(props) => (props.width || props.isMobile ? "49%" : "24.6%")};
     display: flex;
     justify-content: center;
@@ -68,7 +69,7 @@ type sortProps = {
     best: { price: number; duration: string };
     cheapest: { price: number; duration: string };
     fastest: { price: number; duration: string };
-    earliest: { price: number; duration: string; date: string; };
+    earliest: { price: number; duration: string; date: string };
     data: FlightInfo[];
     updateSearchQueryHandler: (updatedParams: Record<string, any>) => void;
 };
@@ -85,10 +86,11 @@ function SortOption({
     flightTime?: string;
     flightDate?: string;
     isLoading: boolean;
-    
 }) {
     const { isMobile } = useScreenResolution();
-    const { preFerredCurrency, conversionRate } = useUserPreferencesStore((state) => state);
+    const { preFerredCurrency, conversionRate } = useUserPreferencesStore(
+        (state) => state
+    );
 
     return (
         <Flex
@@ -112,31 +114,36 @@ function SortOption({
                 gap=".5rem"
                 align="center"
             >
-                {price &&
+                {price && (
                     <Text
                         type={isMobile ? "h1" : "p"}
                         text={
-                            isLoading ? "-" : `${formatPrice({ total: price, currency: preFerredCurrency })}`
+                            isLoading
+                                ? "-"
+                                : `${formatPrice({
+                                      total: price,
+                                      currency: preFerredCurrency,
+                                  })}`
                         }
                         weight={600}
                     />
-                }
-                {flightTime &&
+                )}
+                {flightTime && (
                     <Text
                         type="p"
                         text={isLoading ? "-" : flightTime}
                         whiteSpace="nowrap"
                         weight={600}
                     />
-                }
-                {flightDate &&
+                )}
+                {flightDate && (
                     <Text
                         type="p"
                         text={isLoading ? "-" : flightDate}
                         whiteSpace="nowrap"
                         weight={600}
                     />
-                }
+                )}
             </Flex>
         </Flex>
     );
@@ -144,23 +151,47 @@ function SortOption({
 
 function SortedFlightsTab(props: sortProps) {
     const { isMobile } = useScreenResolution();
-    const { searchFlightsMode, searchQuery } = useFlightBookingStore((state) => state);
+    const { searchFlightsMode, searchQuery } = useFlightBookingStore(
+        (state) => state
+    );
     const isLoading = searchFlightsMode === Mode.loading;
 
     return (
         <FlightContainer>
             {isLoading ? (
-                <Flex padding={isMobile ? ".5rem 1.5rem" : ".5rem 1rem"} direction="column" gap=".8rem">
-                    <Text type="h3" text={`Looking for flights from ${searchQuery?.fly_from} to ${searchQuery?.fly_to}`} weight={600} size={20} />
-                    <Text type="p" size={14} text="for selected dates" color={ttColors.lighterGray} />
+                <Flex
+                    padding={isMobile ? ".5rem 1.5rem" : ".5rem 1rem"}
+                    direction="column"
+                    gap=".8rem"
+                >
+                    <Text
+                        type="h3"
+                        text={`Looking for flights from ${searchQuery?.fly_from} to ${searchQuery?.fly_to}`}
+                        weight={600}
+                        size={20}
+                    />
+                    <Text
+                        type="p"
+                        size={14}
+                        text="for selected dates"
+                        color={ttColors.lighterGray}
+                    />
                     <ProgressLoader />
                 </Flex>
             ) : (
-                <Flex justify={isMobile ? "space-between" : "flex-start"} gap={isMobile ? "1rem" : "0.2rem"} margin="0 0" overflowX="auto" className="scroll-custom">
+                <Flex
+                    justify={isMobile ? "space-between" : "flex-start"}
+                    gap={isMobile ? "1rem" : "0.2rem"}
+                    margin="0 0"
+                    overflowX="auto"
+                    className="scroll-custom"
+                >
                     <ButtonBox
                         isMobile={isMobile}
                         active={searchQuery?.sort === "quality"}
-                        onClick={() => props.updateSearchQueryHandler({ sort: "quality" })}
+                        onClick={() =>
+                            props.updateSearchQueryHandler({ sort: "quality" })
+                        }
                     >
                         <SortOption
                             label="Best"
@@ -172,7 +203,9 @@ function SortedFlightsTab(props: sortProps) {
                     <ButtonBox
                         isMobile={isMobile}
                         active={searchQuery?.sort === "price"}
-                        onClick={() => props.updateSearchQueryHandler({ sort: "price" })}
+                        onClick={() =>
+                            props.updateSearchQueryHandler({ sort: "price" })
+                        }
                     >
                         <SortOption
                             label="Cheapest"
@@ -184,7 +217,9 @@ function SortedFlightsTab(props: sortProps) {
                     <ButtonBox
                         isMobile={isMobile}
                         active={searchQuery?.sort === "duration"}
-                        onClick={() => props.updateSearchQueryHandler({ sort: "duration" })}
+                        onClick={() =>
+                            props.updateSearchQueryHandler({ sort: "duration" })
+                        }
                     >
                         <SortOption
                             label="Fastest"
@@ -196,8 +231,10 @@ function SortedFlightsTab(props: sortProps) {
                     <ButtonBox
                         isMobile={isMobile}
                         active={searchQuery?.sort === "date"}
-                        onClick={() => props.updateSearchQueryHandler({ sort: "date" })}
-                        >
+                        onClick={() =>
+                            props.updateSearchQueryHandler({ sort: "date" })
+                        }
+                    >
                         <SortOption
                             label="Earliest"
                             flightDate={props.earliest.date}

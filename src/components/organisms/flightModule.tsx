@@ -20,6 +20,7 @@ import LocationSearchSelectInput from "./locationInputs/KiwiLocationSearchSelect
 import { KiwiLocation } from "@/lib/types/response-models/flight/location.type";
 
 interface flightProps {
+    first: OneFlightType;
     stops: string;
     flight: OneFlightType;
     length?: number;
@@ -60,6 +61,7 @@ const TravellersDropdownContainer = styled.div`
 `;
 
 function FlightModule({
+    first,
     stops,
     flight,
     handleUpdate,
@@ -78,7 +80,7 @@ function FlightModule({
         }`;
     };
 
-    const defText = formatDisplayText(flight);
+    const defText = formatDisplayText(first);
 
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const today = dayjs().toDate();
@@ -96,7 +98,6 @@ function FlightModule({
     const handleDataChange = (data: FlightCountType) => {
         handleUpdate && handleUpdate(flight, data);
     };
-
 
     return (
         <Section padding=".75rem 0 0 0 " height="unset">
@@ -165,15 +166,18 @@ function FlightModule({
                     />
                     <DatePicker
                         placeholder="Select Date"
-                        value={dayjs(flight?.departureDate ?? undefined).toDate()}
+                        value={dayjs(
+                            flight?.departureDate ?? undefined
+                        ).toDate()}
                         minDate={today}
                         onChange={(e) =>
                             handleUpdate &&
                             handleUpdate(flight, { departureDate: dayjs(e) })
                         }
+                        format="dd/MM/yyyy"
                     />
                 </Flex>
-                {stops !== "one-way" && (
+                {stops == "round" && (
                     <Flex
                         direction="column"
                         gap=".5rem"
@@ -190,12 +194,17 @@ function FlightModule({
                         />
                         <DatePicker
                             placeholder="Select Date"
-                            value={dayjs(flight?.returnDate ?? undefined).toDate()}
-                            minDate={dayjs(flight?.departureDate ?? undefined).toDate()}
+                            value={dayjs(
+                                flight?.returnDate ?? undefined
+                            ).toDate()}
+                            minDate={dayjs(
+                                flight?.departureDate ?? undefined
+                            ).toDate()}
                             onChange={(e) =>
                                 handleUpdate &&
                                 handleUpdate(flight, { returnDate: dayjs(e) })
                             }
+                            format="dd/MM/yyyy"
                         />
                     </Flex>
                 )}
@@ -216,6 +225,7 @@ function FlightModule({
                                 onClick={handleClick}
                                 placeholder="Click me to open dropdown"
                                 value={defText}
+                                readOnly={flight.index != 0}
                                 styles={{
                                     fontFamily: "poppins",
                                     cursor: "pointer",
@@ -226,7 +236,7 @@ function FlightModule({
                                 <DropdownMenu
                                     onDataChange={handleDataChange}
                                     isMobile={isMobile}
-                                    data={flight}
+                                    data={first}
                                 />
                             )}
                         </TravellersDropdownContainer>

@@ -12,6 +12,9 @@ import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
 import OutletIcon from "@mui/icons-material/Outlet";
+import { ttColors } from "@/lib/theme/colors";
+import { ViewSingleStayResponse } from "@/lib/types/response-models/stay/search.type";
+import { pickIcon } from "./modals/components/AmenitiesBox";
 
 export const BootstrapTooltip = styled(
   ({ className, ...props }: TooltipProps) => (
@@ -32,7 +35,7 @@ export const BootstrapTooltip = styled(
 }));
 
 interface ExpandableTextProps {
-  text: string;
+  text: string | string[];
   maxLines: number;
 }
 
@@ -79,13 +82,21 @@ export const ExpandableTextTag: React.FC<ExpandableTextProps> = ({
     WebkitBoxOrient: "vertical",
     whiteSpace: "pre-line",
     WebkitLineClamp: expanded ? "unset" : maxLines,
+    color: ttColors.foundation.gray,
+    fontSize: '14px',
+    marginBottom: '.5rem'
   };
 
   return (
-    <div>
-      <p style={textStyle} ref={textRef}>
-        {text}
-      </p>
+      <div>
+        {Array.isArray(text) ? (
+            <p style={textStyle} ref={textRef} dangerouslySetInnerHTML={{ __html: text.join(' <br> ') }}>
+            </p>
+        ) : (
+            <p style={textStyle} ref={textRef}>
+                {text}
+            </p>  
+        )}
 
       {!expanded && (
         <Flex
@@ -121,8 +132,22 @@ export const ExpandableTextTag: React.FC<ExpandableTextProps> = ({
     </div>
   );
 };
-const DescriptionOfHotel = () => {
-  const { isMobile } = useScreenResolution();
+
+
+interface DescriptionOfHotelProps {
+    stayResponse?: ViewSingleStayResponse;
+}
+
+const DescriptionOfHotel = ({ stayResponse }: DescriptionOfHotelProps) => {
+    const { isMobile } = useScreenResolution();
+    
+    const facts = {
+        constructYear: stayResponse?.facts.year_built ?? null,
+        renovateYear: stayResponse?.facts.year_renovated ?? null,
+        roomsNumber: stayResponse?.facts.rooms_number ?? null,
+        floorsNumber: stayResponse?.facts.floors_number ?? null,
+        electricity: stayResponse?.facts.electricity?.voltage ? stayResponse?.facts.electricity : null
+    }
 
   return (
     <>
@@ -134,7 +159,7 @@ const DescriptionOfHotel = () => {
           <Flex direction="column">
             <Text
               type="h4"
-              size={17}
+              size={18}
               text="Description of the Hotel"
               weight={600}
               styles={{
@@ -154,41 +179,27 @@ const DescriptionOfHotel = () => {
         </Header>
         <GridLayout className="description_grid">
           <Span>
-            <Span style={{ marginBottom: "25px" }}>
-              <Flex gap="10px" align="center" styles={{ marginBottom: "10px" }}>
-                <PinDropIcon style={{ fontSize: "19px" }} />
-                <Text
-                  type="h5"
-                  weight={"bold"}
-                  size={15}
-                  text="Location"
-                ></Text>
-              </Flex>
-              <Text
-                type="p"
-                size={14}
-                color="var(--text-gray-color)"
-                text="Want to take a rest and explore the city? Hotel «New York Marriott Marquis» is located in New York. This hotel is located in 3 km from the city center. You can take a walk and explore the neighbourhood area of the hotel — Broadway, Times Square and Times Square – 42nd Street."
-              ></Text>
-            </Span>
-            <Span>
-              <Flex gap="10px" align="center" styles={{ marginBottom: "10px" }}>
-                <BedIcon style={{ fontSize: "19px" }} />
-                <Text type="h5" weight={"bold"} size={15} text="Hotel"></Text>
-              </Flex>
-              <ExpandableTextTag
-                text="You can stop by the bar. You can stop by the restaurant. Have a cup of coffee in the cafe and, who knows, maybe it’s going to be the best one in the city. Want to be always on-line? Wi-Fi is available. If you travel by car, there’s a paid parking zone at the hotel. The following services are also available for the guests: a massage room, a spa center and a recreation club. Guests who love doing sports will be able to enjoy a fitness center and a gym. To book an excursion, consult the tour assistance desk of the hotel."
-                maxLines={4}
-              />
-            </Span>
+            {stayResponse?.description_struct.map((desc, index) => 
+                <Span key={`desc-${index}`} style={{ display: 'flex', flexDirection: 'column', margin: '0 0 1rem' }}>
+                    <Flex gap="10px" align="center" styles={{ marginBottom: "10px" }}>
+                        {pickIcon(desc.title, { fontSize: '20px' })}
+                        <Text type="h5" weight={"bold"} size={15} text={desc.title}></Text>
+                    </Flex>
+                    <ExpandableTextTag
+                        text={desc.paragraphs}
+                        maxLines={5}
+                    />
+                </Span>
+            )}
           </Span>
           <Span>
             <Flex direction="column">
-              <Text
+            <Text
                 type="h4"
                 weight={"bold"}
                 text="Facts about the Hotel"
-              ></Text>
+            />
+            {facts.constructYear && 
               <Flex direction="column" styles={{ margin: "10px 0px" }}>
                 <Text
                   type="p"
@@ -196,61 +207,77 @@ const DescriptionOfHotel = () => {
                   color="var(--text-gray-color)"
                   text="Year of construction"
                 ></Text>
-                <Text type="h5" weight={"bold"} text={`${2001}`}></Text>
+                <Text type="h5" weight={"bold"} text={String(facts.constructYear)}></Text>
               </Flex>
-              <Flex direction="column" styles={{ margin: "10px 0px" }}>
-                <Text
-                  type="p"
-                  size={14}
-                  color="var(--text-gray-color)"
-                  text="Year of renovation"
-                ></Text>
-                <Text type="h5" weight={"bold"} text={`${2020}`}></Text>
-              </Flex>
-              <Flex direction="column" styles={{ margin: "10px 0px" }}>
-                <Flex align="center" gap="8px" styles={{ marginBottom: "5px" }}>
-                  <Text
+            }
+            {facts.renovateYear && 
+                <Flex direction="column" styles={{ margin: "10px 0px" }}>
+                    <Text
                     type="p"
                     size={14}
                     color="var(--text-gray-color)"
-                    text="Socket Type"
-                  ></Text>
-                  <BootstrapTooltip
-                    title={<OutletIcon style={{ color: "white" }} />}
-                  >
-                    <ErrorOutlineOutlinedIcon
-                      style={{
-                        fontSize: "19px",
-                        color: "var(--text-gray-color)",
-                      }}
-                    />
-                  </BootstrapTooltip>
+                    text="Year of renovation"
+                    ></Text>
+                    <Text type="h5" weight={"bold"} text={String(facts.renovateYear)}></Text>
                 </Flex>
-                <Text
-                  type="h5"
-                  weight={"bold"}
-                  text="North American 120 V / 60 Hz"
-                ></Text>
-                <Text
-                  type="h5"
-                  weight={"bold"}
-                  styles={{ marginTop: "10px" }}
-                  text="North American (grounded) 120 V / 60 Hz"
-                ></Text>
-              </Flex>
+            }
+            {facts.electricity && 
+                <Flex direction="column" styles={{ margin: "10px 0px" }}>
+                    <Flex align="center" gap="8px" styles={{ marginBottom: "5px" }}>
+                    <Text
+                        type="p"
+                        size={14}
+                        color="var(--text-gray-color)"
+                        text="Socket Type"
+                    ></Text>
+                    <BootstrapTooltip
+                        title={<OutletIcon style={{ color: "white" }} />}
+                    >
+                        <ErrorOutlineOutlinedIcon
+                        style={{
+                            fontSize: "19px",
+                            color: "var(--text-gray-color)",
+                        }}
+                        />
+                    </BootstrapTooltip>
+                    </Flex>
+                    <Text
+                        type="h5"
+                        weight={"bold"}
+                        text={`${facts.electricity?.voltage[0]}V, ${facts.electricity?.frequency[0]}Hz`}
+                    />
+                </Flex>
+            }
+            {facts.roomsNumber &&
               <Flex direction="column" styles={{ margin: "10px 0px" }}>
                 <Text
-                  type="p"
-                  size={14}
-                  color="var(--text-gray-color)"
-                  text="Rooms and floors number"
-                ></Text>
+                    type="p"
+                    size={14}
+                    color="var(--text-gray-color)"
+                    text="Rooms number"
+                />
                 <Text
-                  type="h5"
-                  weight={"bold"}
-                  text="1957 rooms 49 floors"
-                ></Text>
+                    type="h5"
+                    weight={"bold"}
+                    text={String(facts.roomsNumber)}
+                />
               </Flex>
+            }   
+            {facts.floorsNumber &&
+              <Flex direction="column" styles={{ margin: "10px 0px" }}>
+                <Text
+                    type="p"
+                    size={14}
+                    color="var(--text-gray-color)"
+                    text="Floors number"
+                />
+                <Text
+                    type="h5"
+                    weight={"bold"}
+                    text={String(facts.floorsNumber)}
+                />
+              </Flex>
+            }              
             </Flex>
           </Span>
         </GridLayout>

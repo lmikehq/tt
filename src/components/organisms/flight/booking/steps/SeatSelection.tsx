@@ -23,6 +23,7 @@ import { SeatHeader } from "../headers";
 import { useFlightBookingStore } from "@/lib/store/flight/booking.store";
 import {
     CheckSeatingRequestInput,
+    FlightTypeEnum,
     ParticularSeatingOption,
     PassengerCategory,
     SaveBookingRequestInput,
@@ -45,6 +46,7 @@ import {
 } from "@/lib/extensions/helpers/constructQuery";
 import { formatPrice } from "@/lib/extensions/helpers/formatPrice";
 import { useUserPreferencesStore } from "@/lib/store/preferences.store";
+import { useQueryParams } from "@/hooks/useNext";
 
 const Wrapper = styled.div``;
 // background-image: url(${"/assets/images/flights/plane_background.png"});
@@ -55,6 +57,8 @@ const SeatSelection = () => {
     const [showSeatSelectionModal, setShowSeatSelectionModal] = useState(false);
     const router = useRouter();
     const pathname = usePathname();
+    const { queryParams } = useQueryParams();
+
     const { preFerredCurrency, conversionRate } = useUserPreferencesStore(
         (state) => state
     );
@@ -336,10 +340,18 @@ const SeatSelection = () => {
         let data: SaveBookingRequestInput;
         data =
             particularSeats.length == 0
-                ? saveBookingDetails
+                ? {
+                      ...saveBookingDetails,
+                      flightType: queryParams?.flightType.includes("ONE")
+                          ? FlightTypeEnum.one_way
+                          : queryParams?.flightType,
+                  }
                 : {
                       ...saveBookingDetails,
                       seatId: collectSeatNames(particularSeats),
+                      flightType: queryParams?.flightType.includes("ONE")
+                          ? FlightTypeEnum.one_way
+                          : queryParams?.flightType,
                       additional_services: {
                           seating: [...particularSeats],
                       },
@@ -391,7 +403,7 @@ const SeatSelection = () => {
                         align="center"
                         gap="2rem"
                         padding="3rem 3rem"
-                        maxWidth={isMobile? "95vw" : "35vw"}
+                        maxWidth={isMobile ? "95vw" : "35vw"}
                     >
                         <Image
                             src={"/assets/icons/favourite_icon.svg"}
@@ -399,13 +411,31 @@ const SeatSelection = () => {
                             width={70}
                             height={70}
                         />
-                        <Text type="h2" text="Fancy this seat?" weight={600} size={28} />
-                        
+                        <Text
+                            type="h2"
+                            text="Fancy this seat?"
+                            weight={600}
+                            size={28}
+                        />
+
                         {selectionModalContent.seatDescription}
-                        
-                        <Text type="p" text={"Would you like to pick seat " + selectionModalContent.seatName + " for " + currentPassenger} weight={500} size={16} />
-                        
-                        <Flex gap="1rem" direction={isMobile ? "column" : "row"}>
+
+                        <Text
+                            type="p"
+                            text={
+                                "Would you like to pick seat " +
+                                selectionModalContent.seatName +
+                                " for " +
+                                currentPassenger
+                            }
+                            weight={500}
+                            size={16}
+                        />
+
+                        <Flex
+                            gap="1rem"
+                            direction={isMobile ? "column" : "row"}
+                        >
                             <Button
                                 background="transparent"
                                 color={ttColors.dark}
@@ -428,10 +458,10 @@ const SeatSelection = () => {
                                                     "Main Passenger"
                                                         ? 0
                                                         : parseInt(
-                                                            currentPassenger.split(
-                                                                "Passenger "
-                                                            )[1]
-                                                        ) - 1,
+                                                              currentPassenger.split(
+                                                                  "Passenger "
+                                                              )[1]
+                                                          ) - 1,
                                                 particularSeats,
                                             })?.split("Seat ")[1] ?? null,
                                         newSeat: selectionModalContent.seatName,
@@ -522,7 +552,7 @@ const SeatSelection = () => {
                     <Section
                         padding="3rem 3.5rem"
                         height="unset"
-                        maxWidth={isMobile? "95vw" : "40vw"}
+                        maxWidth={isMobile ? "95vw" : "40vw"}
                     >
                         <Flex direction="column" justify="center">
                             <Section margin="0 0  14px" height="unset">
@@ -551,7 +581,10 @@ const SeatSelection = () => {
                                     color="#929292"
                                 />
                             </Section>
-                            <Flex gap="1rem" direction={isMobile ? "column" : "row"}>
+                            <Flex
+                                gap="1rem"
+                                direction={isMobile ? "column" : "row"}
+                            >
                                 <Button
                                     width={isMobile ? "100%" : "50%"}
                                     color={ttColors.dark}

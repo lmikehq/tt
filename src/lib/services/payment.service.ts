@@ -1,4 +1,4 @@
-import { axiosClient, kiwiResourceClient } from "@lib/axios/axios-client";
+import { axiosClient, kiwiResourceClient, rateHawkResourceClient } from "@lib/axios/axios-client";
 import { ApplicationFormRequestInput } from "@lib/types/request-models/application-form.type";
 import { CreateVisaApplicationResponse } from "@lib/types/response-models/application-form/application-form.type";
 import { AxiosResponse } from "axios";

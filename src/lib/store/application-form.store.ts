@@ -4,182 +4,186 @@ import { CreateVisaApplicationResponse } from "@lib/types/response-models/applic
 import { visaInitVals } from "@lib/types/schema";
 import { UploadedDoc } from "@organism/form/applicationForm";
 import {
-    Mode,
-    VisaApplicationFormInterface,
-    VisaFormUnionType,
-    mapVisaApplicationFormInterfaceToApplicationFormRequestInput,
+  Mode,
+  VisaApplicationFormInterface,
+  VisaFormUnionType,
+  mapVisaApplicationFormInterfaceToApplicationFormRequestInput,
 } from "@lib/types";
 import { create } from "zustand";
 import { COUNTRY_FLAGS, findCountry } from "@lib/extensions/data/COUNTRY_FLAGS";
 import { useUserStore } from "./useStore";
-import { test as testVisaForm } from "@lib/types/schema";
+// import { test as testVisaForm } from "@lib/types/schema";
 
 interface State {
-    form: VisaApplicationFormInterface;
-    highestStep: number;
-    step: number;
-    mode: Mode;
-    uploadedDocuments: UploadedDoc[];
-    createVisaApplicationResponse: CreateVisaApplicationResponse | null;
+  form: VisaApplicationFormInterface;
+  highestStep: number;
+  step: number;
+  mode: Mode;
+  uploadedDocuments: UploadedDoc[];
+  createVisaApplicationResponse: CreateVisaApplicationResponse | null;
 }
 
 interface Actions {
-    goToStep: ({ step } : { step: number }) => void;
-    prevStep: () => void;
-    nextStep: (params: { data: VisaFormUnionType }) => void;
-    saveProgress: (params: {
-        data: VisaApplicationFormInterface;
-        uploadedDocuments: UploadedDoc[];
-    }) => void;
-    setUploadedDocuments: (docs: UploadedDoc[]) => void;
-    fetchRecentProgressFromSession: () => void;
-    fetchDetailsFromURL: (params: {
-        homeCountry: string;
-        destination: string;
-        visaType: string;
-    }) => void;
-    createVisaApplication: (params: {
-        data: VisaApplicationFormInterface;
-    }) => Promise<void>;
-    createFormFeeCharge: (params: {
-        data: CreateVisaApplicationResponse;
-    }) => Promise<any>;
-    setStep: (params: { step: number }) => void;
+  goToStep: ({ step }: { step: number; }) => void;
+  prevStep: () => void;
+  nextStep: (params: { data: VisaFormUnionType; }) => void;
+  saveProgress: (params: {
+    data: VisaApplicationFormInterface;
+    uploadedDocuments: UploadedDoc[];
+  }) => void;
+  setUploadedDocuments: (docs: UploadedDoc[]) => void;
+  fetchRecentProgressFromSession: () => void;
+  fetchDetailsFromURL: (params: {
+    homeCountry: string;
+    destination: string;
+    visaType: string;
+  }) => void;
+  createVisaApplication: (params: {
+    data: VisaApplicationFormInterface;
+  }) => Promise<void>;
+  createFormFeeCharge: (params: {
+    data: CreateVisaApplicationResponse;
+  }) => Promise<any>;
+  setStep: (params: { step: number; }) => void;
 }
 
 export const useApplicationFormStore = create<State & Actions>(
-    (set): State & Actions => ({
-        form: visaInitVals,
-        step: 1,
-        highestStep: 1,
-        mode: Mode.init,
-        createVisaApplicationResponse: null,
-        uploadedDocuments: [],
+  (set): State & Actions => ({
+    form: visaInitVals,
+    step: 1,
+    highestStep: 1,
+    mode: Mode.init,
+    createVisaApplicationResponse: null,
+    uploadedDocuments: [],
 
-        nextStep: async ({ data }: { data: VisaFormUnionType }) => {
-            set({
-                mode: Mode.loading,
-            });
-            await sleep(1500);
-            set((state) => ({
-                mode: Mode.loaded,
-                step: state.step + 1,
-                highestStep:
-                    state.step + 1 > state.highestStep
-                        ? state.step + 1
-                        : state.highestStep,
-                form: {
-                    ...state.form,
-                    ...data,
-                },
-            }));
-            window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+    nextStep: async ({ data }: { data: VisaFormUnionType; }) => {
+      set({
+        mode: Mode.loading,
+      });
+      await sleep(1500);
+      set((state) => ({
+        mode: Mode.loaded,
+        step: state.step + 1,
+        highestStep:
+          state.step + 1 > state.highestStep
+            ? state.step + 1
+            : state.highestStep,
+        form: {
+          ...state.form,
+          ...data,
         },
+      }));
+      window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+    },
 
-        prevStep: () => {
-            set((state) => ({
-                step:
-                    state.mode == Mode.loading || state.step == 1
-                        ? state.step
-                        : state.step - 1,
-            }));
-        },
+    prevStep: () => {
+      set((state) => ({
+        step:
+          state.mode == Mode.loading || state.step == 1
+            ? state.step
+            : state.step - 1,
+      }));
+    },
 
-        goToStep: ({ step } : { step: number }) => {
-            set((state) => ({
-                step: step
-            }));
-        },
+    goToStep: ({ step }: { step: number; }) => {
+      set((state) => ({
+        step: step
+      }));
+    },
 
-        saveProgress: ({
-            data,
-            uploadedDocuments,
-        }: {
-            data: VisaApplicationFormInterface;
-            uploadedDocuments: UploadedDoc[];
-        }) => {
-            sessionStorage.setItem(
-                "visa_application_form",
-                JSON.stringify(data)
-            );
-            sessionStorage.setItem(
-                "visa_application_uploaded_documents",
-                JSON.stringify(uploadedDocuments ?? [])
-            );
-        },
+    saveProgress: ({
+      data,
+      uploadedDocuments,
+    }: {
+      data: VisaApplicationFormInterface;
+      uploadedDocuments: UploadedDoc[];
+    }) => {
+      sessionStorage.setItem(
+        "visa_application_form",
+        JSON.stringify(data)
+      );
+      sessionStorage.setItem(
+        "visa_application_uploaded_documents",
+        JSON.stringify(uploadedDocuments ?? [])
+      );
+    },
 
-        fetchRecentProgressFromSession: () => {
-            const form = sessionStorage.getItem("visa_application_form");
-            const uploadedDocuments = sessionStorage.getItem(
-                "visa_application_uploaded_documents"
-            );
-            const recent = {
-                form: form
-                    ? (JSON.parse(form) as VisaApplicationFormInterface)
-                    : null,
-                uploadedDocuments: uploadedDocuments
-                    ? (JSON.parse(uploadedDocuments) as UploadedDoc[])
-                    : null,
-            };
-            //
-            set((state) => ({
-                form: recent.form ?? state.form,
-                uploadedDocuments: recent.uploadedDocuments ?? [],
-            }));
-        },
+    fetchRecentProgressFromSession: () => {
+      const form = sessionStorage.getItem("visa_application_form");
+      const uploadedDocuments = sessionStorage.getItem(
+        "visa_application_uploaded_documents"
+      );
+      const recent = {
+        form: form
+          ? (JSON.parse(form) as VisaApplicationFormInterface)
+          : null,
+        uploadedDocuments: uploadedDocuments
+          ? (JSON.parse(uploadedDocuments) as UploadedDoc[])
+          : null,
+        };
+      //
+      set((state) => ({
+            form: {
+                ...state.form,
+                ...(recent.form ?? {}),
+                tripDetails: state.form.tripDetails,
+            },
+        uploadedDocuments: recent.uploadedDocuments ?? [],
+      }));
+    },
 
-        createVisaApplication: async ({
-            data,
-        }: {
-            data: VisaApplicationFormInterface;
-        }) => {
-            set({ mode: Mode.loading, form: data });
-            const { user } = useUserStore.getState();
-            const payload =
-                mapVisaApplicationFormInterfaceToApplicationFormRequestInput({
-                    data,
-                    user,
-                });
-            return await ApplicationFormService.createVisaApplication({
-                payload: payload,
-            })
-                .then((response) => {
-                    set((state) => ({
-                        createVisaApplicationResponse: response,
-                        step: state.step + 1,
-                        mode: Mode.loaded,
-                    }));
-                })
-                .catch((error) => {
-                    set({
-                        mode: Mode.error,
-                    });
-                    throw error;
-                });
-        },
+    createVisaApplication: async ({
+      data,
+    }: {
+      data: VisaApplicationFormInterface;
+    }) => {
+      set({ mode: Mode.loading, form: data });
+      const { user } = useUserStore.getState();
+      const payload =
+        mapVisaApplicationFormInterfaceToApplicationFormRequestInput({
+          data,
+          user,
+        });
+      return await ApplicationFormService.createVisaApplication({
+        payload: payload,
+      })
+        .then((response) => {
+          set((state) => ({
+            createVisaApplicationResponse: response,
+            step: state.step + 1,
+            mode: Mode.loaded,
+          }));
+        })
+        .catch((error) => {
+          set({
+            mode: Mode.error,
+          });
+          throw error;
+        });
+    },
 
-        createFormFeeCharge: async ({
-            data,
-        }: {
-            data: CreateVisaApplicationResponse;
-        }) => {
-            set({ mode: Mode.loading });
-            return await ApplicationFormService.createFormFeeCharge({
-                payload: data,
-            })
-                .then((response) => {
-                    set((state) => ({
-                        mode: Mode.loaded,
-                    }));
-                    return response;
-                })
-                .catch((error) => {
-                    set({
-                        mode: Mode.error,
-                    });
-                    throw error;
-                });
-        },
+    createFormFeeCharge: async ({
+      data,
+    }: {
+      data: CreateVisaApplicationResponse;
+    }) => {
+      set({ mode: Mode.loading });
+      return await ApplicationFormService.createFormFeeCharge({
+        payload: data,
+      })
+        .then((response) => {
+          set((state) => ({
+            mode: Mode.loaded,
+          }));
+          return response;
+        })
+        .catch((error) => {
+          set({
+            mode: Mode.error,
+          });
+          throw error;
+        });
+    },
 
     fetchDetailsFromURL: ({
       homeCountry,
@@ -190,26 +194,26 @@ export const useApplicationFormStore = create<State & Actions>(
       destination: string;
       visaType: string;
     }) => {
-    //   console.log(destination);
-        set((state) => ({
-          form: {
-              ...state.form,
-              tripDetails: {
-                ...state.form.tripDetails,
-                homeCountry: findCountry({ name: homeCountry }),
-                destination: findCountry({ name: destination }),
-                visaType,
-              },
+      //   console.log(destination);
+      set((state) => ({
+        form: {
+          ...state.form,
+          tripDetails: {
+            ...state.form.tripDetails,
+            homeCountry: findCountry({ name: homeCountry }),
+            destination: findCountry({ name: destination }),
+            visaType,
           },
-        }));
+        },
+      }));
     },
 
-        setStep: ({ step }: { step: number }) => {
-            set({ step });
-        },
+    setStep: ({ step }: { step: number; }) => {
+      set({ step });
+    },
 
-        setUploadedDocuments: (docs: UploadedDoc[]) => {
-            set({ uploadedDocuments: docs });
-        },
-    })
+    setUploadedDocuments: (docs: UploadedDoc[]) => {
+      set({ uploadedDocuments: docs });
+    },
+  })
 );

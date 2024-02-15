@@ -1,54 +1,68 @@
 import VisaDashboardHeader from "./visaDashboardHeader";
 import styled from "styled-components";
-import { AiFillHeart } from "react-icons/ai";
-import { useState } from "react";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import Section from "@molecule/section";
 import { Grid } from "@components/templates/grid";
-import Image from "@atom/image";
 import Flex from "@components/templates/flex";
-import Text from "@atom/text";
+import FavouritesCard from "./favourites/favouriteCard";
+import Center from "@/components/templates/center";
+import NoApplication from "./noApplication";
+import NoFavImg from 'public/assets/icons/dashboard/no-favourites.svg';
+import { useFavouriteDashboard } from "@/lib/hooks/dashboard/favourite.hook";
+import { HotelRoomFavourite } from "@/lib/types/response-models/dashboard";
+import Spinner from "../../icons/spinner";
+import { ttColors } from "@/lib/theme/colors";
+import { useDashboardStore } from "@/lib/store/dashboard/index.store";
+// import { useConversionRate } from "@/hooks/useConversionRate";
 
 const FavouriteWrapper = styled.div``;
-const FavouriteCard = styled.div`
-  position: relative;
-`;
-const FavouriteCardImg = styled.div``;
-const FavouriteCardIcon = styled.div`
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  padding: 5px;
-  background: #ffffff;
-  height: 48px;
-  width: 48px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 
-  @media (max-width: 900px) {
-    right: 20px;
-  }
-`;
 
 const Favourite = () => {
-  const { isMobile } = useScreenResolution();
-  const [isFavourite, setIsFavourite] = useState(false);
-
-  const toggleFavourite = () => {
-    setIsFavourite(!isFavourite);
-  };
-
-  const heartColor = isFavourite ? "red" : "grey";
+  const { isMobile, isTablet } = useScreenResolution();
+  const { page, setPage, limit } = useDashboardStore((state) => state);
+  // const { convertCurrency } = useConversionRate();
 
   const content = {
-    title: "You’ve got no favorite - Let’s help you get Started",
+    title: "You've got no favorite - Let's help you get Started",
     links: [
-      { text: "Apply for Visa", url: "/apply/visa" },
+      { text: "Apply for Visa", url: "/visa/apply" },
       { text: "Book flight", url: "/flight" },
     ],
   };
+
+  const { data, isLoading, refetch } = useFavouriteDashboard({ query: { currentPage: page, limit }, options: { retry: 2 } });
+
+  const favourites: HotelRoomFavourite[] = data as HotelRoomFavourite[];
+  // const favourites: HotelRoomFavourite[] = response.favourites || []
+  // const filteredCount: number = response?.filteredCount || 1;
+  // const totalCount: number = response?.totalCount || 1;
+
+  interface RenderPriceProps {
+    show_currency_code: string;
+    foreign_currency_code: string;
+    foreignAmount: string;
+    show_amount: string;
+  }
+
+  function renderPrice({ show_currency_code, foreign_currency_code, foreignAmount, show_amount }: RenderPriceProps) {
+    // IF THE SHOW_CURRENCY_CODE === NGN RETURN SHOW_AMOUNT
+    if (show_currency_code === "NGN") {
+      return show_amount;
+    }
+
+
+    // ELSE IF SHOW_CURRECNCY_CODE !== NGN CONVERT THE CURRENCY 
+
+    // if (show_currency_code !== 'NGN') {
+    //   return convertCurrency({
+    //     convertFrom: foreign_currency_code,
+    //     convertTo: 'NGN',
+    //     amount: foreignAmount
+    //   }).amount.toString();
+    // }
+  }
+
   return (
     <Section
       margin="2rem 0"
@@ -58,161 +72,49 @@ const Favourite = () => {
         padding: ".5rem 1.5rem",
       }}
     >
-      <VisaDashboardHeader headerText="Favourites" />
-      {/* <Center margin={isMobile ? "3.5rem 0px" : "10rem 0"} height="25rem">
-        <NoVisaApplication noVisaImage={NoVisa} content={content} />
-      </Center> */}
-      <FavouriteWrapper>
-        <Grid columns={isMobile ? "1" : "3"} gap={isMobile ? "1.5rem" : "1rem"}>
-          <FavouriteCard>
-            <FavouriteCardImg>
-              <Image
-                src="/assets/images/favourite/favourite1.png"
-                alt=""
-                width={370}
-                height={258}
-                styles={{ borderRadius: "4px" }}
-              />
-              <FavouriteCardIcon onClick={toggleFavourite}>
-                <AiFillHeart size="1.5rem" color={heartColor} />
-              </FavouriteCardIcon>
-            </FavouriteCardImg>
-            <Flex justify="space-between" width="370px">
-              <Flex direction="column">
-                <Text
-                  type="h3"
-                  text="Venice"
-                  size={20}
-                  weight={600}
-                  color="#000000"
-                />
-                <Text
-                  type="span"
-                  text="Italy"
-                  size={16}
-                  weight={400}
-                  color="#606060"
-                />
-              </Flex>
-              <Flex direction="column" align="flex-end">
-                <Text
-                  type="span"
-                  text="Starts from"
-                  size={16}
-                  weight={400}
-                  color="#606060"
-                />
-                <Text
-                  type="h3"
-                  text="$2,000"
-                  size={20}
-                  weight={600}
-                  color="#000000"
-                />
-              </Flex>
-            </Flex>
-          </FavouriteCard>
+      <VisaDashboardHeader headerText="Favourites" type="radio" />
 
-          <FavouriteCard>
-            <FavouriteCardImg>
-              <Image
-                src="/assets/images/favourite/favourite1.png"
-                alt=""
-                width={370}
-                height={258}
-                styles={{ borderRadius: "4px" }}
-              />
-              <FavouriteCardIcon onClick={toggleFavourite}>
-                <AiFillHeart size="1.5rem" color={heartColor} />
-              </FavouriteCardIcon>
-            </FavouriteCardImg>
-            <Flex justify="space-between" width="370px">
-              <Flex direction="column">
-                <Text
-                  type="h3"
-                  text="Venice"
-                  size={20}
-                  weight={600}
-                  color="#000000"
-                />
-                <Text
-                  type="span"
-                  text="Italy"
-                  size={16}
-                  weight={400}
-                  color="#606060"
-                />
-              </Flex>
-              <Flex direction="column" align="flex-end">
-                <Text
-                  type="span"
-                  text="Starts from"
-                  size={16}
-                  weight={400}
-                  color="#606060"
-                />
-                <Text
-                  type="h3"
-                  text="$2,000"
-                  size={20}
-                  weight={600}
-                  color="#000000"
-                />
-              </Flex>
-            </Flex>
-          </FavouriteCard>
-
-          <FavouriteCard>
-            <FavouriteCardImg>
-              <Image
-                src="/assets/images/favourite/favourite1.png"
-                alt=""
-                width={370}
-                height={258}
-                styles={{ borderRadius: "4px" }}
-              />
-              <FavouriteCardIcon onClick={toggleFavourite}>
-                <AiFillHeart size="1.5rem" color={heartColor} />
-              </FavouriteCardIcon>
-            </FavouriteCardImg>
-            <Flex justify="space-between" width="370px">
-              <Flex direction="column">
-                <Text
-                  type="h3"
-                  text="Venice"
-                  size={20}
-                  weight={600}
-                  color="#000000"
-                />
-                <Text
-                  type="span"
-                  text="Italy"
-                  size={16}
-                  weight={400}
-                  color="#606060"
-                />
-              </Flex>
-              <Flex direction="column" align="flex-end">
-                <Text
-                  type="span"
-                  text="Starts from"
-                  size={16}
-                  weight={400}
-                  color="#606060"
-                />
-                <Text
-                  type="h3"
-                  text="$2,000"
-                  size={20}
-                  weight={600}
-                  color="#000000"
-                />
-              </Flex>
-            </Flex>
-          </FavouriteCard>
-        </Grid>
-      </FavouriteWrapper>
-    </Section>
+      {isLoading ? (
+        <Flex height="450px" align="center" justify="center">
+          <Spinner size="60px" fill={ttColors.blackishBlue} />
+        </Flex>
+      ) : (
+        <>
+          {/* FAVOURITE COMPONENT */}
+          {favourites.length > 0 ? (
+            <FavouriteWrapper>
+              <Grid columns={isMobile ? "1" : isTablet ? "2" : "3"} gap={isMobile ? "1.5rem" : "1rem"} style={{ rowGap: '56px', justifyItems: 'center' }} margin="0 0 40px">
+                {favourites.map((favourite, index) => {
+                  return (
+                    <FavouritesCard
+                      key={favourite._id}
+                      refetch={refetch}
+                      hotelId={favourite.id}
+                      image={favourite.images[0]}
+                      name={favourite.name}
+                      countryName={favourite.region.name}
+                      price={Number(favourite?.rates?.[0]?.payment_options?.payment_types?.[0]?.amount)}
+                      currencyCode={favourite?.rates[0]?.payment_options?.payment_types[0]?.currency_code}
+                    // price={Number(renderPrice({
+                    //   show_currency_code: favourite?.rates?.[0]?.payment_options?.payment_types?.[0]?.show_currency_code,
+                    //   foreign_currency_code: favourite?.rates[0]?.payment_options?.payment_types[0]?.currency_code,
+                    //   foreignAmount: favourite?.rates?.[0]?.payment_options?.payment_types?.[0]?.amount,
+                    //   show_amount: favourite?.rates?.[0]?.payment_options?.payment_types?.[0]?.show_amount
+                    // }))}
+                    // price={Number(favourite.rates[0].daily_prices[0])}
+                    />
+                  );
+                })}
+              </Grid>
+            </FavouriteWrapper>
+          ) : (
+            <Center margin={isMobile ? "3.5rem 0px" : "10rem 0"} height="25rem">
+              <NoApplication noVisaImage={NoFavImg} content={content} />
+            </Center>
+          )}
+        </>
+      )}
+    </Section >
   );
 };
 

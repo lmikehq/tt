@@ -1,12 +1,30 @@
 import styled from "styled-components";
 import NoVisaApplication from "./noApplication";
 import VisaDashboardHeader from "./visaDashboardHeader";
-import NoVisaBg from "@image/background.png";
-import FlightImg from "@image/flight.png";
+// import NoVisaBg from "@image/background.png"
+// import FlightImg from "@image/flight.png"
 import Text from "@atom/text";
 import Image from "@atom/image";
-import FlightIcon from "@image/flightBooking.png";
+import FlightIcon from "public/assets/icons/dashboard/plane-track.svg";
 import { ttColors } from "@lib/theme/colors";
+import Flex from "@/components/templates/flex";
+import Center from "@/components/templates/center";
+import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
+import { Divider } from "@mui/material";
+import { Grid } from "@/components/templates/grid";
+// import { useState } from "react";
+// import SimplePopper from "@/components/organisms/SimplePopper/SimplePopper";
+import { useDashboardFlight } from "@/lib/hooks/dashboard/flight.hook";
+import { useDashboardStore } from "@/lib/store/dashboard/index.store";
+import { DashboardFlightBookingProps, DashboardMultiCityFlightBookingProps, DashboardReturnFlightBookingProps } from "@/lib/types/response-models/dashboard";
+import Spinner from "../../icons/spinner";
+// import { mockFlightBooking } from "@/lib/extensions/data/mock";
+import { MobileReturnFlightComp, ReturnFlightComp } from "./flight/returnFlight";
+import PaginationCtrl from "../../pagination";
+import { MobileSingleFlightComp, SingleFlightComp } from "./flight/singleFlight";
+import { MobileMultiFlightComp, MultiFlightComp } from "./flight/multiFlight";
+import CustomPagination from "../../pagination/customPagination";
+import useHandlePagination from "@/lib/extensions/hook/useHandlePagination";
 
 const FlightWrapper = styled.div`
     background: ${ttColors.defaultColor};
@@ -22,12 +40,12 @@ const FlightWrapper = styled.div`
         padding: 20px 16px;
     }
 `;
-const History = styled.div`
+export const FlightHistory = styled.div`
     display: flex;
     flex-direction: column;
 
     width: 100%;
-    height: 311px;
+    // height: 311px;
     border: 1px solid #e7e7e7;
     border-radius: 14px;
 `;
@@ -47,7 +65,7 @@ const NotificationWrapper = styled.div`
     }
 `;
 
-const TextContainer = styled.div`
+export const TextContainer = styled.div`
     background: #f3f3ff;
     padding: 10px;
     border-radius: 20px;
@@ -57,200 +75,122 @@ const TextContainer = styled.div`
 `;
 
 const Flight = () => {
-    const content = {
-        title: "You’ve booked no Flight Ticket yet - Let’s help you get Started",
-        links: [
-            { text: "Search Flights", url: "/flight" },
-            { text: "Search Stays", url: "/stays" },
-        ],
-    };
+  const { param, search, page, limit, setPage, endDate, startDate, updatePage } = useDashboardStore((state) => state);
+  const { isMobile } = useScreenResolution();
+  const content = {
+    title: "You've booked no Flight Ticket yet - Let's help you get Started",
+    links: [
+      { text: "Apply for Visa", url: "/visa/apply" },
+      { text: "Book flight", url: "/flight" },
+      { text: "Search Stays", url: "/stay" }
+    ],
+  };
 
-    // function NoFlightImg() {
-    //   return <Image src="/assets/images/flight.png" alt="" />;
-    // }
+  // HANDLE PAGINATION
+  const { onPageChange } = useHandlePagination();
 
-    return (
-        <FlightWrapper>
-            <VisaDashboardHeader headerText="All Flight Applications" />
-            <NoVisaApplication
-                noVisaImage={"/assets/images/flight.png"}
-                content={content}
-            />
-            {/* <Flex direction="column" gap="1rem">
-        <History>
-          <Flex
-            justify="space-between"
-            width="100%"
-            gap="1rem"
-            align="center"
-            padding="28px 24px"
-          >
-            <Flex gap="1.5rem" align="center">
-              <Flex direction="column" align="center" width="10%">
-                <Text type="h1" text="25" size={48} weight={600} />
-                <Text
-                  type="p"
-                  text="Aug"
-                  size={20}
-                  weight={200}
-                  styles={{ position: "relative", top: "-10px" }}
-                />
-              </Flex>
-              <Flex justify="flex-start">
-                <Flex direction="column">
-                  <Text
-                    type="h3"
-                    text="Murtala Muhammed Airport"
-                    margin="0px 0px .5rem"
-                  />
+  // function NoFlightImg() {
+  //   return <Image src="/assets/images/flight.png" alt="" />;
+  // }
 
-                  <Text
-                    type="p"
-                    text="11:25"
-                    color="#606060"
-                    weight={600}
-                    size={16}
-                    styles={{
-                      letterSpacing: "0.1rem",
-                    }}
-                  />
+  function renderFlight(isMobile: boolean, type: 'ONE WAY' | 'RETURN' | 'MULTI_CITY', flight: DashboardFlightBookingProps | DashboardReturnFlightBookingProps | DashboardMultiCityFlightBookingProps) {
+
+    switch (type) {
+      case 'ONE WAY':
+        return (
+          <>
+            {isMobile ? (
+              <MobileSingleFlightComp flight={flight as DashboardFlightBookingProps} />
+            ) : (
+              <SingleFlightComp flight={flight as DashboardFlightBookingProps} />
+            )}
+          </>
+        );
+      case 'RETURN':
+        return (
+          <>
+            {isMobile ? (
+              <MobileReturnFlightComp flight={flight as DashboardReturnFlightBookingProps} />
+            ) : (
+              <ReturnFlightComp flight={flight as DashboardReturnFlightBookingProps} />
+            )}
+          </>
+        );
+      case 'MULTI_CITY':
+        return (
+          <>
+            {isMobile ? (<MobileMultiFlightComp
+              flight={flight as DashboardMultiCityFlightBookingProps}
+            />) : (
+              <MultiFlightComp
+                flight={flight as DashboardMultiCityFlightBookingProps}
+              />
+            )}
+          </>
+        );
+
+      default:
+        return (
+          <>
+            {isMobile ? (
+              <MobileSingleFlightComp flight={flight as DashboardFlightBookingProps} />
+            ) : (
+              <SingleFlightComp flight={flight as DashboardFlightBookingProps} />
+            )}
+          </>
+        );
+    }
+  }
+
+  const { data, isLoading } = useDashboardFlight({
+    query: { status: param, limit, currentPage: page, search, startDate, endDate },
+    options: { retry: 2 }
+  });
+
+  const response = data as { userBookings: DashboardFlightBookingProps[] | DashboardReturnFlightBookingProps[] | DashboardMultiCityFlightBookingProps[], filteredCount: number, totalCount: number; };
+  const flights: DashboardFlightBookingProps[] | DashboardReturnFlightBookingProps[] | DashboardMultiCityFlightBookingProps[] = response?.userBookings;
+  const filteredCount = response?.filteredCount;
+  const totalCount = response?.totalCount;
+
+
+  return (
+    <FlightWrapper>
+      <VisaDashboardHeader headerText="All Flight Booking" type="radio" />
+
+      {isLoading ? (
+        <Flex height="450px" align="center" justify="center">
+          <Spinner size="60px" fill={ttColors.blackishBlue} />
+        </Flex>
+      ) : (
+        <>
+          {
+            flights.length > 0 ? (
+              <Flex direction="column" gap="1rem">
+                {flights.map((flight: DashboardFlightBookingProps | DashboardReturnFlightBookingProps | DashboardMultiCityFlightBookingProps) => {
+                  return (
+                    <>
+                      {renderFlight(isMobile, flight.flightType, flight)}
+                    </>
+                  );
+                })}
+                <Flex justify="flex-end" align="center">
+                  <CustomPagination count={Math.ceil(filteredCount / limit)} onChange={onPageChange} page={page} />
                 </Flex>
-                <Text type="p" text="LAG" color="#929292" />
               </Flex>
-            </Flex>
-
-            <Flex direction="column" align="center" gap="1rem">
-              <Image src={FlightIcon} alt="" width={119} height={20} />
-              <TextContainer>
-                <Text type="p" text="3 Stops" />
-              </TextContainer>
-            </Flex>
-
-            <Flex gap="0rem" align="center">
-              <Flex justify="flex-start">
-                <Flex direction="column">
-                  <Text
-                    type="h3"
-                    text="Murtala Muhammed Airport"
-                    margin="0px 0px .5rem"
-                  />
-
-                  <Text
-                    type="p"
-                    text="11:25"
-                    color="#606060"
-                    weight={600}
-                    size={16}
-                    styles={{
-                      letterSpacing: "0.1rem",
-                    }}
-                  />
-                </Flex>
-                <Text type="p" text="DUS" color="#929292" />
-              </Flex>
-              <Flex direction="column" align="flex-start" width="20%">
-                <Text
-                  type="h3"
-                  text="DEPART"
-                  size={28}
-                  weight={600}
-                  color="#7BBBD6"
-                  styles={{
-                    transform: "rotate(-90deg)",
-                  }}
+            ) : (
+              <Center>
+                <NoVisaApplication
+                  noVisaImage={"/assets/images/flight.png"}
+                  content={content}
                 />
-              </Flex>
-            </Flex>
-          </Flex>
+              </Center>
+            )
+          }
+        </>
+      )}
 
-          <Flex
-            justify="space-between"
-            width="100%"
-            gap="1rem"
-            align="center"
-            padding="28px 24px"
-          >
-            <Flex gap="1.5rem" align="center">
-              <Flex direction="column" align="center" width="10%">
-                <Text type="h1" text="12" size={48} weight={600} />
-                <Text
-                  type="p"
-                  text="Sept"
-                  size={20}
-                  weight={200}
-                  styles={{ position: "relative", top: "-10px" }}
-                />
-              </Flex>
-              <Flex justify="flex-start">
-                <Flex direction="column">
-                  <Text
-                    type="h3"
-                    text="Murtala Muhammed Airport"
-                    margin="0px 0px .5rem"
-                  />
-
-                  <Text
-                    type="p"
-                    text="11:25"
-                    color="#606060"
-                    weight={600}
-                    size={16}
-                    styles={{
-                      letterSpacing: "0.1rem",
-                    }}
-                  />
-                </Flex>
-                <Text type="p" text="LAG" color="#929292" />
-              </Flex>
-            </Flex>
-
-            <Flex direction="column" align="center" gap="1rem">
-              <Image src={FlightIcon} alt="" width={119} height={20} />
-              <TextContainer>
-                <Text type="p" text="3 Stops" />
-              </TextContainer>
-            </Flex>
-
-            <Flex gap="0rem" align="center">
-              <Flex justify="flex-start">
-                <Flex direction="column">
-                  <Text
-                    type="h3"
-                    text="Murtala Muhammed Airport"
-                    margin="0px 0px .5rem"
-                  />
-
-                  <Text
-                    type="p"
-                    text="11:25"
-                    color="#606060"
-                    weight={600}
-                    size={16}
-                    styles={{
-                      letterSpacing: "0.1rem",
-                    }}
-                  />
-                </Flex>
-                <Text type="p" text="DUS" color="#929292" />
-              </Flex>
-              <Flex direction="column" align="flex-start" width="20%">
-                <Text
-                  type="h3"
-                  text="RETURN"
-                  size={28}
-                  weight={600}
-                  color="#7BBBD6"
-                  styles={{
-                    transform: "rotate(-90deg)",
-                  }}
-                />
-              </Flex>
-            </Flex>
-          </Flex>
-        </History>
-      </Flex> */}
-        </FlightWrapper>
-    );
+    </FlightWrapper>
+  );
 };
 
 export default Flight;
