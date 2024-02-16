@@ -239,6 +239,7 @@ const FlightBookingPage = () => {
 
     const { adults = "0", children = "0", infants = "0" } = searchParams;
     const intervalIds = useRef<any[]>([]);
+    const [unavailableTimeout, setUnavailableTimeout] = useState<any>();
 
     const [passengersBagCombination, setPassengersBagCombination] = useState<
         PassengerBaggageCombinationInterface[]
@@ -468,6 +469,7 @@ const FlightBookingPage = () => {
         };
     }, []);
     const showUnavailableModal = () => {
+        console.log(checkFlightsResponse, "checkFlightsResponse");
         if (
             checkFlightsResponse?.flights_checked == true &&
             checkFlightsResponse?.price_change == false &&
@@ -483,12 +485,17 @@ const FlightBookingPage = () => {
 
     useEffect(() => {
         if (!checkFlightsResponse) return;
-
+        clearTimeout(unavailableTimeout);
         const interval = setTimeout(() => {
             showUnavailableModal();
         }, 60000);
-        return () => clearTimeout(interval);
-    }, [checkFlightsResponse?.booking_token]);
+        setUnavailableTimeout(interval);
+        return () => clearTimeout(unavailableTimeout);
+    }, [
+        checkFlightsResponse?.flights_invalid,
+        checkFlightsResponse?.price_change,
+        checkFlightsResponse?.flights_checked,
+    ]);
 
     return (
         <Section>
