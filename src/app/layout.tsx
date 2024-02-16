@@ -24,7 +24,7 @@ const poppins = Poppins({
   subsets: ["latin-ext"],
 });
 
-const generateMetadata = () => {
+export const generateMetadata = () => {
   return {
     title: {
       default: Siteconfig.name,
