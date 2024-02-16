@@ -102,7 +102,7 @@ const FooterSection = ({ showNewsletter = true }) => {
         { text: "Waitlist", href: "/waitlist", color: "#06062A" },
         { text: "Travel AI Guide", href: "/ai-guide", color: "#06062A" },
         { text: "FAQs", href: "/faqs", color: "#06062A" },
-        { text: "Referral Program", href: "/reviews", color: "#06062A" },
+        { text: "Referral Program", href: "/referral-program", color: "#06062A" },
     ];
 
     const supports = [
