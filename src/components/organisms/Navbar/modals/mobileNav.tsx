@@ -35,14 +35,8 @@ interface Props {
 function MobileNavigationDrawer({ isOpen, setIsOpen, pathArray }: Props) {
     const { user, setUser } = useUserStore((state) => state);
     const { setTab } = useDashboardStore((state) => state);
-    async function getUser(): Promise<User | any> {
-        const res = await apiService("/user", "GET");
-        setUser(res);
-        return res;
-    }
     const router = useRouter();
     const [collapseSupport, setCollapseSupport] = useState(false);
-    const [collapseCompany, setCollapseCompany] = useState(false);
 
     const CollapsedItem = ({
         name,
@@ -133,26 +127,32 @@ function MobileNavigationDrawer({ isOpen, setIsOpen, pathArray }: Props) {
         {
             name: "All Applications",
             url: "/dashboard",
+            action: () => setTab(0),
         },
         {
             name: "Payment History",
             url: "/dashboard",
+            action: () => setTab(1),
         },
         {
             name: "Favourites",
             url: "/dashboard",
+            action: () => setTab(2),
         },
         {
             name: "Notifications",
             url: "/dashboard",
+            action: () => setTab(3),
         },
         {
             name: "Account",
             url: "/dashboard",
+            action: () => setTab(4),
         },
         {
             name: "Referral",
             url: "/dashboard",
+            action: () => setTab(5),
         },
         {
             name: "Logout",
@@ -431,13 +431,15 @@ function MobileNavigationDrawer({ isOpen, setIsOpen, pathArray }: Props) {
                             </Section>
                         </Flex>
                         <Section styles={{ marginBottom: "1rem" }}>
-                            <Text
-                                type="p"
-                                text="My Dashboard"
-                                weight={600}
-                                size={18}
-                                color="#7BBBD6"
-                            />
+                            <Link href="/dashboard">
+                                <Text
+                                    type="p"
+                                    text="My Dashboard"
+                                    weight={600}
+                                    size={18}
+                                    color="#7BBBD6"
+                                />
+                            </Link>
                         </Section>
                         <List>
                             {menuListWithoutIcon.map((item, index) => {
@@ -448,15 +450,17 @@ function MobileNavigationDrawer({ isOpen, setIsOpen, pathArray }: Props) {
                                             sx={{
                                                 padding: "0",
                                             }}
-                                            onClick={
+                                            onClick={() => {
+                                                console.log(
+                                                    "action: ",
+                                                    item.action
+                                                );
                                                 item.action
                                                     ? item.action
                                                     : () => {
-                                                          // router.push(item.url);
-                                                          // update the tab here
                                                           setTab(index);
-                                                      }
-                                            }
+                                                      };
+                                            }}
                                         >
                                             <Flex
                                                 align="center"
@@ -476,6 +480,14 @@ function MobileNavigationDrawer({ isOpen, setIsOpen, pathArray }: Props) {
                                                         type="p"
                                                         whiteSpace="nowrap"
                                                         weight={400}
+                                                        onClick={() => {
+                                                            setIsOpen(false);
+                                                            if (item.url) {
+                                                                router.push(
+                                                                    item.url
+                                                                );
+                                                            }
+                                                        }}
                                                     />
                                                 </Flex>
                                                 {item.collapse &&
