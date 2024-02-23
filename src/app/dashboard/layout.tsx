@@ -21,7 +21,7 @@ interface layoutProps {
 //   description: "Welcome to your dashboard",
 // }
 
-export default async function DashboardLayout({ children }: layoutProps) {
+export default function DashboardLayout({ children }: layoutProps) {
     const router = useRouter();
     const { user } = useUserStore((state) => state);
 
