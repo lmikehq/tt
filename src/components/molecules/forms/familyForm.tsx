@@ -346,7 +346,7 @@ export default function FamilyForm({ formik, count, values, arrayHelpers, isFirs
             gap={isMobile ? "0px" : "1.5rem"}
           >
             <Section margin="0">
-              <Text type="p" text="Issue Date" margin="0 0 .5rem" />
+              <Text type="p" text="Issue Year" margin="0 0 .5rem" />
               <FieldAsDate
                 name={`familyMembers.${count}.issueYear`}
                 placeholder="Select Issue Year"
@@ -356,12 +356,12 @@ export default function FamilyForm({ formik, count, values, arrayHelpers, isFirs
               />
             </Section>
             <Section margin="0">
-              <Text type="p" text="Expiry Date" margin="0 0 .5rem" />
+              <Text type="p" text="Expiry Year" margin="0 0 .5rem" />
               <FieldAsDate
                 name={`familyMembers.${count}.expiryYear`}
                 placeholder="Select Expiry Year"
                 formik={formik}
-                minDate={dayjs().year(formik.values.familyMembers.count.expiryYear)}
+                minDate={dayjs()}
                 views={["year"]}
               />
             </Section>
