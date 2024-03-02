@@ -1,17 +1,17 @@
+import BlogTab from "@/components/atoms/blogTab";
 import Input from "@/components/atoms/input";
 import Text from "@/components/atoms/text";
 import Flex from "@/components/templates/flex";
-import { CiSearch } from "react-icons/ci";
-import styled from "styled-components";
-import { AdminPost } from "./adminPost";
+import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
+import { useFetchBlogs } from "@/lib/hooks/blog/index.hook";
+import Image from "next/image";
 import { useState } from "react";
 import { AiOutlineClockCircle } from "react-icons/ai";
+import { CiSearch } from "react-icons/ci";
 import { LiaTimesSolid } from "react-icons/lia";
-import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
-import BlogResults from "@/components/organisms/blog/BlogResults";
+import styled from "styled-components";
 import Section from "../../section";
-import Image from "@/components/atoms/image";
-
+import BlogCardMini from "./blogArticle";
 const Box = styled.div`
     width: 886px;
     @media (max-width: 900px) {
@@ -25,13 +25,13 @@ const SearchArea = styled.div`
     border: 1px solid #b6b6b6;
     border-radius: 8px;
     background-color: #ffffff;
-    top: 30px;
+    // top: 30px;
     height: 72px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0px 23px;
-    margin: 3rem 0rem 6rem;
+    margin: 1rem 0rem 2rem;
 
     &:focus-within {
         border-bottom-right-radius: 0;
@@ -85,6 +85,45 @@ export const BlogHeroSection = () => {
     // const handleToggleSearchResults = () => {
     //   setSearchResultsVisible(!isSearchResultsVisible);
     // };
+    const { data = [] } = useFetchBlogs({});
+
+    const tabItems = [
+        {
+            label: "For You",
+            value: 0,
+            content: "",
+        },
+
+        {
+            label: "Events",
+            value: 1,
+            content: "",
+        },
+
+        // {
+        //     label: "Visa Application",
+        //     value: 2,
+        //     content: "",
+        // },
+
+        // {
+        //     label: "Flight Ticket",
+        //     value: 3,
+        //     content: "",
+        // },
+        // {
+        //     label: "Stays",
+        //     value: 4,
+        //     content: "",
+        // },
+        // {
+        //     label: "Others",
+        //     value: 4,
+        //     content: "",
+        // },
+    ];
+
+    const [activeTab, setActiveTab] = useState(0);
 
     const handleSearch = () => {
         setSearchTriggered(true);
@@ -112,34 +151,67 @@ export const BlogHeroSection = () => {
     };
 
     const handleInputFocus = () => {
-        setSearchResultsVisible(true);
+        // setSearchResultsVisible(true);
     };
 
     const handleInputBlur = () => {
-        setSearchResultsVisible(false);
+        // setSearchResultsVisible(false);
     };
 
-    const renderContent = () => {
-        // if (searchTriggered) {
-        //   return <BlogResults blogs={[]} />;
-        // } else {
-        return <AdminPost />;
-        // }
-    };
+    // const blogs = [
+    //     {
+    //         _id: "01",
+    //         blogImage:
+    //             "https://res.cloudinary.com/thrillers-travels/image/upload/v1704888923/ADEBISI1704888727685-files/yvbtno7eqejklzropdxk.webp",
+    //         readingTimeInMins: 6,
+    //         topic: "Travels",
+    //         tags: ["Travel", "Tips", "Vacation"],
+    //         likes: ["01", "02", "03", "04", "05"],
+    //         dislikes: ["01", "02", "03", "04", "05"],
+    //         title: "10 Essential Travel Tips for a Stress-Free Vacation",
+    //         content:
+    //             "Traveling can be a breeze with the right preparation. From packing also a breeze ....",
+    //         createdAt: "2021-09-09T00:00:00.000Z",
+    //         updatedAt: "2021-09-09T00:00:00.000Z",
+    //         author: {
+    //             name: "Seun Adebayo",
+    //             picture: User.src,
+    //         },
+    //     },
+    //     {
+    //         _id: "02",
+    //         blogImage:
+    //             "https://res.cloudinary.com/thrillers-travels/image/upload/v1704888923/ADEBISI1704888727685-files/yvbtno7eqejklzropdxk.webp",
+    //         readingTimeInMins: 6,
+    //         topic: "Travels",
+    //         tags: ["Travel", "Tips", "Vacation"],
+    //         likes: ["01", "02", "03", "04", "05"],
+    //         dislikes: ["01", "02", "03", "04", "05"],
+    //         title: "10 Essential Travel Tips for a Stress-Free Vacation",
+    //         content:
+    //             "Traveling can be a breeze with the right preparation. From packing also a breeze ....",
+    //         createdAt: "2021-09-09T00:00:00.000Z",
+    //         updatedAt: "2021-09-09T00:00:00.000Z",
+    //         author: {
+    //             name: "Seun Adebayo",
+    //             picture: User.src,
+    //         },
+    //     },
+    // ];
 
     return (
         <Flex direction="column" justify="flex-start" align="flex-start">
             <Flex direction="column" justify="flex-start" align="center">
-                <Text
+                {/* <Text
                     type="p"
                     text="Blog Stories"
                     weight={400}
                     size={isMobile ? 16 : 24}
                     color="#06062A"
                     styles={{ lineHeight: "36px" }}
-                />
+                /> */}
 
-                <Box>
+                {/* <Box>
                     <Text
                         type="h1"
                         text="ENJOY TRAVEL EXPERIENCE IN FORM OF A STORY"
@@ -151,7 +223,7 @@ export const BlogHeroSection = () => {
                         }}
                         width={isMobile ? "384px" : "886px"}
                     />
-                </Box>
+                </Box> */}
 
                 <SearchArea onFocus={handleInputFocus} onBlur={handleInputBlur}>
                     <Input
@@ -165,7 +237,9 @@ export const BlogHeroSection = () => {
                         onChange={(e) => setSearchTerm(e.target.value)}
                         onKeyDown={(e) => {
                             if (e.key === "Enter") {
-                                handleSearch();
+                                // handleSearch();
+                                confirm(`want to search for ${searchTerm}?`);
+                                setSearchTerm("");
                             }
                         }}
                     />
@@ -219,38 +293,67 @@ export const BlogHeroSection = () => {
                 </h2>
             )}
             <Section>
-                <AdminPost />
-                <Section
-                    maxWidth={isMobile ? "100%" : "525px"}
-                    margin="auto"
-                    padding={"10rem 0"}
-                >
-                    <Section width="fit-content" margin="auto">
-                        <Image
-                            alt=""
-                            src={"/assets/icons/articles/empty_blog_icon.svg"}
-                            height={120}
-                            width={120}
-                        />
-                    </Section>
-                    <Text
-                        type="h5"
-                        size={30}
-                        weight={600}
-                        margin={"2.5rem 0 2rem 0"}
-                        text="No blogs available"
-                        textAlign="center"
-                    />
-                    <Text
-                        type="p"
-                        size={18}
-                        weight={400}
-                        textAlign="center"
-                        text="We apologize for the inconvenience, 
-                        but there are no blogs available at the moment.
-                         Please check back later as we're constantly updating our content."
+                <Section margin="0rem 0 2rem">
+                    <BlogTab
+                        tabItems={tabItems}
+                        addColor={true}
+                        width={true}
+                        activeTab={activeTab}
+                        setActiveTab={setActiveTab}
                     />
                 </Section>
+                {activeTab !== 1 && data?.length ? (
+                    <Flex wrap="wrap" gap="2rem">
+                        {data.map((blog, index) => (
+                            <BlogCardMini key={index} blog={blog} />
+                        ))}
+                    </Flex>
+                ) : (
+                    <Section
+                        maxWidth={isMobile ? "100%" : "525px"}
+                        margin="auto"
+                        padding={"10rem 0"}
+                    >
+                        <Section width="fit-content" margin="auto">
+                            <Image
+                                alt=""
+                                src={
+                                    "/assets/icons/articles/empty_blog_icon.svg"
+                                }
+                                height={120}
+                                width={120}
+                            />
+                        </Section>
+                        <Text
+                            type="h5"
+                            size={30}
+                            weight={600}
+                            margin={"2.5rem 0 2rem 0"}
+                            text="No article found"
+                            textAlign="center"
+                        />
+                        <p style={{ textAlign: "center" }}>
+                            <Text
+                                type="span"
+                                size={18}
+                                weight={400}
+                                text={`There is currently no article in  section, `}
+                            />
+                            <Text
+                                type="span"
+                                size={18}
+                                weight={800}
+                                text={`${tabItems[activeTab].label}`}
+                            />
+                            <Text
+                                type="span"
+                                size={18}
+                                weight={400}
+                                text={` section, please check back later.`}
+                            />
+                        </p>
+                    </Section>
+                )}
             </Section>
         </Flex>
     );

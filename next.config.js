@@ -4,7 +4,7 @@ const nextConfig = {
     styledComponents: true,
   },
   images: {
-    domains: ["cdn.worldota.net", "res.cloudinary.com"],
+    domains: ["cdn.worldota.net", "res.cloudinary.com", 'images.unsplash.com'],
     remotePatterns: [
       {
         protocol: "https",
