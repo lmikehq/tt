@@ -33,19 +33,19 @@ const Preview = () => {
         direction="column"
         justify="flex-start"
         align="center"
-        padding="2rem 0px"
-        margin={isMobile ? "0px 0px 2rem" : "3rem 0px 4rem"}
+        padding="0rem 0px"
+        margin={isMobile ? "0px 0px 2rem" : "0rem 0px 4rem"}
       >
-        <Text
+        {/* <Text
           type="p"
           text="Blog Stories"
           weight={400}
           size={isMobile ? 16 : 24}
           color="#06062A"
           styles={{ lineHeight: "36px" }}
-        />
+        /> */}
 
-        <Box>
+        {/* <Box>
           <Text
             type="h1"
             text="ENJOY TRAVEL EXPERIENCE IN FORM OF A STORY"
@@ -56,7 +56,7 @@ const Preview = () => {
               textAlign: "center",
             }}
           />
-        </Box>
+        </Box> */}
       </Flex>
       <Flex direction="column" gap="30px">
         <Image
