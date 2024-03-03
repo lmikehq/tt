@@ -1,18 +1,16 @@
 "use client";
-import Image from "@/components/atoms/image";
 import Text from "@/components/atoms/text";
 import Flex from "@/components/templates/flex";
-import BlogTab from "@/components/atoms/blogTab";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
-import { BlogArticleMini } from "@/components/molecules/blog/component/blogArticleMini";
+// import { BlogArticleMini } from "@/components/molecules/blog/component/blogArticleMini";
 import { BlogArticle } from "@/components/molecules/blog/component/blogArticle";
 import { RelatedTopic } from "@/components/molecules/blog/component/relatedTopic";
-import { SingleBlogInterface } from "@/lib/types/response-models/blog/index.type";
+// import { SingleBlogInterface } from "@/lib/types/response-models/blog/index.type";
 
 interface BlogResultsProps {
-    blogs: SingleBlogInterface[];
+    // blogs: SingleBlogInterface[];
 }
-function BlogResults({ blogs }: BlogResultsProps) {
+function BlogResults({ blogs }: { blogs: any }) {
     const { isMobile } = useScreenResolution();
 
     const tabItems = [
@@ -53,9 +51,9 @@ function BlogResults({ blogs }: BlogResultsProps) {
                     width={isMobile ? "100%" : "65%"}
                     gap="2rem"
                 >
-                    <BlogTab tabItems={tabItems} addColor width={true} />
+                    {/* <BlogTab tabItems={tabItems} addColor width={true} /> */}
 
-                    <BlogArticleMini />
+                    {/* <BlogArticleMini />
                     <br />
 
                     <BlogArticleMini />
@@ -67,7 +65,7 @@ function BlogResults({ blogs }: BlogResultsProps) {
                     <BlogArticleMini />
                     <br />
 
-                    <BlogArticleMini />
+                    <BlogArticleMini /> */}
                 </Flex>
 
                 <Flex
@@ -87,7 +85,7 @@ function BlogResults({ blogs }: BlogResultsProps) {
                                 alignContent: "center",
                             }}
                         />
-                        {blogs.map((blog) => {
+                        {blogs.map((blog: any) => {
                             return (
                                 <BlogArticle
                                     key={blog.blog._id}
