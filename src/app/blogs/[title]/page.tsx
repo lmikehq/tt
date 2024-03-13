@@ -55,6 +55,7 @@ const Preview = ({ params }: { params: any }) => {
                             width={isMobile ? 54 : 78}
                             height={isMobile ? 54 : 78}
                             alt=""
+                            styles={{ borderRadius: "50%" }}
                         />
                         <Flex
                             justify="flex-start"
