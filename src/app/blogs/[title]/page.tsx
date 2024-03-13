@@ -4,10 +4,13 @@ import Image from "@/components/atoms/image";
 import Text from "@/components/atoms/text";
 import BlogCardMini from "@/components/molecules/blog/component/blogArticle";
 import CountryArticle from "@/components/molecules/countryArticle";
+import Spinner from "@/components/molecules/icons/spinner";
 import SectionLayout from "@/components/templates/SectionLayout";
+import Center from "@/components/templates/center";
 import Flex from "@/components/templates/flex";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { useFetchBlogBySlug, useFetchBlogs } from "@/lib/hooks/blog/index.hook";
+import { ttColors } from "@/lib/theme/colors";
 import dayjs from "dayjs";
 import { BsBoxArrowUp } from "react-icons/bs";
 import { GoDotFill } from "react-icons/go";
@@ -26,16 +29,24 @@ const Preview = ({ params }: { params: any }) => {
     const { isMobile } = useScreenResolution();
     const { data } = useFetchBlogBySlug(params?.title);
     const { data: blogs = [] } = useFetchBlogs({});
-    if (!data) return <div>Loading...</div>;
+    if (!data)
+        return (
+            <Center height="calc(100vh - 70px)">
+                <Spinner size="40px" fill={ttColors.primary} />{" "}
+            </Center>
+        );
 
     return (
         <SectionLayout>
             <Flex direction="column" gap="30px" margin="2rem 0 0 ">
                 <Image
                     src={data?.blogImage}
-                    alt=""
-                    height={isMobile ? 268 : 431}
-                    styles={{ borderRadius: "8px" }}
+                    alt="blogImage"
+                    styles={{
+                        borderRadius: "8px",
+                        maxWidth: "100%",
+                        height: "auto",
+                    }}
                 />
 
                 <Text
@@ -52,6 +63,7 @@ const Preview = ({ params }: { params: any }) => {
                             width={isMobile ? 54 : 78}
                             height={isMobile ? 54 : 78}
                             alt=""
+                            styles={{ borderRadius: "50%" }}
                         />
                         <Flex
                             justify="flex-start"
@@ -90,7 +102,15 @@ const Preview = ({ params }: { params: any }) => {
                                         <GoDotFill color="#929292" size="6px" />
                                         <Text
                                             type="p"
-                                            text={`${data?.readingTimeInMins}`}
+                                            text={`${Math.ceil(
+                                                data?.readingTimeInMins
+                                            )} min${
+                                                Math.ceil(
+                                                    data?.readingTimeInMins
+                                                ) == 1
+                                                    ? ""
+                                                    : "s"
+                                            }`}
                                             weight={400}
                                             size="16px"
                                             color="#929292"
@@ -649,7 +669,6 @@ const Preview = ({ params }: { params: any }) => {
                             </Flex>
                         </Flex>
                     </Flex> */}
-                    
                 </Flex>
             </Flex>
         </SectionLayout>

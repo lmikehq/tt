@@ -187,21 +187,28 @@ const BlogCardMini: React.FC<BlogCardMiniProps> = ({ blog }) => {
                 <Image
                     src={blog.blogImage}
                     alt=""
-                    height={252}
+                    // height={252}
                     // width={252}
-                    styles={{ borderRadius: "8px" }}
+                    styles={{
+                        borderRadius: "8px",
+                        maxHeight: "252px",
+                        objectFit: "cover",
+                    }}
                 />
             </Link>
             <Flex
                 justify="space-between"
                 styles={{ display: isMobile ? "none" : "flex" }}
+                align="center"
+                margin="0.5rem 0"
             >
-                <Flex justify="flex-start" gap="10px">
+                <Flex justify="flex-start" align="center" gap="10px">
                     <Image
                         src={blog.author.picture}
                         width={30}
                         height={30}
                         alt=""
+                        styles={{ borderRadius: "50%" }}
                     />
                     <Flex justify="flex-start" direction="column" gap="0px">
                         <Text
@@ -232,7 +239,7 @@ const BlogCardMini: React.FC<BlogCardMiniProps> = ({ blog }) => {
                 <BsBoxArrowUp color="#929292" size="19.25px" />
             </Flex>
 
-            <Flex direction="column" gap="1rem">
+            <Flex direction="column" gap="1rem" margin="0.5rem 0">
                 <Link href={previewUrl}>
                     <Text
                         type="h1"
@@ -280,12 +287,6 @@ const BlogCardMini: React.FC<BlogCardMiniProps> = ({ blog }) => {
                             <LiaThumbsUpSolid color="#929292" size="22px" />
                         </Flex>
                         <Flex cursor="pointer">
-                            <Text
-                                type="p"
-                                text={blog.dislikes.length + ""}
-                                color="#929292"
-                                cursor="pointer"
-                            />
                             <LiaThumbsDown color="#929292" size="22px" />
                         </Flex>
                     </Flex>
