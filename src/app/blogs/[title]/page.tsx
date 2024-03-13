@@ -33,9 +33,12 @@ const Preview = ({ params }: { params: any }) => {
             <Flex direction="column" gap="30px" margin="2rem 0 0 ">
                 <Image
                     src={data?.blogImage}
-                    alt=""
-                    height={isMobile ? 268 : 431}
-                    styles={{ borderRadius: "8px" }}
+                    alt="blogImage"
+                    styles={{
+                        borderRadius: "8px",
+                        maxWidth: "100%",
+                        height: "auto",
+                    }}
                 />
 
                 <Text
@@ -90,7 +93,15 @@ const Preview = ({ params }: { params: any }) => {
                                         <GoDotFill color="#929292" size="6px" />
                                         <Text
                                             type="p"
-                                            text={`${data?.readingTimeInMins}`}
+                                            text={`${Math.ceil(
+                                                data?.readingTimeInMins
+                                            )} min${
+                                                Math.ceil(
+                                                    data?.readingTimeInMins
+                                                ) == 1
+                                                    ? ""
+                                                    : "s"
+                                            }`}
                                             weight={400}
                                             size="16px"
                                             color="#929292"
@@ -649,7 +660,6 @@ const Preview = ({ params }: { params: any }) => {
                             </Flex>
                         </Flex>
                     </Flex> */}
-                    
                 </Flex>
             </Flex>
         </SectionLayout>
