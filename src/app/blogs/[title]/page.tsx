@@ -4,10 +4,13 @@ import Image from "@/components/atoms/image";
 import Text from "@/components/atoms/text";
 import BlogCardMini from "@/components/molecules/blog/component/blogArticle";
 import CountryArticle from "@/components/molecules/countryArticle";
+import Spinner from "@/components/molecules/icons/spinner";
 import SectionLayout from "@/components/templates/SectionLayout";
+import Center from "@/components/templates/center";
 import Flex from "@/components/templates/flex";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { useFetchBlogBySlug, useFetchBlogs } from "@/lib/hooks/blog/index.hook";
+import { ttColors } from "@/lib/theme/colors";
 import dayjs from "dayjs";
 import { BsBoxArrowUp } from "react-icons/bs";
 import { GoDotFill } from "react-icons/go";
@@ -26,7 +29,12 @@ const Preview = ({ params }: { params: any }) => {
     const { isMobile } = useScreenResolution();
     const { data } = useFetchBlogBySlug(params?.title);
     const { data: blogs = [] } = useFetchBlogs({});
-    if (!data) return <div>Loading...</div>;
+    if (!data)
+        return (
+            <Center height="calc(100vh - 70px)">
+                <Spinner size="40px" fill={ttColors.primary} />{" "}
+            </Center>
+        );
 
     return (
         <SectionLayout>
