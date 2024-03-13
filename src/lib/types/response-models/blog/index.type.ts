@@ -11,14 +11,16 @@ export interface BlogInterface {
     createdAt: string;
     updatedAt: string;
     author: Author;
-    slug: string;   
+    slug: string;
 }
 
 export interface Author {
     name: string;
     picture: string;
 }
-
-
+export type LikeBlogResponse = {
+    msg: string;
+    success: boolean;
+};
 
 export type FetchBlogsResponse = BlogInterface[];

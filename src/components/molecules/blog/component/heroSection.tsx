@@ -12,6 +12,9 @@ import { LiaTimesSolid } from "react-icons/lia";
 import styled from "styled-components";
 import Section from "../../section";
 import BlogCardMini from "./blogArticle";
+import Center from "@/components/templates/center";
+import Spinner from "../../icons/spinner";
+import { ttColors } from "@/lib/theme/colors";
 const Box = styled.div`
     width: 886px;
     @media (max-width: 900px) {
@@ -85,7 +88,7 @@ export const BlogHeroSection = () => {
     // const handleToggleSearchResults = () => {
     //   setSearchResultsVisible(!isSearchResultsVisible);
     // };
-    const { data = [] } = useFetchBlogs({});
+    const { data = [], isFetching } = useFetchBlogs({});
 
     const tabItems = [
         {
@@ -302,7 +305,11 @@ export const BlogHeroSection = () => {
                         setActiveTab={setActiveTab}
                     />
                 </Section>
-                {activeTab !== 1 && data?.length ? (
+                {isFetching ? (
+                    <Center height="calc(100vh - 70px)">
+                        <Spinner size="40px" fill={ttColors.primary} />{" "}
+                    </Center>
+                ) : activeTab !== 1 && data?.length ? (
                     <Flex wrap="wrap" gap="2rem">
                         {data.map((blog, index) => (
                             <BlogCardMini key={index} blog={blog} />

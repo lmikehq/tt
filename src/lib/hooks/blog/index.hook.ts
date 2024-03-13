@@ -4,7 +4,12 @@ import {
     BlogInterface,
     FetchBlogsResponse,
 } from "@/lib/types/response-models/blog/index.type";
-import { UseQueryOptions, useQuery } from "@tanstack/react-query";
+import {
+    UseMutationOptions,
+    UseQueryOptions,
+    useMutation,
+    useQuery,
+} from "@tanstack/react-query";
 
 export const useFetchBlogs = (
     params: FetchBlogsRequestInput,
@@ -26,3 +31,21 @@ export const useFetchBlogBySlug = (
         ...options,
     });
 };
+
+// export const useLikeBlog = (
+//     options?: Omit<
+//       UseMutationOptions<
+//         LikeBlogResponse,
+//         unknown,
+//         LikeBlogRequestInput,
+//         unknown
+//       >,
+//       "mutationFn"
+//     >
+//   ) => {
+//     return useMutation({
+//       mutationFn: (params: LikeBlogRequestInput): Promise<LikeBlogResponse> =>
+//         BlogService.likeBlog(params),
+//       ...options,
+//     });
+//   };
