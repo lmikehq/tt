@@ -191,7 +191,7 @@ const BlogCardMini: React.FC<BlogCardMiniProps> = ({ blog }) => {
                     // width={252}
                     styles={{
                         borderRadius: "8px",
-                        height: "252px",
+                        maxHeight: "252px",
                         objectFit: "cover",
                     }}
                 />
@@ -287,12 +287,6 @@ const BlogCardMini: React.FC<BlogCardMiniProps> = ({ blog }) => {
                             <LiaThumbsUpSolid color="#929292" size="22px" />
                         </Flex>
                         <Flex cursor="pointer">
-                            <Text
-                                type="p"
-                                text={blog.dislikes.length + ""}
-                                color="#929292"
-                                cursor="pointer"
-                            />
                             <LiaThumbsDown color="#929292" size="22px" />
                         </Flex>
                     </Flex>
