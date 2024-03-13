@@ -1,6 +1,9 @@
 #blog img {
     width: 100%;
 }
+#blog p img {
+    margin-top: 1rem;
+}
 
 #blog h2 {
     margin-top: 3rem;
