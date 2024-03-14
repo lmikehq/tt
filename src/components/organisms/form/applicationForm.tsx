@@ -3,14 +3,13 @@
 import Flex from "@components/templates/flex";
 import Text from "@atom/text";
 import {
-
-  detailsSchema,
-  documentsSchema,
-  familyInfoSchema,
-  guarantorSchema,
-  manyEducationSchema,
-  manyEmploymentSchema,
-  personalInfoSchema,
+    detailsSchema,
+    documentsSchema,
+    familyInfoSchema,
+    guarantorSchema,
+    manyEducationSchema,
+    manyEmploymentSchema,
+    personalInfoSchema,
 } from "@lib/types/schema";
 import { getSteps } from "src/lib/application/steps";
 import Section from "src/components/molecules/section";
@@ -28,17 +27,21 @@ import { styled } from "styled-components";
 import { ttColors } from "@lib/theme/colors";
 import FormSideMenu from "./components/sideMenu/formSideMenu";
 import { useApplicationFormStore } from "@lib/store/application-form.store";
-import { DetailsKeys, GuarantorInfoInterface, Mode, PersonalInfoInterface } from "@lib/types";
+import {
+    DetailsKeys,
+    GuarantorInfoInterface,
+    Mode,
+    PersonalInfoInterface,
+} from "@lib/types";
 import toast from "react-hot-toast";
 import SectionLayout from "@components/templates/SectionLayout";
 import CustomConfirmationModal from "../visaApplicationModal";
 import Image from "@/components/atoms/image";
-import testPayload from '@/constants/payload.json';
+import testPayload from "@/constants/payload.json";
 import { useDebounce } from "use-debounce";
 import { useQueryParams } from "@/hooks/useNext";
 import { findCountry } from "@/lib/extensions/data/COUNTRY_FLAGS";
 import AuthModal from "../auth/AuthModal";
-
 
 const PromoInput = styled.div`
     display: flex;
@@ -82,14 +85,14 @@ const ErrorToastComponent = styled.div`
 `;
 
 export interface UploadedDoc {
-  name: string;
-  type: string;
-  size: string;
-  title: string;
+    name: string;
+    type: string;
+    size: string;
+    title: string;
 }
 interface ErrorInterface {
-  property: string;
-  constraints: string;
+    property: string;
+    constraints: string;
 }
 
 function ApplicationForm() {
@@ -122,8 +125,9 @@ function ApplicationForm() {
     const isLoading = mode == Mode.loading;
     const params = useSearchParams();
     const router = useRouter();
-    const { queryParams } = useQueryParams()
-    const [showApplicationExistsModal, setShowApplicationExistsModal] = useState(false);
+    const { queryParams } = useQueryParams();
+    const [showApplicationExistsModal, setShowApplicationExistsModal] =
+        useState(false);
     const [showAuthModal, setShowAuthModal] = useState(false);
 
     const detailsFormik = useFormik({
@@ -181,14 +185,13 @@ function ApplicationForm() {
         onSubmit: (values, formikHelpers) => {
             formikHelpers
                 .validateForm()
-                .then((res) => { })
-                .catch((err) => { });
+                .then((res) => {})
+                .catch((err) => {});
             if (isLoading) return;
             nextStep({ data: { familyMembers: values.familyMembers } });
         },
         validateOnChange: true,
     });
-
 
     const guarantorFormik: FormikProps<GuarantorInfoInterface> = useFormik({
         initialValues: guarantorInfo,
@@ -226,18 +229,30 @@ function ApplicationForm() {
                             duration: 15000,
                         }
                     );
-                    toast.success("An account has been created for you, please check your mail for login details", { duration: 15000 });
+                    toast.success(
+                        "An account has been created for you, please check your mail for login details",
+                        { duration: 15000 }
+                    );
                 })
                 .catch((error) => {
                     const err = error.response?.data;
-                    if (err?.statusCode === 422 && err?.errorMessage.includes("already exists")) {
-                        toast.error('An account with this email exists, please login to proceed')
+                    if (
+                        err?.statusCode === 422 &&
+                        err?.errorMessage.includes("already exists")
+                    ) {
+                        toast.error(
+                            "An account with this email exists, please login to proceed"
+                        );
                         setShowAuthModal(true);
-                    } else if (err?.statusCode === 422 && err?.errorMessage.includes("duplicate")) {
-                        toast.error('This appears to be a duplicate application, please check your dashboard for ongoing visa applications')
+                    } else if (
+                        err?.statusCode === 422 &&
+                        err?.errorMessage.includes("duplicate")
+                    ) {
+                        toast.error(
+                            "This appears to be a duplicate application, please check your dashboard for ongoing visa applications"
+                        );
                         setShowApplicationExistsModal(true);
                     } else if (err?.statusCode === 400) {
-
                         toast(
                             (t) => (
                                 <ErrorToastComponent>
@@ -245,15 +260,22 @@ function ApplicationForm() {
                                         There are errors in your form
                                     </p>{" "}
                                     {/* <br /> */}
-                                    {err.data.map((error: ErrorInterface, index: number) => (
-                                        <Text
-                                            type="p"
-                                            text={error.constraints}
-                                            color={ttColors.red}
-                                            key={index}
-                                        />
-                                    ))}
-                                    <button onClick={() => toast.dismiss(t.id)}>Dismiss</button>
+                                    {err.data.map(
+                                        (
+                                            error: ErrorInterface,
+                                            index: number
+                                        ) => (
+                                            <Text
+                                                type="p"
+                                                text={error.constraints}
+                                                color={ttColors.red}
+                                                key={index}
+                                            />
+                                        )
+                                    )}
+                                    <button onClick={() => toast.dismiss(t.id)}>
+                                        Dismiss
+                                    </button>
                                 </ErrorToastComponent>
                             ),
                             {
@@ -306,15 +328,18 @@ function ApplicationForm() {
             visaType: searchParams.get("visaType") || "",
         });
         fetchRecentProgressFromSession();
+        const intervalId = setInterval(() => persistForm(true), 15000);
+        return () => clearInterval(intervalId);
     }, [params]);
 
-    
     const persistFormOnInterval = useCallback(() => {
         saveProgress({
             data: {
                 tripDetails: {
                     homeCountry: findCountry({ name: queryParams?.home }),
-                    destination: findCountry({ name: queryParams?.destination }),
+                    destination: findCountry({
+                        name: queryParams?.destination,
+                    }),
                     visaType: queryParams?.visaType,
                     applicationType: detailsFormik.values.applicationType,
                 },
@@ -327,201 +352,209 @@ function ApplicationForm() {
             },
             uploadedDocuments,
         });
-    }, [detailsFormik.values, personalInfoFormik.values, educationFormik.values, employmentFormik.values, familyMembersFormik.values, guarantorFormik.values, documentsFormik.values])
+    }, [
+        detailsFormik.values,
+        personalInfoFormik.values,
+        educationFormik.values,
+        employmentFormik.values,
+        familyMembersFormik.values,
+        guarantorFormik.values,
+        documentsFormik.values,
+    ]);
 
     useEffect(() => {
         const interval = setInterval(() => {
-            persistFormOnInterval()
+            persistFormOnInterval();
         }, 20000);
         return () => clearInterval(interval);
     }, [persistFormOnInterval]);
 
     // useEffect(() => {
-        // saveProgress({ data: testPayload, uploadedDocuments: [] })
+    // saveProgress({ data: testPayload, uploadedDocuments: [] })
     // }, [])
 
-
-  return (
-    <>
-      <CustomConfirmationModal
-        open={showApplicationExistsModal}
-        handleClose={() => setShowApplicationExistsModal(false)}
-        icon={
-          <Image
-            src={"/assets/images/visaIcons/duplicate_icon.svg"}
-            alt="delete-icon"
-            width={95.5}
-            height={95.5}
-          />
-        }
-        title={"Duplicate Application"}
-        description="There is an existing application with the same details."
-        subTitle={"Continue to your dashboard to view application?"}
-        buttons={
-          <>
-            <Button
-              background="transparent"
-              color={ttColors.dark}
-              border="1px solid #19013b"
-              onClick={() => setShowApplicationExistsModal(false)}
-            >
-              Cancel
-            </Button>
-            <Button
-              background={ttColors.blackishBlue}
-              color="#fff"
-              onClick={() => {
-                router.push("/dashboard");
-              }}
-            >
-              Continue
-            </Button>
-          </>
-        }
-      />
-
-      <AllCountryHead
-        cover={coverImage}
-        title={form.tripDetails.destination.name || ""}
-      />
-
-      <SectionLayout>
-        <SectionTitle
-          title={`Apply Now for ${form.tripDetails.destination.name || ""
-            } Employment Visa`}
-          description="We'll Handle Your Travel Documentation Hassles, and ensure a seamless travel experience for you"
-          showButton={false}
-        />
-
-        <Button
-          onClick={() => setBottomDrawerOpen(true)}
-          styles={{ display: isMobile ? "block" : "none" }}
-          background="transparent"
-          padding="0"
-          width="fit-content"
-          height="fit-content"
-        >
-          <Text
-            type="p"
-            size={14}
-            color={ttColors.primary}
-            text="View Important Documents Required"
-          />
-        </Button>
-
-        <CustomDrawer
-          anchor="bottom"
-          open={bottomDrawerOpen}
-          onClose={() => setBottomDrawerOpen(false)}
-        >
-          <Section
-            height="unset"
-            padding={"1.125rem 1.125rem 3.5rem 1.125rem"}
-            styles={{
-              background: ttColors.light,
-            }}
-          >
-            <FormSideMenu
-              currentPhase={step}
-              formData={form}
-              onClose={() => setBottomDrawerOpen(false)}
+    return (
+        <>
+            <CustomConfirmationModal
+                open={showApplicationExistsModal}
+                handleClose={() => setShowApplicationExistsModal(false)}
+                icon={
+                    <Image
+                        src={"/assets/images/visaIcons/duplicate_icon.svg"}
+                        alt="delete-icon"
+                        width={95.5}
+                        height={95.5}
+                    />
+                }
+                title={"Duplicate Application"}
+                description="There is an existing application with the same details."
+                subTitle={"Continue to your dashboard to view application?"}
+                buttons={
+                    <>
+                        <Button
+                            background="transparent"
+                            color={ttColors.dark}
+                            border="1px solid #19013b"
+                            onClick={() => setShowApplicationExistsModal(false)}
+                        >
+                            Cancel
+                        </Button>
+                        <Button
+                            background={ttColors.blackishBlue}
+                            color="#fff"
+                            onClick={() => {
+                                router.push("/dashboard");
+                            }}
+                        >
+                            Continue
+                        </Button>
+                    </>
+                }
             />
-          </Section>
-        </CustomDrawer>
 
-        <Flex
-          {...(!isMobile && { background: "white" })}
-          // background='white'
-          borderRadius={isMobile ? "0px" : "16px"}
-          margin={isMobile ? "1.5rem 0" : "3rem 0px 5rem 0px"}
-          styles={{
-            boxShadow: isMobile
-              ? "none"
-              : "0px 2px 2px 0px rgba(0, 0, 0, 0.05), 2px 0px 2px 0px rgba(0, 0, 0, 0.05)",
+            <AllCountryHead
+                cover={coverImage}
+                title={form.tripDetails.destination.name || ""}
+            />
 
-            marginBottom: isMobile ? "3rem" : "0px",
-            position: "relative",
-          }}
-          height="auto"
-          padding={isMobile ? "0px" : "2.5rem"}
-          gap="4.5rem"
-          direction={isMobile ? "column" : "row"}
-        >
-          <Section
-            height="unset"
-            width={isMobile ? "100%" : "62%"}
-            padding={isMobile ? "0 0 1.5rem 0" : "0 0 8rem 0"}
-            styles={{ position: "relative" }}
-          >
-            <Flex
-              direction="column"
-              styles={{ flexGrow: 1 }}
-              gap={isMobile ? "2.5rem" : "2rem"}
-            >
-              {step < 7 && (
-                <Flex
-                  align="center"
-                  cursor="pointer"
-                  gap="0.3rem"
-                  onClick={prevStep}
-                >
-                  <BsArrowLeft
-                    color={
-                      step > 1
-                        ? ttColors.primary
-                        : ttColors.gray
-                    }
-                    size="22px"
-                  />
-                  <Text
-                    text="Previous"
-                    type="p"
-                    color={
-                      step > 1
-                        ? ttColors.primary
-                        : ttColors.gray
-                    }
-                    size="16px"
-                    weight="bold"
-                  />
-                </Flex>
-              )}
-              {step > 1 && step < 7 && (
-                <VisaProgress
-                  phase={step - 1}
-                  setStep={setStep}
-                  highestPhase={highestStep}
+            <SectionLayout>
+                <SectionTitle
+                    title={`Apply Now for ${
+                        form.tripDetails.destination.name || ""
+                    } Employment Visa`}
+                    description="We'll Handle Your Travel Documentation Hassles, and ensure a seamless travel experience for you"
+                    showButton={false}
                 />
-              )}
-              <Section
-                width={isMobile ? "100%" : "100%"}
-                height="unset"
-                padding="0px 0px 2rem 0px"
-              >
-                {steps?.content}
-              </Section>
-            </Flex>
-          </Section>
-          <Section
-            width="38%"
-            height="unset"
-            styles={{ display: isMobile ? "none" : "block" }}
-          >
-            <FormSideMenu
-              currentPhase={step}
-              formData={form}
-              saveProgress={persistForm}
-            />
-          </Section>
-        </Flex>
-          </SectionLayout>
-          
+
+                <Button
+                    onClick={() => setBottomDrawerOpen(true)}
+                    styles={{ display: isMobile ? "block" : "none" }}
+                    background="transparent"
+                    padding="0"
+                    width="fit-content"
+                    height="fit-content"
+                >
+                    <Text
+                        type="p"
+                        size={14}
+                        color={ttColors.primary}
+                        text="View Important Documents Required"
+                    />
+                </Button>
+
+                <CustomDrawer
+                    anchor="bottom"
+                    open={bottomDrawerOpen}
+                    onClose={() => setBottomDrawerOpen(false)}
+                >
+                    <Section
+                        height="unset"
+                        padding={"1.125rem 1.125rem 3.5rem 1.125rem"}
+                        styles={{
+                            background: ttColors.light,
+                        }}
+                    >
+                        <FormSideMenu
+                            currentPhase={step}
+                            formData={form}
+                            onClose={() => setBottomDrawerOpen(false)}
+                        />
+                    </Section>
+                </CustomDrawer>
+
+                <Flex
+                    {...(!isMobile && { background: "white" })}
+                    // background='white'
+                    borderRadius={isMobile ? "0px" : "16px"}
+                    margin={isMobile ? "1.5rem 0" : "3rem 0px 5rem 0px"}
+                    styles={{
+                        boxShadow: isMobile
+                            ? "none"
+                            : "0px 2px 2px 0px rgba(0, 0, 0, 0.05), 2px 0px 2px 0px rgba(0, 0, 0, 0.05)",
+
+                        marginBottom: isMobile ? "3rem" : "0px",
+                        position: "relative",
+                    }}
+                    height="auto"
+                    padding={isMobile ? "0px" : "2.5rem"}
+                    gap="4.5rem"
+                    direction={isMobile ? "column" : "row"}
+                >
+                    <Section
+                        height="unset"
+                        width={isMobile ? "100%" : "62%"}
+                        padding={isMobile ? "0 0 1.5rem 0" : "0 0 8rem 0"}
+                        styles={{ position: "relative" }}
+                    >
+                        <Flex
+                            direction="column"
+                            styles={{ flexGrow: 1 }}
+                            gap={isMobile ? "2.5rem" : "2rem"}
+                        >
+                            {step < 7 && (
+                                <Flex
+                                    align="center"
+                                    cursor="pointer"
+                                    gap="0.3rem"
+                                    onClick={prevStep}
+                                >
+                                    <BsArrowLeft
+                                        color={
+                                            step > 1
+                                                ? ttColors.primary
+                                                : ttColors.gray
+                                        }
+                                        size="22px"
+                                    />
+                                    <Text
+                                        text="Previous"
+                                        type="p"
+                                        color={
+                                            step > 1
+                                                ? ttColors.primary
+                                                : ttColors.gray
+                                        }
+                                        size="16px"
+                                        weight="bold"
+                                    />
+                                </Flex>
+                            )}
+                            {step > 1 && step < 7 && (
+                                <VisaProgress
+                                    phase={step - 1}
+                                    setStep={setStep}
+                                    highestPhase={highestStep}
+                                />
+                            )}
+                            <Section
+                                width={isMobile ? "100%" : "100%"}
+                                height="unset"
+                                padding="0px 0px 2rem 0px"
+                            >
+                                {steps?.content}
+                            </Section>
+                        </Flex>
+                    </Section>
+                    <Section
+                        width="38%"
+                        height="unset"
+                        styles={{ display: isMobile ? "none" : "block" }}
+                    >
+                        <FormSideMenu
+                            currentPhase={step}
+                            formData={form}
+                            saveProgress={persistForm}
+                        />
+                    </Section>
+                </Flex>
+            </SectionLayout>
+
             <AuthModal
                 open={showAuthModal}
                 handleClose={() => setShowAuthModal(false)}
             />
-    </>
-  );
+        </>
+    );
 }
 
 export default ApplicationForm;

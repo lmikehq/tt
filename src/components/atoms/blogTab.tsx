@@ -93,19 +93,21 @@ export default function BlogTab({
   page = "blog",
   addColor = false,
   width = false,
-  activeTab,
+  activeTab = 0,
+  setActiveTab,
 }: {
   tabItems: any[];
   defaultIcons?: boolean;
   page?: "home" | "blog";
   addColor?: boolean;
-  activeTab?: string;
+  activeTab: number;
   width?: boolean;
+  setActiveTab: (index: number) => void;
 }) {
-  const [value, setValue] = useState(0);
+  // const [value, setValue] = useState(activeTab);
 
   const handleChange = (_: SyntheticEvent, newValue: number) => {
-    setValue(newValue);
+    setActiveTab(newValue);
   };
   const { isMobile } = useScreenResolution();
 
@@ -119,10 +121,9 @@ export default function BlogTab({
     <TabWrapper isMobile={isMobile} width={width}>
       <Box>
         <Tabs
-          value={value}
+          value={activeTab}
           onChange={handleChange}
           variant={isMobile ? "scrollable" : "standard"}
-          aria-label="select your service"
           scrollButtons="auto"
           sx={{
             fontFamily: "Montserrat",
@@ -172,7 +173,7 @@ export default function BlogTab({
         </Tabs>
       </Box>
       {tabItems.map((tabItem) => (
-        <TabPanel value={value} index={tabItem.value} key={tabItem.value}>
+        <TabPanel value={activeTab} index={tabItem.value} key={tabItem.value}>
           {tabItem.content}
         </TabPanel>
       ))}

@@ -97,7 +97,7 @@ export interface PersonalInfoInterface {
     nativeLanguage: string;
     meansOfId: string;
     idNumber: string;
-    issueDate: string;
+    issueDate?: string;
     expiryDate?: string;
 
     address: string;
@@ -285,19 +285,21 @@ export const mapVisaApplicationFormInterfaceToApplicationFormRequestInput = ({
 }: {
     data: VisaApplicationFormInterface;
     user?: AuthUser | null;
-    }) => {
-    const sortedFamily = data.familyMembers.filter(e => !!e?.membersName).map((member) => {
-        delete member.index;
-        delete member.membersOccupation;
-        delete member.issueCountry;
-        delete member.maritalStatus;
-        return ({
-            ...member,
-            dateOfBirth: formatISODate(member?.dateOfBirth),
-            issueYear: safelyConvertToNumber(member?.issueYear),
-            expiryYear: safelyConvertToNumber(member?.expiryYear),
-        })
-    })
+}) => {
+    const sortedFamily = data.familyMembers
+        .filter((e) => !!e?.membersName)
+        .map((member) => {
+            delete member.index;
+            delete member.membersOccupation;
+            delete member.issueCountry;
+            delete member.maritalStatus;
+            return {
+                ...member,
+                dateOfBirth: formatISODate(member?.dateOfBirth),
+                issueYear: safelyConvertToNumber(member?.issueYear),
+                expiryYear: safelyConvertToNumber(member?.expiryYear),
+            };
+        });
 
     const prevResidences = [
         data.personalInfo.prevResidence1?.name
@@ -353,7 +355,7 @@ export const mapVisaApplicationFormInterfaceToApplicationFormRequestInput = ({
                 nativeLanguage: data.personalInfo.nativeLanguage,
                 meansOfId: data.personalInfo.meansOfId,
                 idNumber: data.personalInfo.idNumber,
-                issueDate: data.personalInfo.issueDate,
+                issueDate: formatISODate(data.personalInfo.issueDate),
                 expiryDate: formatISODate(data.personalInfo.expiryDate),
                 address: data.personalInfo.address,
                 gender: data.personalInfo.gender,
@@ -368,7 +370,10 @@ export const mapVisaApplicationFormInterfaceToApplicationFormRequestInput = ({
                 countryApplyingFrom: formatCountry(
                     data.personalInfo.countryOfApply ?? mockCountry
                 ),
-                statusOfResidence: data.personalInfo.statusOfResidence === 'Others' ? (data.personalInfo.statusOfResidenceText ?? '') : data.personalInfo.statusOfResidence,
+                statusOfResidence:
+                    data.personalInfo.statusOfResidence === "Others"
+                        ? data.personalInfo.statusOfResidenceText ?? ""
+                        : data.personalInfo.statusOfResidence,
                 startDateOfResidence: formatISODate(
                     data.personalInfo.startDateOfResidence
                 ),
@@ -433,15 +438,18 @@ export const mapVisaApplicationFormInterfaceToApplicationFormRequestInput = ({
                     "",
             },
             employment: data.employment,
-            education: data.education.map(e => ({
+            education: data.education.map((e) => ({
                 school: e.school,
                 cgpa: e.cgpa,
                 location: e.location,
                 startYear: e.startYear,
                 endYear: e.endYear,
                 stillAtSchool: e.stillAtSchool,
-                degree: e.degree === 'Others' ? (e.degreeText ?? '') : e.degree,
-                fieldOfStudy: e.fieldOfStudy === 'Others' ? (e.fieldOfStudyText ?? '') : e.fieldOfStudy,
+                degree: e.degree === "Others" ? e.degreeText ?? "" : e.degree,
+                fieldOfStudy:
+                    e.fieldOfStudy === "Others"
+                        ? e.fieldOfStudyText ?? ""
+                        : e.fieldOfStudy,
             })),
         },
         familyInformation: {

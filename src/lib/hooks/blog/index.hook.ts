@@ -1,10 +1,15 @@
-import { ArticleService } from "@/lib/services/articles";
 import { BlogService } from "@/lib/services/blog/index.service";
-import { FetchSingleArticleParams } from "@/lib/types/request-models/articles";
 import { FetchBlogsRequestInput } from "@/lib/types/request-models/blog/index.type";
-import { FetchSingleArticleResponse } from "@/lib/types/response-models/articles";
-import { FetchBlogsResponse } from "@/lib/types/response-models/blog/index.type";
-import { UseQueryOptions, useQuery } from "@tanstack/react-query";
+import {
+    BlogInterface,
+    FetchBlogsResponse,
+} from "@/lib/types/response-models/blog/index.type";
+import {
+    UseMutationOptions,
+    UseQueryOptions,
+    useMutation,
+    useQuery,
+} from "@tanstack/react-query";
 
 export const useFetchBlogs = (
     params: FetchBlogsRequestInput,
@@ -16,3 +21,31 @@ export const useFetchBlogs = (
         ...options,
     });
 };
+export const useFetchBlogBySlug = (
+    slug: string,
+    options?: UseQueryOptions<BlogInterface>
+) => {
+    return useQuery({
+        queryKey: ["fetch-blog-by-slug", slug],
+        queryFn: () => BlogService.blogBySlug(slug),
+        ...options,
+    });
+};
+
+// export const useLikeBlog = (
+//     options?: Omit<
+//       UseMutationOptions<
+//         LikeBlogResponse,
+//         unknown,
+//         LikeBlogRequestInput,
+//         unknown
+//       >,
+//       "mutationFn"
+//     >
+//   ) => {
+//     return useMutation({
+//       mutationFn: (params: LikeBlogRequestInput): Promise<LikeBlogResponse> =>
+//         BlogService.likeBlog(params),
+//       ...options,
+//     });
+//   };

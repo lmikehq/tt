@@ -672,10 +672,7 @@ function VisaDetail({
                     membersPhoneNumber: dependant.phoneNumber,
                     relationshipToPrimary: dependant.relationship,
                     membersName: dependant.memberName,
-                    dateOfBirth: format(
-                        new Date(dependant.dateOfBirth),
-                        "yyyy-MM-dd"
-                    ),
+                    dateOfBirth: dependant.dateOfBirth,
                     expiryYear: Number(dependant.expiryDate.split("/")[2]),
                     issueYear: Number(dependant.issueDate.split("/")[2]),
                     passportNumber: dependant.passportNumber,

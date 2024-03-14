@@ -1,0 +1,14 @@
+#blog img {
+    width: 100%;
+}
+#blog p img {
+    margin-top: 1rem;
+}
+
+#blog h2 {
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+}
+#blog h4 {
+    margin-bottom: 0.5rem;
+}

@@ -8,18 +8,19 @@ export interface BlogInterface {
     dislikes: any[];
     title: string;
     content: string;
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt: string;
+    updatedAt: string;
     author: Author;
+    slug: string;
 }
 
 export interface Author {
     name: string;
     picture: string;
 }
+export type LikeBlogResponse = {
+    msg: string;
+    success: boolean;
+};
 
-export interface SingleBlogInterface {
-    blog: BlogInterface;
-}
-
-export type FetchBlogsResponse = SingleBlogInterface[];
+export type FetchBlogsResponse = BlogInterface[];
