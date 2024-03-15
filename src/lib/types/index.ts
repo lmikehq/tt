@@ -355,8 +355,17 @@ export const mapVisaApplicationFormInterfaceToApplicationFormRequestInput = ({
                 nativeLanguage: data.personalInfo.nativeLanguage,
                 meansOfId: data.personalInfo.meansOfId,
                 idNumber: data.personalInfo.idNumber,
-                issueDate: formatISODate(data.personalInfo.issueDate),
-                expiryDate: formatISODate(data.personalInfo.expiryDate),
+                ...(data.personalInfo.issueDate
+                    ? { issueDate: formatISODate(data.personalInfo.issueDate) }
+                    : {}),
+                ...(data.personalInfo.expiryDate
+                    ? {
+                          expiryDate: formatISODate(
+                              data.personalInfo.expiryDate
+                          ),
+                      }
+                    : {}),
+
                 address: data.personalInfo.address,
                 gender: data.personalInfo.gender,
             },
