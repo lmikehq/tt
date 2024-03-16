@@ -288,6 +288,9 @@ function ApplicationForm() {
     });
 
     const persistForm = (noRedirect?: boolean) => {
+        // alert("persisting");
+        console.log(detailsFormik, personalInfoFormik);
+
         saveProgress({
             data: {
                 tripDetails: detailsFormik.values,
@@ -328,11 +331,22 @@ function ApplicationForm() {
             visaType: searchParams.get("visaType") || "",
         });
         fetchRecentProgressFromSession();
-        const intervalId = setInterval(() => persistForm(true), 15000);
-        return () => clearInterval(intervalId);
     }, [params]);
 
-    const persistFormOnInterval = useCallback(() => {
+    useEffect(() => {
+        persistFormOnInterval();
+        // return () => clearInterval(intervalId);
+    }, [
+        detailsFormik.values,
+        personalInfoFormik.values,
+        educationFormik.values,
+        employmentFormik.values,
+        familyMembersFormik.values,
+        guarantorFormik.values,
+        documentsFormik.values,
+    ]);
+
+    const persistFormOnInterval = () => {
         saveProgress({
             data: {
                 tripDetails: {
@@ -352,22 +366,14 @@ function ApplicationForm() {
             },
             uploadedDocuments,
         });
-    }, [
-        detailsFormik.values,
-        personalInfoFormik.values,
-        educationFormik.values,
-        employmentFormik.values,
-        familyMembersFormik.values,
-        guarantorFormik.values,
-        documentsFormik.values,
-    ]);
+    };
 
-    useEffect(() => {
-        const interval = setInterval(() => {
-            persistFormOnInterval();
-        }, 20000);
-        return () => clearInterval(interval);
-    }, [persistFormOnInterval]);
+    // useEffect(() => {
+    //     const interval = setInterval(() => {
+    //         persistFormOnInterval();
+    //     }, 20000);
+    //     return () => clearInterval(interval);
+    // }, [persistFormOnInterval]);
 
     // useEffect(() => {
     // saveProgress({ data: testPayload, uploadedDocuments: [] })

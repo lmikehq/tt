@@ -7,7 +7,8 @@ import {
     BackgroundInfoInterface,
 } from "@lib/types";
 
-interface ThisFamilyInterface extends Omit<FamilyInfoInterface, 'issueYear' | 'expiryYear'> {
+interface ThisFamilyInterface
+    extends Omit<FamilyInfoInterface, "issueYear" | "expiryYear"> {
     issueYear?: number;
     expiryYear?: number;
 }
@@ -27,11 +28,11 @@ export interface ApplicationFormRequestInput {
             nativeLanguage: string;
             meansOfId: string;
             idNumber: string;
-            issueDate: string;
-            expiryDate: string;
+            issueDate?: string;
+            expiryDate?: string;
             address: string;
             gender: string;
-        },
+        };
         citizenshipInformation: {
             countryOfCitizenship: CountryType;
             countryOfResidence: CountryType;
@@ -39,23 +40,27 @@ export interface ApplicationFormRequestInput {
             statusOfResidence: string;
             startDateOfResidence: string;
             placeOfOrigin: string;
-            previousCountryOfResidences: { country: CountryType; since: string; till: string; }[];
+            previousCountryOfResidences: {
+                country: CountryType;
+                since: string;
+                till: string;
+            }[];
             greenCardDetails?: {
-                number: string,
-                expiryDate: string
-            },
-        },
+                number: string;
+                expiryDate: string;
+            };
+        };
         passportInformation: {
-            number: string,
-            issuedCountry: CountryType,
-            issuedDate: string,
-            expiryDate: string,
-        },
+            number: string;
+            issuedCountry: CountryType;
+            issuedDate: string;
+            expiryDate: string;
+        };
         marriageInformation: {
-            maritalStatus:     string;
-            partnersName?:      string;
+            maritalStatus: string;
+            partnersName?: string;
             marriageStartDate?: string;
-        },
+        };
         employment: EmploymentDetailsInterface[];
         education: EducationDetailsInterface[];
         backgroundInformation: BackgroundInfoInterface;
