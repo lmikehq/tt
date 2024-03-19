@@ -158,7 +158,7 @@ function MobileNavigationDrawer({ isOpen, setIsOpen, pathArray }: Props) {
             name: "Logout",
             action: () => {
                 handleLogout();
-                router.push("/");
+                router.push("/auth/login");
             },
         },
         {
@@ -451,12 +451,8 @@ function MobileNavigationDrawer({ isOpen, setIsOpen, pathArray }: Props) {
                                                 padding: "0",
                                             }}
                                             onClick={() => {
-                                                console.log(
-                                                    "action: ",
-                                                    item.action
-                                                );
                                                 item.action
-                                                    ? item.action
+                                                    ? item.action()
                                                     : () => {
                                                           setTab(index);
                                                       };
