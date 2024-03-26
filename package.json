@@ -75,6 +75,7 @@
     "react-phone-input-2": "^2.15.1",
     "react-phone-number-input": "^3.3.7",
     "react-select": "^5.8.0",
+    "react-share": "^5.1.0",
     "react-slick": "^0.29.0",
     "react-to-print": "^2.14.15",
     "react-truncate-markup": "^5.1.2",

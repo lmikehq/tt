@@ -12,13 +12,7 @@ import PropTypes from "prop-types";
 import User from "../../../../../public/assets/images/blog/user.png";
 import Section from "../../section";
 import { useEffect, useState } from "react";
-import LikeModal from "./modals/likemodal";
-import DislikeModal from "./modals/dislikemodal";
-import BlogFeedbackModal from "./modals/feedback-reaction";
-import SuccessModal from "./modals/successmodal";
-import ShareModal from "./modals/sharemodal";
-import apiService from "@/lib/extensions/hook/apiService";
-import { toast } from "react-hot-toast";
+
 import { useUserStore } from "@/lib/store/useStore";
 import { useBlogStore } from "@/lib/store/blog.store";
 
@@ -119,7 +113,7 @@ export const BlogArticle = ({ blog }: BlogArticleProps) => {
                             <LiaThumbsUpSolid color="#929292" size="19.25px" />
                             <Text type="p" text="1.3k" color="#929292" />
                             <LiaThumbsDown color="#929292" size="19.25px" />
-                            <BsBoxArrowUp color="#929292" size="19.25px" />
+                            {/* <BsBoxArrowUp color="#929292" size="19.25px" /> */}
                         </Flex>
                     </Flex>
                 </Flex>
@@ -148,7 +142,7 @@ const { user, setUser } = useUserStore();
   const { blogs,setBlogs,likeModal, setLikeModal, setDislikeModal, dislikeModal,feedbackModal, setFeedbackModal,setFeedbackSuccessModal,feedbackSuccessModal,shareModal, setShareModal} = useBlogStore(
         (state) => state);
       useEffect(() => {
-        console.log(blogs,"blogs")       
+         
     const fetchUserIp = async () => {
       try {
         const ipResponse = await fetch("https://api.ipify.org/?format=json");
@@ -165,79 +159,7 @@ const { user, setUser } = useUserStore();
   
 
 
-const handleLike = async (blogId: string) => {
-  try {
-     setLikeModal(true);
-     const likedBlog = blogs.find((blog) => blog._id === blogId);
-      if (likedBlog && likedBlog.likes.includes(userIp)) {
-        toast.error("You have already liked this post.")}
-        else{
-   const response = await apiService(`/blog/${blogId}/like`, "POST", {
-      ip: userIp,
-    });
 
-    if (response && response.data.success) {
-        const updatedBlogs = blogs.map((blog) => {
-          if (blog._id === blogId) {
-            return { ...blog, likes: [...blog.likes, userIp] };
-          }
-          return blog;
-        });
-
-        setBlogs(updatedBlogs);
-        // toast.success("Post liked successfully!");
-          if (!user?._id) {
-        setLikeModal(true);
-      }
-      }
-        }
-
-
- 
-
-    
-    
-  } catch (error) {
-    console.error("Error occurred while handling like:", error);
-    toast.error("Failed to like the post. Please try again.");
-  }
-};
-
-
-
-     const handleDislike = async (blogId: string) => {
-  try {
- setDislikeModal(true);
-       const likedBlog = blogs.find((blog) => blog._id === blogId);
-      if (likedBlog && likedBlog.likes.includes(userIp)) {
-        toast.error("You have already disliked this post.")}else{
-
-   const response = await apiService(`/blog/${blogId}/dislike`, "POST", {
-      ip: userIp,
-    });
-
-    if (response && response.data.success) {
-      const updatedBlogs = blogs.map((blog) => {
-        if (blog._id === blogId) {
-    
-            return { ...blog, dislikes: [...blog.dislikes, userIp] };
-        }
-        return blog;
-      });
-    console.log(updatedBlogs," blogs up")
-      setBlogs(updatedBlogs);
-      toast.success("Post disliked successfully!");
-
-      if (!user?._id) {
-        setDislikeModal(true);
-      }
-    }
-        }
- 
-  } catch (error) {
-    toast.error("Failed to dislike the post. Please try again.");
-  }
-};
   
 
 
@@ -345,7 +267,7 @@ const handleLike = async (blogId: string) => {
                         </Flex>
                     </Flex>
                 </Flex>
-                <BsBoxArrowUp color="#929292" size="19.25px" onClick={()=>setShareModal(true)} />
+                {/* <BsBoxArrowUp color="#929292" size="19.25px"/> */}
             </Flex>
 
             <Flex direction="column" gap="1rem" margin="0.5rem 0">
@@ -386,7 +308,7 @@ const handleLike = async (blogId: string) => {
                     />
 
                     <Flex width="fit-content" gap=".5rem">
-                        <Flex cursor="pointer" onClick={()=>handleLike(blog._id)} >
+                        <Flex cursor="pointer" >
                             <Text
                                 type="p"
                                 text={blog.likes.length + ""}
@@ -395,7 +317,7 @@ const handleLike = async (blogId: string) => {
                             />
                             <LiaThumbsUpSolid color="#929292" size="22px" />
                         </Flex>
-                        <Flex cursor="pointer" onClick={()=>handleDislike(blog._id)}>
+                        <Flex cursor="pointer" >
                             <LiaThumbsDown color="#929292" size="22px" />
                         </Flex>
                     </Flex>
@@ -428,11 +350,7 @@ const handleLike = async (blogId: string) => {
                     <BsBoxArrowUp color="#929292" size="18px" />
                 </Flex>
             </Flex>
-            <LikeModal open={likeModal} onClose={()=>setLikeModal(false)}/>
-            <DislikeModal open={dislikeModal} onClose={()=>setDislikeModal(false)}/>
-<ShareModal open={shareModal} onClose={()=>setShareModal(false)}/>
-                  <BlogFeedbackModal open={feedbackModal} onClose={()=>setFeedbackModal(false)}/>
-                  <SuccessModal open={feedbackSuccessModal} onClose={()=>setFeedbackSuccessModal(false)}/>
+      
         </Section>
     );
 };

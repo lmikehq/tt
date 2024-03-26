@@ -9,6 +9,7 @@ import { ttColors } from "@/lib/theme/colors";
 import styled from "styled-components";
 import Image from "@/components/atoms/image";
 import { useBlogStore } from "@/lib/store/blog.store";
+import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 
 
 const EmojisContainer = styled.div`
@@ -72,7 +73,7 @@ interface Props {
 
 const SuccessModal = ({ open, onClose }: Props) => {
     const [loading,setLoading]= useState(false)
-    
+     const { isMobile } = useScreenResolution();
  const {setFeedbackSuccessModal} = useBlogStore(
         (state) => state);
 
@@ -88,9 +89,13 @@ const SuccessModal = ({ open, onClose }: Props) => {
 
     >
       <Box styles={{display:"flex", flexDirection:"column", alignItems:"center"}}>
-        <Image src={"/assets/images/blog/success.svg"} alt="" styles={{height:"auto", maxWidth:"20.2%"}}/>
-             <Text type="h1" text="Feedback Sent!" size={28} weight={600}/>
-              <Text type="p" text="Thank you for taking your time to send us your feedback. We will ensure to work on your feedback to ensure we give you the best."  weight={600}/>
+
+        {
+          !isMobile &&        <Image src={"/assets/images/blog/success.svg"} alt="" styles={{height:"auto", maxWidth:"20.2%"}}/>
+        }
+ 
+             <Text type="h1" text="Feedback Sent!" size={isMobile?24:28} weight={600}  margin={isMobile?"20px 0 0 0":"0 0 0 0"} />
+              <Text textAlign={isMobile?"center":"initial"} type="p" text="Thank you for taking your time to send us your feedback. We will ensure to work on your feedback to ensure we give you the best."  weight={600}/>
 
 
 
