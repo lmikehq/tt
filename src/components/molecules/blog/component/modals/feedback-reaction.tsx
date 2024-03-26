@@ -3,13 +3,16 @@ import Text from "@/components/atoms/text";
 import BlogReusableModal from "./blog-reusable-modal";
 import Input from "@/components/atoms/input";
 import Button from "@/components/atoms/button";
-import { useState } from "react";
+import { use, useEffect, useState } from "react";
 import Spinner from "@/components/molecules/icons/spinner";
 import { ttColors } from "@/lib/theme/colors";
 import styled from "styled-components";
 import Image from "@/components/atoms/image";
 import { useBlogStore } from "@/lib/store/blog.store";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
+import apiService from "@/lib/extensions/hook/apiService";
+import toast from "react-hot-toast";
+import { BlogInterface } from "@/lib/types/response-models/blog/index.type";
 
 
 const EmojisContainer = styled.div`
@@ -68,21 +71,68 @@ const emojis= [
 
 interface Props {
   open: boolean;
+  blog:BlogInterface;
   onClose: () => void;
 }
 
-const BlogFeedbackModal = ({ open, onClose}: Props) => {
- const [selectedEmoji, setSelectedEmoji] = useState(0);
+const BlogFeedbackModal = ({ open, onClose,blog}: Props) => {
+ const [selectedEmoji, setSelectedEmoji] = useState(null);
   const [loading, setLoading] = useState(false);
      const { isMobile } = useScreenResolution();
+     const[feedbackData, setFeedbackData] = useState({
+      reaction:0,
+      comment:""
+     })
  const { setFeedbackSuccessModal} = useBlogStore(
         (state) => state);
-  const handleEmojiClick = (index:number) => {
+  const handleEmojiClick = (index:any) => {
     setSelectedEmoji(index);
     console.log(index, "index")
+         setFeedbackData({
+                        ...feedbackData,
+                        reaction: index+1,
+                      })
   };
 
+  useEffect(()=>{
+    setFeedbackData({
+                        ...feedbackData,
+                        reaction: 0,
+                        comment:""
+                      })
+  },[])
 
+
+const handleSubmit =async ()=>{
+  try{
+//  if (!feedbackData.reaction){
+
+//   }
+  const response = await apiService(`/blog/${blog._id}/feedback`, "POST", {
+ reaction: feedbackData.reaction,
+    comment: feedbackData.comment
+    });
+console.log(response,"resp")
+    if (response.statusCode ===400){
+        toast.error("User already submitted feedback on this blog.");
+           onClose();
+        return;
+    }
+    
+    if (response && response.success) {
+   setFeedbackSuccessModal(true);
+   console.log("resp 2")
+   onClose();
+    }
+
+
+  }
+ 
+ catch (error) {
+    toast.error("Failed to sumbmit feedback. Please try again.");
+  }
+
+}
 
   return (
     <BlogReusableModal
@@ -93,11 +143,11 @@ const BlogFeedbackModal = ({ open, onClose}: Props) => {
       width="60%"
 
     >
-      <Box styles={{display:"flex", flexDirection:"column", padding:"6rem 0 0 0", position:"relative"}}>
+      <Box styles={{display:"flex", flexDirection:"column", padding:isMobile?"2rem 0 0 0":"6rem 0 0 0", position:"relative"}}>
        {
   isMobile?null:  <Image src={"/assets/images/blog/ttlogo.svg"} alt="" styles={{height:"auto", maxWidth:"18.7%", position:"absolute", top:"-50%", left:"0%"}}/>
 }
-             <Text type="h1" text="Article Feedback" size={28} weight={600}/>
+             <Text type="h1" text="Article Feedback" size={isMobile?24:28} weight={600}/>
 
               <Text type="p" text="How would you like to rate the article?"  weight={600}/>
 
@@ -112,12 +162,15 @@ const BlogFeedbackModal = ({ open, onClose}: Props) => {
               selected={selectedEmoji === index}
               onClick={() => handleEmojiClick(index)}
             >
-              <Image src={emoji.src} alt={emoji.alt}
+              <Image src={emoji.src} alt={emoji.alt} 
                styles={{height:"auto", maxWidth:"100%"}}
             
                />
             </ImageContainer>
-            <p>{emoji.alt}</p>
+            {
+              !isMobile &&     <Text type="p" text={emoji.alt} size={16}/>
+            }
+        
           </div>
         ))}
       </EmojisContainer>
@@ -125,7 +178,12 @@ const BlogFeedbackModal = ({ open, onClose}: Props) => {
 <Text type="p" text="Comment"/>
 
 <Input type="textArea" placeholder="
-Enter your Comment here" styles={{}}/>
+Enter your Comment here" styles={{}}         onChange={(e) =>
+                      setFeedbackData({
+                        ...feedbackData,
+                        comment: e.target.value,
+                      })
+                    } value={feedbackData.comment}/>
 </Comment>
               
        
@@ -135,7 +193,8 @@ Enter your Comment here" styles={{}}/>
           width="100%"
           background={ttColors.dark}
           margin="48px 0 0 0"
-             onClick={()=>{setFeedbackSuccessModal(true), onClose()}}
+             onClick={()=>handleSubmit()}
+             disabled={feedbackData.reaction===0}
         >
           {loading ? (
             <Spinner size="40px" fill={ttColors.primary} />
