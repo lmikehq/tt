@@ -257,8 +257,8 @@ setErrorMessage("");
   isMobile?null:  <Image src={"/assets/images/blog/ttlogo.svg"} alt="" styles={{height:"auto", maxWidth:"18.7%", position:"absolute", top:"-50%", left:"0%"}}/>
 }
   
-        <Text type="h1" text="Hi! Thank you for liking the post" size={isMobile?24:28} weight={600}/>
-        <p style={{margin:"10px 0 40px 0"}}>We noticed you just liked an article. If you would love to view more of this kind of articles. Kindly <span>{createForm?"Sign Up ": "Sign In "}</span>to Thrillers Travels.</p>
+        <Text type="h1" text="Hi! Kindly login or sign up to interact with the blog" size={isMobile?20:24} weight={600}/>
+        {/* <p style={{margin:"10px 0 40px 0"}}>We noticed you just liked an article. If you would love to view more of this kind of articles. Kindly <span>{createForm?"Sign Up ": "Sign In "}</span>to Thrillers Travels.</p> */}
       
 
 

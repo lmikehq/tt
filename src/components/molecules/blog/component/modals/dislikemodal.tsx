@@ -262,8 +262,8 @@ setFeedbackModal(true);
       {
   isMobile?null:  <Image src={"/assets/images/blog/ttlogo.svg"} alt="" styles={{height:"auto", maxWidth:"18.7%", position:"absolute", top:"-50%", left:"0%"}}/>
 }     
-        <Text type="h1" text="Help Us Improve Articles on Thrillers Travels" size={isMobile?24:28} weight={600} />
-        <p style={{ margin: "0 0 40px 0" }}>Help Us improve Articles on Thrillers Travels</p>
+        <Text type="h1" text="Hi! Kindly login or signup to interact with the blog and share with us how Articles on Thrillers Travels can be improved." size={isMobile?20:24} weight={600} />
+        {/* <p style={{ margin: "0 0 40px 0" }}>Help Us improve Articles on Thrillers Travels</p> */}
 
         {createForm ? (
           <form onSubmit={handleSubmitReg}>

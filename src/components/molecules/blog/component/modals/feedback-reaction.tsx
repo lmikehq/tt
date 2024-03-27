@@ -99,7 +99,8 @@ const BlogFeedbackModal = ({ open, onClose,blog}: Props) => {
                         ...feedbackData,
                         reaction: 0,
                         comment:""
-                      })
+                      });
+                      setSelectedEmoji(null)
   },[])
 
 
