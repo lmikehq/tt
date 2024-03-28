@@ -22,7 +22,7 @@ import { useUserStore } from "@/lib/store/useStore";
 import { ttColors } from "@/lib/theme/colors";
 import dayjs from "dayjs";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { BsBoxArrowUp } from "react-icons/bs";
 import { GoDotFill } from "react-icons/go";
@@ -46,10 +46,19 @@ const Preview = ({ params }: { params: any }) => {
      const {mode,getBlog, blog,setBlogs,likeModal,getAllBlogs, setLikeModal, setDislikeModal,blogs,setBlog, dislikeModal,feedbackModal, setFeedbackModal,setFeedbackSuccessModal,feedbackSuccessModal,shareModal, setShareModal} = useBlogStore(
         (state) => state);
           const pathname = usePathname();
+        const commentSectionRef = useRef<HTMLDivElement>(null);
   const fullUrl = window.location.origin + pathname;
   const { user, setUser } = useUserStore();
           const { likedByUser, dislikedByUser } = useLikedByUser(blog, user?._id);
         const [userIp, setUserIp] = useState<string>("");
+         const [openCommentField, setOpenCommentField] = useState(false);
+
+          const scrollToCommentSection = () => {
+    if (commentSectionRef.current) {
+      commentSectionRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+    setOpenCommentField(true)
+  };
 
     // const { data } = useFetchBlogBySlug(params?.title);
     // const { data: blogs = [] } = useFetchBlogs({});
@@ -158,7 +167,7 @@ const handleDislike = async (blogId: string) => {
         );
 
     return (
-        <SectionLayout>
+        <SectionLayout style={{width:"59.02%"}}>
             <Flex direction="column"  margin="111px 0 0">
                 {/* <Text type="h3" text="ENJOY TRAVEL EXPERIENCE IN FORM OF A STORY" size={isMobile?45:64} weight={700} textAlign="center" margin={0}/> */}
                 <Image
@@ -291,7 +300,7 @@ const handleDislike = async (blogId: string) => {
                                             size="24px"
                                               onClick={()=>handleDislike(blog._id)}
                                         />
-                                        <div style={{display:"flex", alignItems:"center", gap:"10px"}}>   <FaRegComment color="#929292"  size="20px"/>
+                                        <div style={{display:"flex", alignItems:"center", gap:"10px"}} onClick={scrollToCommentSection}>   <FaRegComment color="#929292"  size="20px"/>
                                          <Text
                                             type="p"
                                             text={`${blog?.comments.length}`}
@@ -377,8 +386,10 @@ const handleDislike = async (blogId: string) => {
                 </Flex>
 
                 <CountryArticle article={{ body: blog?.content }} />
-
-            <BlogCommentSection blog={blog} />
+<div ref={commentSectionRef}>
+<BlogCommentSection blog={blog} inputfield={openCommentField} />
+</div>
+            
 
                 <Text
                     type="h2"

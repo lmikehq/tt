@@ -154,23 +154,29 @@ const { user, setUser } = useUserStore();
  <Text type='' text={reply.text} size={16} weight={400} margin={"0 0 24px 0"}/>
 <Flex justify='space-between' align='center'>
  <Flex align='center'justify='flex-start' gap="36px" width='25%' >
-    <Flex align='center' gap='10px' cursor='pointer'>
+
+
+
+       <div style={{alignItems:'center', display:"flex", flexDirection:"row", gap:'10px', cursor:'pointer'}} >
      <BiSolidLike color={likedByUser?"#7BBBD6":"#929292"} onClick={handleLikeAndUnlikeReply}/>
 
 
      {
-      reply?.likes?.length ?  <Text type='' text={`${reply?.likes?.length} ${reply?.likes?.length === 1 ? 'like' : 'likes'}`}/>
+     reply?.likes?.length ?  <p style={{ whiteSpace: 'nowrap' }}>{`${reply?.likes?.length} ${reply?.likes?.length === 1 ? 'like' : 'likes'}`}</p>
      :""}
     
-    </Flex>
+    </div>
 
-    <Flex align='center' gap="10px" cursor='pointer' onClick={handleOpenReplies}>
+
+      <div style={{alignItems:'center', display:"flex", flexDirection:"row", gap:'10px', cursor:'pointer'}} onClick={handleOpenReplies} >
        
         <FaRegComment/>
-      {
-      reply?.replies?.length ?  <Text type='' text={`${reply?.replies?.length}    ${reply?.replies?.length === 1 ? 'comment' : 'comments'}`}/>
+
+           {
+      reply?.replies?.length ?  <p style={{ whiteSpace: 'nowrap' }}>{`${reply?.replies?.length}    ${reply?.replies?.length === 1 ? 'reply' : 'replies'}`}</p>
      :""}
-    </Flex>
+
+    </div>
  </Flex>
   <Button background='#06062A' color='#FFFFFF' onClick={()=>{setOpenInput(true),setOpenEmoji(false), setEditInputValue(""), setMode("reply")}}>Reply</Button>
 </Flex>

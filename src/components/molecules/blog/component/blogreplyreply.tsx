@@ -132,25 +132,29 @@ const handleAddReplyReply =async()=>{
  <Text type='' text={replyreply.text} size={16} weight={400} margin={"0 0 24px 0"}/>
 <Flex justify='space-between' align='center'>
  <Flex align='center'justify='flex-start' gap="36px" width='25%' >
-    <Flex align='center' gap='10px' cursor='pointer'>
+
+           <div style={{alignItems:'center', display:"flex", flexDirection:"row", gap:'10px', cursor:'pointer'}} >
      <BiSolidLike color={likedByUser?"#7BBBD6":"#929292"} onClick={handleLikeAndUnlikeComment}/>
 
 
      {
-      replyreply?.likes?.length ?  <Text type='' text={`${replyreply?.likes?.length} ${replyreply?.likes?.length === 1 ? 'like' : 'likes'}`}/>
+     replyreply?.likes?.length ?  <p style={{ whiteSpace: 'nowrap' }}>{`${replyreply?.likes?.length} ${replyreply?.likes?.length === 1 ? 'like' : 'likes'}`}</p>
      :""}
     
-    </Flex>
+    </div>
 
-    <Flex align='center' gap="10px" cursor='pointer' onClick={()=>setOpenReplies(!openReplies)} width='100%'>
+
+      <div style={{alignItems:'center', display:"flex", flexDirection:"row", gap:'10px', cursor:'pointer'}}  onClick={()=>setOpenReplies(!openReplies)} >
        
-        <FaRegComment/>
-      {
-      replyreply?.replies?.length ?  <Text type='' text={`${replyreply?.replies?.length}    ${replyreply?.replies?.length === 1 ? 'comment' : 'comments'}`}/>
+        {/* <FaRegComment/> */}
+
+           {
+      replyreply?.replies?.length ?  <p style={{ whiteSpace: 'nowrap' }}>{`${replyreply?.replies?.length}    ${replyreply?.replies?.length === 1 ? 'comment' : 'comments'}`}</p>
      :""}
-    </Flex>
+
+    </div>
  </Flex>
-  <Button background='#06062A' color='#FFFFFF' onClick={()=>{setOpenInput(true),setOpenEmoji(false), setEditInputValue(""), setMode("reply")}}>Reply</Button>
+  {/* <Button background='#06062A' color='#FFFFFF' onClick={()=>{setOpenInput(true),setOpenEmoji(false), setEditInputValue(""), setMode("reply")}}>Reply</Button> */}
 </Flex>
 
 {
