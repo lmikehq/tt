@@ -18,11 +18,11 @@ import toast from 'react-hot-toast'
 import { ClickAwayListener } from '@mui/material'
 import useLikedByUser from './use-like-by-user'
 import { useUserStore } from '@/lib/store/useStore'
-import BlogReply from './blogreply'
+import BlogReplyReply from './blogreplyreply'
 interface Props {
    comment:any
    blogId:string;
-
+   reply:any;
 }
 
 const CommentWrapper = styled.div`
@@ -59,7 +59,7 @@ justify-content:space-between;
 align-items:center;
 padding:0 23px;
 `;
-const BlogComment = ({comment,blogId}:Props) => {
+const BlogReply = ({comment,blogId,reply}:Props) => {
    const [openOption, setOpenOption]= useState(false)
     const [openInput, setOpenInput]= useState(false)
 const [mode, setMode] = useState<"edit" | "reply">("edit");
@@ -67,29 +67,26 @@ const [mode, setMode] = useState<"edit" | "reply">("edit");
 const [editInputValue, setEditInputValue]= useState("");
 const [openReplies, setOpenReplies] =useState(false)
 const { user, setUser } = useUserStore();
- const { likedByUser, dislikedByUser } = useLikedByUser(comment, user?._id);
+ const { likedByUser} = useLikedByUser(reply, user?._id);
  const {setBlog} = useBlogStore(
         (state) => state);
 
-
-        console.log(comment,"comment")
-
  const handleEditSelectEmoji = (emoji: any) => {
         setEditInputValue((prevText) => prevText + emoji.emoji);
-    };
- const handleOpenReplies=()=>{
-        if(comment.replies.length>0){
-    setOpenReplies(!openReplies)
-        }}
+        
 
-        const handleLikeAndUnlikeComment =async()=>{
+    };
+
+
+
+        const handleLikeAndUnlikeReply =async()=>{
       try{
-       const response = await apiService(`/blog/${blogId}/comment/${comment._id}/like`, "POST")
+    console.log(reply,"reply")
+       const response = await apiService(`/blog/${blogId}/comment/${comment._id}/reply/${reply._id}/like`, "POST")
 
     if (response && response.success) {
       setBlog(response.data);
-        setEditInputValue("");
-      setOpenInput(false);
+
     }
 
       }catch (error) {
@@ -99,15 +96,17 @@ const { user, setUser } = useUserStore();
     }
 
 
-      const handleAddReply =async()=>{
+
+
+     const handleAddReply =async()=>{
       try{
-       const response = await apiService(`/blog/${blogId}/comment/${comment._id}/reply`, "POST",{
+       const response = await apiService(`/blog/${blogId}/comment/${comment._id}/reply/${reply._id}/reply`, "POST",{
          text:editInputValue
        })
 
     if (response && response.success) {
       setBlog(response.data);
-     
+       console.log(response.data, "resp")
          setEditInputValue("");
       setOpenInput(false);
     }
@@ -117,50 +116,59 @@ const { user, setUser } = useUserStore();
   }
      
     }
+
+
+    const handleOpenReplies=()=>{
+        if(reply.replies.length>0){
+    setOpenReplies(!openReplies)
+        }
+    
+
+    }
   return (
     <CommentWrapper>
 <Flex direction='row' margin='0 0 20px 0'>
     
 <Flex>
-     <UserAvatar img='' initial={comment?.userName}/>
+     <UserAvatar img='' initial={reply?.userName}/>
  <Flex direction='column' align='flex-start' justify='flex-start' margin='0 0 0 24px'>
-    <Text type='p' text={comment?.userName} size={20} weight={600} margin={"0 0 6px 0"}/>
+    <Text type='p' text={reply?.userName} size={20} weight={600} margin={"0 0 6px 0"}/>
 
     <Flex align='center' color='#D9D9D9' gap='14px'>
 <Text
   type='p'
-  text={comment.createdAt ? formatDistanceToNow(new Date(comment.createdAt), { addSuffix: true }) : ''} color='#929292'
+  text={reply.createdAt ? formatDistanceToNow(new Date(reply.createdAt), { addSuffix: true }) : ''} color='#929292'
   
 />
-{/* {
-   comment.edited && <span style={{background:"#929292", height:"8px", width:"8px", borderRadius:"50%"}}></span>
-} */}
+{
+   reply.edited && <span style={{background:"#929292", height:"8px", width:"8px", borderRadius:"50%"}}></span>
+}
 
-<Text type='p'size={16} text={comment.edited?"":""} color='#929292'/>
+<Text type='p'size={16} text={reply.edited?"Edited":""} color='#929292'/>
     </Flex>
 
  </Flex>
 </Flex>
 {/* <CiMenuKebab style={{marginTop:"12px"}} onClick={()=>setOpenOption(!openOption)} cursor="pointer" color='#000000' size={24}/> */}
 </Flex>
- <Text type='' text={comment.text} size={16} weight={400} margin={"0 0 24px 0"}/>
+ <Text type='' text={reply.text} size={16} weight={400} margin={"0 0 24px 0"}/>
 <Flex justify='space-between' align='center'>
  <Flex align='center'justify='flex-start' gap="36px" width='25%' >
     <Flex align='center' gap='10px' cursor='pointer'>
-     <BiSolidLike color={likedByUser?"#7BBBD6":"#929292"} onClick={handleLikeAndUnlikeComment}/>
+     <BiSolidLike color={likedByUser?"#7BBBD6":"#929292"} onClick={handleLikeAndUnlikeReply}/>
 
 
      {
-      comment?.likes?.length ?  <Text type='' text={`${comment?.likes?.length} ${comment?.likes?.length === 1 ? 'like' : 'likes'}`}/>
+      reply?.likes?.length ?  <Text type='' text={`${reply?.likes?.length} ${reply?.likes?.length === 1 ? 'like' : 'likes'}`}/>
      :""}
     
     </Flex>
 
-    <Flex align='center' gap="10px" cursor='pointer' onClick={handleOpenReplies} width='100%'>
+    <Flex align='center' gap="10px" cursor='pointer' onClick={handleOpenReplies}>
        
         <FaRegComment/>
       {
-      comment?.replies?.length ?  <Text type='' text={`${comment?.replies?.length}    ${comment?.replies?.length === 1 ? 'comment' : 'comments'}`}/>
+      reply?.replies?.length ?  <Text type='' text={`${reply?.replies?.length}    ${reply?.replies?.length === 1 ? 'comment' : 'comments'}`}/>
      :""}
     </Flex>
  </Flex>
@@ -185,28 +193,28 @@ const { user, setUser } = useUserStore();
 
 
 {
-   openReplies && <RepliesWrapper>
+   openReplies ? <RepliesWrapper>
        {
-        comment.replies.map((reply:any, i:number)=>
+        reply.replies.map((replyreply:any, i:number)=>
         <div key={i}>
-             <BlogReply blogId={blogId} comment={comment} reply={reply}/>
+             <BlogReplyReply blogId={blogId} comment={comment} reply={reply} replyreply={replyreply}/>
         </div>
        )
       }
-  </RepliesWrapper>
+  </RepliesWrapper>:""
 }
 
    
 
 
 
-{
+{/* {
    openOption && <CommentOption blogId={blogId} commentId={comment._id} onClose={()=>setOpenOption(false)} openField={()=>{setOpenInput(true), setEditInputValue(comment.text),setMode("edit")}}/>
-}
+} */}
        
 
     </CommentWrapper>
   )
 }
 
-export default BlogComment
+export default BlogReply

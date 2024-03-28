@@ -144,11 +144,11 @@ console.log(response,"resp")
       width="60%"
 
     >
-      <Box styles={{display:"flex", flexDirection:"column", padding:isMobile?"2rem 0 0 0":"6rem 0 0 0", position:"relative"}}>
+      <Box styles={{display:"flex", flexDirection:"column", padding:isMobile?"2rem 0 0 0":"4rem 0 0 0", position:"relative"}}>
        {
   isMobile?null:  <Image src={"/assets/images/blog/ttlogo.svg"} alt="" styles={{height:"auto", maxWidth:"18.7%", position:"absolute", top:"-50%", left:"0%"}}/>
 }
-             <Text type="h1" text="Article Feedback" size={isMobile?24:28} weight={600}/>
+             <Text type="h1" text="Help Us improve Articles on Thrillers Travels" size={isMobile?24:28} weight={600}/>
 
               <Text type="p" text="How would you like to rate the article?"  weight={600}/>
 

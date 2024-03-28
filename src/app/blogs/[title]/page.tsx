@@ -27,7 +27,8 @@ import toast from "react-hot-toast";
 import { BsBoxArrowUp } from "react-icons/bs";
 import { GoDotFill } from "react-icons/go";
 import { FaRegComment } from "react-icons/fa";
-import { VscThumbsupFilled ,VscThumbsdownFilled} from "react-icons/vsc";
+import { BiSolidLike, BiSolidDislike  } from "react-icons/bi";
+
 import styled from "styled-components";
 import UserAvatar from "@/components/atoms/user-avatar";
 import BlogCommentSection from "@/components/organisms/blog-comment-section";
@@ -116,7 +117,7 @@ const handleDislike = async (blogId: string) => {
     }
 
     if (!user?._id) {
-      setDislikeModal(true);
+      setLikeModal(true);
       return;
     }
 
@@ -159,7 +160,7 @@ const handleDislike = async (blogId: string) => {
     return (
         <SectionLayout>
             <Flex direction="column"  margin="111px 0 0">
-                <Text type="h3" text="ENJOY TRAVEL EXPERIENCE IN FORM OF A STORY" size={isMobile?45:64} weight={700} textAlign="center" margin={0}/>
+                {/* <Text type="h3" text="ENJOY TRAVEL EXPERIENCE IN FORM OF A STORY" size={isMobile?45:64} weight={700} textAlign="center" margin={0}/> */}
                 <Image
                     // src={blog?.blogImage}
                         src={"/assets/images/blog-dummy-img.svg"}
@@ -168,7 +169,7 @@ const handleDislike = async (blogId: string) => {
                         borderRadius: "8px",
                         maxWidth: "100%",
                         height: "auto",
-                        margin:"105px 0 64px 0"
+                        margin:"0px 0 64px 0"
                     }}
                 />
 
@@ -271,8 +272,8 @@ const handleDislike = async (blogId: string) => {
                                        
                                     >
                                         <div style={{display:"flex", alignItems:"center", gap:"10px"}}>
-  <VscThumbsupFilled cursor="pointer"
-                                            color={likedByUser?"blue":"#929292"}
+  <BiSolidLike cursor="pointer"
+                                            color={likedByUser?"#7BBBD6":"#929292"}
                                             size="24px"
                 
                                              onClick={()=>handleLike(blog._id)}
@@ -285,8 +286,8 @@ const handleDislike = async (blogId: string) => {
                                         />
                                         </div>
                                       
-                                        <VscThumbsdownFilled cursor="pointer"
-                                             color={dislikedByUser?"blue":"#929292"}
+                                        <BiSolidDislike  cursor="pointer"
+                                             color={dislikedByUser?"#7BBBD6":"#929292"}
                                             size="24px"
                                               onClick={()=>handleDislike(blog._id)}
                                         />
@@ -348,8 +349,8 @@ const handleDislike = async (blogId: string) => {
                                 styles={{ display: isMobile ? "flex" : "none" }}
                             >
                                <div style={{display:"flex", alignItems:"center", gap:"10px"}}>
-  <VscThumbsupFilled cursor="pointer"
-                                            color={likedByUser?"blue":"#929292"}
+  <BiSolidLike cursor="pointer"
+                                            color={likedByUser?"#7BBBD6":"#929292"}
                                             size="24px"
                 
                                              onClick={()=>handleLike(blog._id)}
@@ -361,7 +362,7 @@ const handleDislike = async (blogId: string) => {
                                             margin={0}
                                         />
                                         </div>
-                                <VscThumbsdownFilled  cursor="pointer"  color={dislikedByUser?"blue":"#929292"} size="24px"     onClick={()=>handleDislike(blog._id)}/>
+                                <BiSolidDislike   cursor="pointer"  color={dislikedByUser?"#7BBBD6":"#929292"} size="24px"     onClick={()=>handleDislike(blog._id)}/>
                                <div style={{display:"flex", alignItems:"center", gap:"10px"}}>   <FaRegComment color="#929292"  size="20px"/>
                                          <Text
                                             type="p"
@@ -481,7 +482,7 @@ const handleDislike = async (blogId: string) => {
                                     align="center"
                                     gap="10px"
                                 >
-                                    <VscThumbsupFilled
+                                    <BiSolidLike
                                         color="#929292"
                                         size="24px"
                                     />
@@ -491,7 +492,7 @@ const handleDislike = async (blogId: string) => {
                                         color="#929292"
                                         cursor="pointer"
                                     />
-                                    <VscThumbsdownFilled
+                                    <BiSolidDislike 
                                         color="#929292"
                                         size="24px"
                                     />
@@ -590,7 +591,7 @@ const handleDislike = async (blogId: string) => {
                                     align="center"
                                     gap="10px"
                                 >
-                                    <VscThumbsupFilled
+                                    <BiSolidLike
                                         color="#929292"
                                         size="24px"
                                     />
@@ -600,7 +601,7 @@ const handleDislike = async (blogId: string) => {
                                         color="#929292"
                                         cursor="pointer"
                                     />
-                                    <VscThumbsdownFilled
+                                    <BiSolidDislike 
                                         color="#929292"
                                         size="24px"
                                     />
@@ -701,7 +702,7 @@ const handleDislike = async (blogId: string) => {
                                     align="center"
                                     gap="10px"
                                 >
-                                    <VscThumbsupFilled
+                                    <BiSolidLike
                                         color="#929292"
                                         size="24px"
                                     />
@@ -711,7 +712,7 @@ const handleDislike = async (blogId: string) => {
                                         color="#929292"
                                         cursor="pointer"
                                     />
-                                    <VscThumbsdownFilled
+                                    <BiSolidDislike 
                                         color="#929292"
                                         size="24px"
                                     />
@@ -806,7 +807,7 @@ const handleDislike = async (blogId: string) => {
                                     align="center"
                                     gap="10px"
                                 >
-                                    <VscThumbsupFilled
+                                    <BiSolidLike
                                         color="#929292"
                                         size="24px"
                                     />
@@ -816,7 +817,7 @@ const handleDislike = async (blogId: string) => {
                                         color="#929292"
                                         cursor="pointer"
                                     />
-                                    <VscThumbsdownFilled
+                                    <BiSolidDislike 
                                         color="#929292"
                                         size="24px"
                                     />
@@ -828,7 +829,7 @@ const handleDislike = async (blogId: string) => {
                 </Flex>
             </Flex>
                   <LikeModal open={likeModal} onClose={()=>setLikeModal(false)}/>
-            <DislikeModal open={dislikeModal} onClose={()=>setDislikeModal(false)}/>
+            {/* <DislikeModal open={dislikeModal} onClose={()=>setDislikeModal(false)}/> */}
 
                   <BlogFeedbackModal open={feedbackModal} blog={blog} onClose={()=>setFeedbackModal(false)}/>
                   <SuccessModal open={feedbackSuccessModal} onClose={()=>setFeedbackSuccessModal(false)}/>

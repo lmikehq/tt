@@ -8,11 +8,12 @@ type IPicker = {
     handleCloseEmoji?: () => void;
 };
 
+
 const EmojiPicker: React.FC<IPicker> = ({ onSelect, handleCloseEmoji = () => {} }) => {
     return (
         <ClickAwayListener onClickAway={handleCloseEmoji}>
             <EmojiPickerContainer>
-               <EmojiPickerComponent  />
+               <EmojiPickerComponent onEmojiClick={onSelect}  />
             </EmojiPickerContainer>
         </ClickAwayListener>
     );
@@ -22,8 +23,8 @@ export default EmojiPicker;
 
 const EmojiPickerContainer = styled.div`
     position: absolute;
-    bottom: -10%;
+    bottom: -195%;
     left: 50%;
-    transform: translate(-50%, -50%);
+transform: translate(-50%, -50%);
     z-index: 4;
 `;

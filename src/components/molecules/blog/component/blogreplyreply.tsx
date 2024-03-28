@@ -18,11 +18,11 @@ import toast from 'react-hot-toast'
 import { ClickAwayListener } from '@mui/material'
 import useLikedByUser from './use-like-by-user'
 import { useUserStore } from '@/lib/store/useStore'
-import BlogReply from './blogreply'
 interface Props {
    comment:any
    blogId:string;
-
+   reply:any;
+   replyreply:any;
 }
 
 const CommentWrapper = styled.div`
@@ -59,7 +59,7 @@ justify-content:space-between;
 align-items:center;
 padding:0 23px;
 `;
-const BlogComment = ({comment,blogId}:Props) => {
+const BlogReplyReply = ({comment,blogId,reply,replyreply}:Props) => {
    const [openOption, setOpenOption]= useState(false)
     const [openInput, setOpenInput]= useState(false)
 const [mode, setMode] = useState<"edit" | "reply">("edit");
@@ -67,47 +67,33 @@ const [mode, setMode] = useState<"edit" | "reply">("edit");
 const [editInputValue, setEditInputValue]= useState("");
 const [openReplies, setOpenReplies] =useState(false)
 const { user, setUser } = useUserStore();
- const { likedByUser, dislikedByUser } = useLikedByUser(comment, user?._id);
+ const { likedByUser} = useLikedByUser(replyreply, user?._id);
  const {setBlog} = useBlogStore(
         (state) => state);
-
-
-        console.log(comment,"comment")
 
  const handleEditSelectEmoji = (emoji: any) => {
         setEditInputValue((prevText) => prevText + emoji.emoji);
     };
- const handleOpenReplies=()=>{
-        if(comment.replies.length>0){
-    setOpenReplies(!openReplies)
-        }}
-
-        const handleLikeAndUnlikeComment =async()=>{
+    const handleLikeAndUnlikeComment =async()=>{
       try{
-       const response = await apiService(`/blog/${blogId}/comment/${comment._id}/like`, "POST")
+       const response = await apiService(`/blog/${blogId}/comment/${comment._id}/reply/${reply._id}/reply/${replyreply._id}/like`, "POST")
 
     if (response && response.success) {
       setBlog(response.data);
-        setEditInputValue("");
-      setOpenInput(false);
     }
-
       }catch (error) {
     toast.error("Failed to like comment. Please try again.");
-  }
-     
+  } 
     }
 
-
-      const handleAddReply =async()=>{
+const handleAddReplyReply =async()=>{
       try{
-       const response = await apiService(`/blog/${blogId}/comment/${comment._id}/reply`, "POST",{
+       const response = await apiService(`/blog/${blogId}/comment/${comment._id}/reply/${reply._id}/reply`, "POST",{
          text:editInputValue
        })
 
     if (response && response.success) {
       setBlog(response.data);
-     
          setEditInputValue("");
       setOpenInput(false);
     }
@@ -122,28 +108,28 @@ const { user, setUser } = useUserStore();
 <Flex direction='row' margin='0 0 20px 0'>
     
 <Flex>
-     <UserAvatar img='' initial={comment?.userName}/>
+     <UserAvatar img='' initial={replyreply?.userName}/>
  <Flex direction='column' align='flex-start' justify='flex-start' margin='0 0 0 24px'>
-    <Text type='p' text={comment?.userName} size={20} weight={600} margin={"0 0 6px 0"}/>
+    <Text type='p' text={replyreply?.userName} size={20} weight={600} margin={"0 0 6px 0"}/>
 
     <Flex align='center' color='#D9D9D9' gap='14px'>
 <Text
   type='p'
-  text={comment.createdAt ? formatDistanceToNow(new Date(comment.createdAt), { addSuffix: true }) : ''} color='#929292'
+  text={replyreply.createdAt ? formatDistanceToNow(new Date(replyreply.createdAt), { addSuffix: true }) : ''} color='#929292'
   
 />
-{/* {
-   comment.edited && <span style={{background:"#929292", height:"8px", width:"8px", borderRadius:"50%"}}></span>
-} */}
+{
+   replyreply.edited && <span style={{background:"#929292", height:"8px", width:"8px", borderRadius:"50%"}}></span>
+}
 
-<Text type='p'size={16} text={comment.edited?"":""} color='#929292'/>
+<Text type='p'size={16} text={replyreply.edited?"Edited":""} color='#929292'/>
     </Flex>
 
  </Flex>
 </Flex>
 {/* <CiMenuKebab style={{marginTop:"12px"}} onClick={()=>setOpenOption(!openOption)} cursor="pointer" color='#000000' size={24}/> */}
 </Flex>
- <Text type='' text={comment.text} size={16} weight={400} margin={"0 0 24px 0"}/>
+ <Text type='' text={replyreply.text} size={16} weight={400} margin={"0 0 24px 0"}/>
 <Flex justify='space-between' align='center'>
  <Flex align='center'justify='flex-start' gap="36px" width='25%' >
     <Flex align='center' gap='10px' cursor='pointer'>
@@ -151,16 +137,16 @@ const { user, setUser } = useUserStore();
 
 
      {
-      comment?.likes?.length ?  <Text type='' text={`${comment?.likes?.length} ${comment?.likes?.length === 1 ? 'like' : 'likes'}`}/>
+      replyreply?.likes?.length ?  <Text type='' text={`${replyreply?.likes?.length} ${replyreply?.likes?.length === 1 ? 'like' : 'likes'}`}/>
      :""}
     
     </Flex>
 
-    <Flex align='center' gap="10px" cursor='pointer' onClick={handleOpenReplies} width='100%'>
+    <Flex align='center' gap="10px" cursor='pointer' onClick={()=>setOpenReplies(!openReplies)} width='100%'>
        
         <FaRegComment/>
       {
-      comment?.replies?.length ?  <Text type='' text={`${comment?.replies?.length}    ${comment?.replies?.length === 1 ? 'comment' : 'comments'}`}/>
+      replyreply?.replies?.length ?  <Text type='' text={`${replyreply?.replies?.length}    ${replyreply?.replies?.length === 1 ? 'comment' : 'comments'}`}/>
      :""}
     </Flex>
  </Flex>
@@ -173,7 +159,7 @@ const { user, setUser } = useUserStore();
       
       <InputWrapper>
             <Input border="none" color='#000000' size="20px" weight="300" type="textArea" styles={{borderRadius:"12px",resize:"none", height:"50px"}} value={editInputValue} onChange={(e)=>setEditInputValue(e.target.value)}/>
-            <ButtonsWrapper><BsEmojiLaughingFill onClick={()=>setOpenEmoji(!openEmoji)} cursor="pointer" color='#bbb' size={24}/>  <Button background='#06062A' color='#FFFFFF' onClick={handleAddReply}>Send</Button></ButtonsWrapper>
+            <ButtonsWrapper><BsEmojiLaughingFill onClick={()=>setOpenEmoji(!openEmoji)} cursor="pointer" color='#bbb' size={24}/>  <Button background='#06062A' color='#FFFFFF' onClick={handleAddReplyReply}>Send</Button></ButtonsWrapper>
               {
             openEmoji &&    <EmojiPicker handleCloseEmoji={()=>setOpenEmoji(false)} onSelect={handleEditSelectEmoji}/>
          }
@@ -183,30 +169,10 @@ const { user, setUser } = useUserStore();
   
 }
 
-
-{
-   openReplies && <RepliesWrapper>
-       {
-        comment.replies.map((reply:any, i:number)=>
-        <div key={i}>
-             <BlogReply blogId={blogId} comment={comment} reply={reply}/>
-        </div>
-       )
-      }
-  </RepliesWrapper>
-}
-
-   
-
-
-
-{
-   openOption && <CommentOption blogId={blogId} commentId={comment._id} onClose={()=>setOpenOption(false)} openField={()=>{setOpenInput(true), setEditInputValue(comment.text),setMode("edit")}}/>
-}
        
 
     </CommentWrapper>
   )
 }
 
-export default BlogComment
+export default BlogReplyReply
