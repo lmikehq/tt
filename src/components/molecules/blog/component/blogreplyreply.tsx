@@ -164,7 +164,7 @@ const handleAddReplyReply =async()=>{
 
 {
    openInput  && 
-   <ClickAwayListener onClickAway={()=>setOpenInput(false)}>
+  //  <ClickAwayListener onClickAway={()=>setOpenInput(false)}>
       
       <InputWrapper>
             <Input border="none" color='#000000' size={isMobile?"16px":"20px"}  weight="300" type="textArea" styles={{borderRadius:"12px",resize:"none", height:"50px"}} value={editInputValue} onChange={(e)=>setEditInputValue(e.target.value)}/>
@@ -180,7 +180,7 @@ const handleAddReplyReply =async()=>{
          }
          </InputWrapper>
          
-         </ClickAwayListener>
+        //  </ClickAwayListener>
   
 }
 

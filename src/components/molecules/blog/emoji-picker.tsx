@@ -2,6 +2,7 @@ import React from 'react';
 import EmojiPickerComponent  from 'emoji-picker-react';
 import { ClickAwayListener } from '@mui/material';
 import styled from 'styled-components';
+import { useScreenResolution } from '@/lib/extensions/hook/useScreenResolution';
 
 type IPicker = {
     onSelect?: (emoji: any) => void;
@@ -10,9 +11,10 @@ type IPicker = {
 
 
 const EmojiPicker: React.FC<IPicker> = ({ onSelect, handleCloseEmoji = () => {} }) => {
+     const { isMobile } = useScreenResolution();
     return (
         <ClickAwayListener onClickAway={handleCloseEmoji}>
-            <EmojiPickerContainer>
+            <EmojiPickerContainer style={{}}>
                <EmojiPickerComponent onEmojiClick={onSelect}  />
             </EmojiPickerContainer>
         </ClickAwayListener>

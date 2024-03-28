@@ -182,14 +182,14 @@ const { user, setUser } = useUserStore();
     </div>
  </Flex>
 
- <Button height={isMobile?"30px":"40px"} width={isMobile?"80px":""} background='#06062A' color='#FFFFFF' onClick={()=>{setOpenInput(true),setOpenEmoji(false), setEditInputValue(""), setMode("reply")}}>Reply</Button>
+ <Button height={isMobile?"30px":"40px"} width={isMobile?"80px":""} background='#06062A' color='#FFFFFF' onClick={()=>{setOpenInput(!openInput),setOpenEmoji(false), setEditInputValue(""), setMode("reply")}}>Reply</Button>
  
 
 </Flex>
 
 {
    openInput  && 
-   <ClickAwayListener onClickAway={()=>setOpenInput(false)}>
+  //  <ClickAwayListener onClickAway={()=>setOpenInput(false)}>
       
       <InputWrapper>
             <Input border="none" color='#000000' size={isMobile?"16px":"20px"}  weight="300" type="textArea" styles={{borderRadius:"12px",resize:"none", height:"50px"}} value={editInputValue} onChange={(e)=>setEditInputValue(e.target.value)}/>
@@ -207,7 +207,7 @@ const { user, setUser } = useUserStore();
          }
          </InputWrapper>
          
-         </ClickAwayListener>
+        //  </ClickAwayListener>
   
 }
 
