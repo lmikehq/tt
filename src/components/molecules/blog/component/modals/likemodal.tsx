@@ -41,6 +41,7 @@ const LikeModal = ({ open, onClose}: Props) => {
         (state) => state);
          const [submitClicked, setSubmitClicked] = useState(false);
   const [errmessage, setErrorMessage]=useState("");
+   const [loginerrmessage, setLoginErrorMessage]=useState("");
  const { setUser } = useUserStore((state) => state);
 const searchParams = useSearchParams();
 
@@ -112,7 +113,9 @@ const searchParams = useSearchParams();
 
     }
     setErrorMessage("")
+    setLoginErrorMessage("")
     setSubmitClicked(false);
+    setCreateForm(false);
   }, [loginData, loginData]);
 
      async function handleLogin(): Promise<any> {
@@ -191,7 +194,6 @@ setErrorMessage("");
       setSubmissionState({ ...submissionState, error: [{ property: "email", constraints: res.errors.message }] });
     } else {
       onClose();
-      setFeedbackModal(true);
         setSubmissionState({ ...submissionState, loading: false });
       toast.success("Your account has been created successfully!");
     }
@@ -212,7 +214,7 @@ setErrorMessage("");
     const res = await handleLogin();
 
     if (res?.statusCode === 401) {
-      setErrorMessage("Invalid email or password")
+      setLoginErrorMessage("Invalid email or password")
       return setSubmissionState({
         ...submissionState,
       
@@ -227,11 +229,10 @@ setErrorMessage("");
       window.localStorage.setItem('user', res?.token);
       rateHawkResourceClient.defaults.headers.common['Authorization'] = `Bearer ${res?.token}`;
        onClose();
-
       toast.success("You have successfully logged in!");
 
     } else {
-      setErrorMessage("Something went wrong")
+      setLoginErrorMessage("Something went wrong")
       setSubmissionState({
         ...submissionState,
     
@@ -456,15 +457,12 @@ setErrorMessage("");
               
           </div>
         )}
-          {checkIfFieldHasError(
-                submissionState?.error,
-                "email"
-              ) && (
+         {loginerrmessage && (
                   <Text
                     type="p"
-                    text={submissionState.error[0].constraints}
+                    text={loginerrmessage}
                     color="#FF8682"
-                    margin={"0 0 20px 0"}
+                    margin="0 0 20px 0"
                   />
                 )}
 

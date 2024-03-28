@@ -22,7 +22,7 @@ import { useUserStore } from "@/lib/store/useStore";
 import { ttColors } from "@/lib/theme/colors";
 import dayjs from "dayjs";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { BsBoxArrowUp } from "react-icons/bs";
 import { GoDotFill } from "react-icons/go";
@@ -32,6 +32,7 @@ import { BiSolidLike, BiSolidDislike  } from "react-icons/bi";
 import styled from "styled-components";
 import UserAvatar from "@/components/atoms/user-avatar";
 import BlogCommentSection from "@/components/organisms/blog-comment-section";
+import { Grid } from "@/components/templates/grid";
 
 const Box = styled.div`
     width: 886px;
@@ -46,10 +47,19 @@ const Preview = ({ params }: { params: any }) => {
      const {mode,getBlog, blog,setBlogs,likeModal,getAllBlogs, setLikeModal, setDislikeModal,blogs,setBlog, dislikeModal,feedbackModal, setFeedbackModal,setFeedbackSuccessModal,feedbackSuccessModal,shareModal, setShareModal} = useBlogStore(
         (state) => state);
           const pathname = usePathname();
+        const commentSectionRef = useRef<HTMLDivElement>(null);
   const fullUrl = window.location.origin + pathname;
   const { user, setUser } = useUserStore();
           const { likedByUser, dislikedByUser } = useLikedByUser(blog, user?._id);
         const [userIp, setUserIp] = useState<string>("");
+         const [openCommentField, setOpenCommentField] = useState(false);
+
+          const scrollToCommentSection = () => {
+    if (commentSectionRef.current) {
+      commentSectionRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+    setOpenCommentField(true)
+  };
 
     // const { data } = useFetchBlogBySlug(params?.title);
     // const { data: blogs = [] } = useFetchBlogs({});
@@ -158,8 +168,8 @@ const handleDislike = async (blogId: string) => {
         );
 
     return (
-        <SectionLayout>
-            <Flex direction="column"  margin="111px 0 0">
+        <SectionLayout style={{width:isMobile?"90%":"59.02%"}}>
+            <Flex direction="column"  margin="111px 0 120px 0">
                 {/* <Text type="h3" text="ENJOY TRAVEL EXPERIENCE IN FORM OF A STORY" size={isMobile?45:64} weight={700} textAlign="center" margin={0}/> */}
                 <Image
                     // src={blog?.blogImage}
@@ -291,7 +301,7 @@ const handleDislike = async (blogId: string) => {
                                             size="24px"
                                               onClick={()=>handleDislike(blog._id)}
                                         />
-                                        <div style={{display:"flex", alignItems:"center", gap:"10px"}}>   <FaRegComment color="#929292"  size="20px"/>
+                                        <div style={{display:"flex", alignItems:"center", gap:"10px"}} onClick={scrollToCommentSection}>   <FaRegComment color="#929292"  size="20px"/>
                                          <Text
                                             type="p"
                                             text={`${blog?.comments.length}`}
@@ -363,7 +373,7 @@ const handleDislike = async (blogId: string) => {
                                         />
                                         </div>
                                 <BiSolidDislike   cursor="pointer"  color={dislikedByUser?"#7BBBD6":"#929292"} size="24px"     onClick={()=>handleDislike(blog._id)}/>
-                               <div style={{display:"flex", alignItems:"center", gap:"10px"}}>   <FaRegComment color="#929292"  size="20px"/>
+                               <div style={{display:"flex", alignItems:"center", gap:"10px"}} onClick={scrollToCommentSection}>   <FaRegComment color="#929292"  size="20px"/>
                                          <Text
                                             type="p"
                                             text={`${blog?.comments.length}`}
@@ -377,19 +387,23 @@ const handleDislike = async (blogId: string) => {
                 </Flex>
 
                 <CountryArticle article={{ body: blog?.content }} />
-
-            <BlogCommentSection blog={blog} />
+<div ref={commentSectionRef}>
+<BlogCommentSection blog={blog} inputfield={openCommentField} />
+</div>
+            
 
                 <Text
                     type="h2"
-                    text="Recent Articles"
+                    text="More Blog Posts"
                     size="24px"
                     weight={600}
+                    margin={"0 0 48px 0"}
                 />
-                <Flex gap={isMobile ? "30" : "28px"} wrap="wrap">
-                    {blogs.slice(0, 5).map((blog, index) => (
+                {/* <Flex gap={isMobile ? "30" : "28px"} wrap="wrap"> */}
+                    <Grid columns={isMobile ? "1": "2"}>{blogs.slice(0, 4).map((blog, index) => (
                         <BlogCardMini key={index} blog={blog} />
-                    ))}
+                    ))} </Grid>
+                    
                     {/* <Flex
                         justify="space-between"
                         direction={isMobile ? "column" : "row"}
@@ -826,7 +840,7 @@ const handleDislike = async (blogId: string) => {
                             </Flex>
                         </Flex>
                     </Flex> */}
-                </Flex>
+                {/* </Flex> */}
             </Flex>
                   <LikeModal open={likeModal} onClose={()=>setLikeModal(false)}/>
             {/* <DislikeModal open={dislikeModal} onClose={()=>setDislikeModal(false)}/> */}

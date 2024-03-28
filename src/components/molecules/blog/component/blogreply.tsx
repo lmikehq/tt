@@ -19,6 +19,8 @@ import { ClickAwayListener } from '@mui/material'
 import useLikedByUser from './use-like-by-user'
 import { useUserStore } from '@/lib/store/useStore'
 import BlogReplyReply from './blogreplyreply'
+import { IoSend } from "react-icons/io5";
+import { useScreenResolution } from '@/lib/extensions/hook/useScreenResolution'
 interface Props {
    comment:any
    blogId:string;
@@ -70,6 +72,7 @@ const { user, setUser } = useUserStore();
  const { likedByUser} = useLikedByUser(reply, user?._id);
  const {setBlog} = useBlogStore(
         (state) => state);
+         const { isMobile } = useScreenResolution();
 
  const handleEditSelectEmoji = (emoji: any) => {
         setEditInputValue((prevText) => prevText + emoji.emoji);
@@ -154,40 +157,57 @@ const { user, setUser } = useUserStore();
  <Text type='' text={reply.text} size={16} weight={400} margin={"0 0 24px 0"}/>
 <Flex justify='space-between' align='center'>
  <Flex align='center'justify='flex-start' gap="36px" width='25%' >
-    <Flex align='center' gap='10px' cursor='pointer'>
+
+
+
+       <div style={{alignItems:'center', display:"flex", flexDirection:"row", gap:'10px', cursor:'pointer'}} >
      <BiSolidLike color={likedByUser?"#7BBBD6":"#929292"} onClick={handleLikeAndUnlikeReply}/>
 
 
      {
-      reply?.likes?.length ?  <Text type='' text={`${reply?.likes?.length} ${reply?.likes?.length === 1 ? 'like' : 'likes'}`}/>
+     reply?.likes?.length ?  <p style={{ whiteSpace: 'nowrap' }}>{`${reply?.likes?.length} ${isMobile?"" :reply?.likes?.length === 1 ? 'like' : 'likes'}`}</p>
      :""}
     
-    </Flex>
+    </div>
 
-    <Flex align='center' gap="10px" cursor='pointer' onClick={handleOpenReplies}>
+
+      <div style={{alignItems:'center', display:"flex", flexDirection:"row", gap:'10px', cursor:'pointer'}} onClick={handleOpenReplies} >
        
         <FaRegComment/>
-      {
-      reply?.replies?.length ?  <Text type='' text={`${reply?.replies?.length}    ${reply?.replies?.length === 1 ? 'comment' : 'comments'}`}/>
+
+           {
+      reply?.replies?.length ?  <p style={{ whiteSpace: 'nowrap' }}>{`${reply?.replies?.length}    ${isMobile?"" :reply?.replies?.length === 1 ? 'reply' : 'replies'}`}</p>
      :""}
-    </Flex>
+
+    </div>
  </Flex>
-  <Button background='#06062A' color='#FFFFFF' onClick={()=>{setOpenInput(true),setOpenEmoji(false), setEditInputValue(""), setMode("reply")}}>Reply</Button>
+
+ <Button height={isMobile?"30px":"40px"} width={isMobile?"80px":""} background='#06062A' color='#FFFFFF' onClick={()=>{setOpenInput(!openInput),setOpenEmoji(false), setEditInputValue(""), setMode("reply")}}>Reply</Button>
+ 
+
 </Flex>
 
 {
    openInput  && 
-   <ClickAwayListener onClickAway={()=>setOpenInput(false)}>
+  //  <ClickAwayListener onClickAway={()=>setOpenInput(false)}>
       
       <InputWrapper>
-            <Input border="none" color='#000000' size="20px" weight="300" type="textArea" styles={{borderRadius:"12px",resize:"none", height:"50px"}} value={editInputValue} onChange={(e)=>setEditInputValue(e.target.value)}/>
-            <ButtonsWrapper><BsEmojiLaughingFill onClick={()=>setOpenEmoji(!openEmoji)} cursor="pointer" color='#bbb' size={24}/>  <Button background='#06062A' color='#FFFFFF' onClick={handleAddReply}>Send</Button></ButtonsWrapper>
+            <Input border="none" color='#000000' size={isMobile?"16px":"20px"}  weight="300" type="textArea" styles={{borderRadius:"12px",resize:"none", height:"50px"}} value={editInputValue} onChange={(e)=>setEditInputValue(e.target.value)}/>
+            <ButtonsWrapper><BsEmojiLaughingFill onClick={()=>setOpenEmoji(!openEmoji)} cursor="pointer" color='#bbb' size={24}/> 
+            
+          <Button height={isMobile?"30px":"40px"} width={isMobile?"80px":""} background='#06062A' color='#FFFFFF' onClick={handleAddReply}>Send</Button>
+            
+            
+         
+             
+             
+             </ButtonsWrapper>
               {
             openEmoji &&    <EmojiPicker handleCloseEmoji={()=>setOpenEmoji(false)} onSelect={handleEditSelectEmoji}/>
          }
          </InputWrapper>
          
-         </ClickAwayListener>
+        //  </ClickAwayListener>
   
 }
 

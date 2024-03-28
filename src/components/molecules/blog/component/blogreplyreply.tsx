@@ -18,6 +18,8 @@ import toast from 'react-hot-toast'
 import { ClickAwayListener } from '@mui/material'
 import useLikedByUser from './use-like-by-user'
 import { useUserStore } from '@/lib/store/useStore'
+import { IoSend } from "react-icons/io5";
+import { useScreenResolution } from '@/lib/extensions/hook/useScreenResolution'
 interface Props {
    comment:any
    blogId:string;
@@ -68,6 +70,7 @@ const [editInputValue, setEditInputValue]= useState("");
 const [openReplies, setOpenReplies] =useState(false)
 const { user, setUser } = useUserStore();
  const { likedByUser} = useLikedByUser(replyreply, user?._id);
+  const { isMobile } = useScreenResolution();
  const {setBlog} = useBlogStore(
         (state) => state);
 
@@ -132,40 +135,52 @@ const handleAddReplyReply =async()=>{
  <Text type='' text={replyreply.text} size={16} weight={400} margin={"0 0 24px 0"}/>
 <Flex justify='space-between' align='center'>
  <Flex align='center'justify='flex-start' gap="36px" width='25%' >
-    <Flex align='center' gap='10px' cursor='pointer'>
+
+           <div style={{alignItems:'center', display:"flex", flexDirection:"row", gap:'10px', cursor:'pointer'}} >
      <BiSolidLike color={likedByUser?"#7BBBD6":"#929292"} onClick={handleLikeAndUnlikeComment}/>
 
 
      {
-      replyreply?.likes?.length ?  <Text type='' text={`${replyreply?.likes?.length} ${replyreply?.likes?.length === 1 ? 'like' : 'likes'}`}/>
+     replyreply?.likes?.length ?  <p style={{ whiteSpace: 'nowrap' }}>{`${replyreply?.likes?.length} ${isMobile?"":replyreply?.likes?.length === 1 ? 'like' : 'likes'}`}</p>
      :""}
     
-    </Flex>
+    </div>
 
-    <Flex align='center' gap="10px" cursor='pointer' onClick={()=>setOpenReplies(!openReplies)} width='100%'>
+
+      <div style={{alignItems:'center', display:"flex", flexDirection:"row", gap:'10px', cursor:'pointer'}}  onClick={()=>setOpenReplies(!openReplies)} >
        
-        <FaRegComment/>
-      {
-      replyreply?.replies?.length ?  <Text type='' text={`${replyreply?.replies?.length}    ${replyreply?.replies?.length === 1 ? 'comment' : 'comments'}`}/>
+        {/* <FaRegComment/> */}
+
+           {
+      replyreply?.replies?.length ?  <p style={{ whiteSpace: 'nowrap' }}>{`${replyreply?.replies?.length}    ${isMobile?"":replyreply?.replies?.length === 1 ? 'comment' : 'comments'}`}</p>
      :""}
-    </Flex>
+
+    </div>
  </Flex>
-  <Button background='#06062A' color='#FFFFFF' onClick={()=>{setOpenInput(true),setOpenEmoji(false), setEditInputValue(""), setMode("reply")}}>Reply</Button>
+
+ {/* <Button height={isMobile?"30px":"40px"} width={isMobile?"80px":""} background='#06062A' color='#FFFFFF' onClick={()=>{setOpenInput(true),setOpenEmoji(false), setEditInputValue(""), setMode("reply")}}>Reply</Button> */}
+
 </Flex>
 
 {
    openInput  && 
-   <ClickAwayListener onClickAway={()=>setOpenInput(false)}>
+  //  <ClickAwayListener onClickAway={()=>setOpenInput(false)}>
       
       <InputWrapper>
-            <Input border="none" color='#000000' size="20px" weight="300" type="textArea" styles={{borderRadius:"12px",resize:"none", height:"50px"}} value={editInputValue} onChange={(e)=>setEditInputValue(e.target.value)}/>
-            <ButtonsWrapper><BsEmojiLaughingFill onClick={()=>setOpenEmoji(!openEmoji)} cursor="pointer" color='#bbb' size={24}/>  <Button background='#06062A' color='#FFFFFF' onClick={handleAddReplyReply}>Send</Button></ButtonsWrapper>
+            <Input border="none" color='#000000' size={isMobile?"16px":"20px"}  weight="300" type="textArea" styles={{borderRadius:"12px",resize:"none", height:"50px"}} value={editInputValue} onChange={(e)=>setEditInputValue(e.target.value)}/>
+            <ButtonsWrapper><BsEmojiLaughingFill onClick={()=>setOpenEmoji(!openEmoji)} cursor="pointer" color='#bbb' size={24}/>
+            
+<Button height={isMobile?"30px":"40px"} width={isMobile?"80px":""} background='#06062A' color='#FFFFFF' onClick={handleAddReplyReply}>Send</Button>
+            
+           
+            
+            </ButtonsWrapper>
               {
             openEmoji &&    <EmojiPicker handleCloseEmoji={()=>setOpenEmoji(false)} onSelect={handleEditSelectEmoji}/>
          }
          </InputWrapper>
          
-         </ClickAwayListener>
+        //  </ClickAwayListener>
   
 }
 
