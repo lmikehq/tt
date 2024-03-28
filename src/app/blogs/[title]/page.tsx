@@ -168,7 +168,7 @@ const handleDislike = async (blogId: string) => {
         );
 
     return (
-        <SectionLayout style={{width:"59.02%"}}>
+        <SectionLayout style={{width:isMobile?"90%":"59.02%"}}>
             <Flex direction="column"  margin="111px 0 120px 0">
                 {/* <Text type="h3" text="ENJOY TRAVEL EXPERIENCE IN FORM OF A STORY" size={isMobile?45:64} weight={700} textAlign="center" margin={0}/> */}
                 <Image
@@ -373,7 +373,7 @@ const handleDislike = async (blogId: string) => {
                                         />
                                         </div>
                                 <BiSolidDislike   cursor="pointer"  color={dislikedByUser?"#7BBBD6":"#929292"} size="24px"     onClick={()=>handleDislike(blog._id)}/>
-                               <div style={{display:"flex", alignItems:"center", gap:"10px"}}>   <FaRegComment color="#929292"  size="20px"/>
+                               <div style={{display:"flex", alignItems:"center", gap:"10px"}} onClick={scrollToCommentSection}>   <FaRegComment color="#929292"  size="20px"/>
                                          <Text
                                             type="p"
                                             text={`${blog?.comments.length}`}

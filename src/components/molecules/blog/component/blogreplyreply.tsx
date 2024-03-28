@@ -158,9 +158,8 @@ const handleAddReplyReply =async()=>{
     </div>
  </Flex>
 
- {/* {
-  isMobile?<IoSend color="#06062A" size={24} onClick={()=>{setOpenInput(true),setOpenEmoji(false), setEditInputValue(""), setMode("reply")}}/>:  <Button background='#06062A' color='#FFFFFF' onClick={()=>{setOpenInput(true),setOpenEmoji(false), setEditInputValue(""), setMode("reply")}}>Reply</Button>
-} */}
+ {/* <Button height={isMobile?"30px":"40px"} width={isMobile?"80px":""} background='#06062A' color='#FFFFFF' onClick={()=>{setOpenInput(true),setOpenEmoji(false), setEditInputValue(""), setMode("reply")}}>Reply</Button> */}
+
 </Flex>
 
 {
@@ -168,13 +167,11 @@ const handleAddReplyReply =async()=>{
    <ClickAwayListener onClickAway={()=>setOpenInput(false)}>
       
       <InputWrapper>
-            <Input border="none" color='#000000' size="20px" weight="300" type="textArea" styles={{borderRadius:"12px",resize:"none", height:"50px"}} value={editInputValue} onChange={(e)=>setEditInputValue(e.target.value)}/>
+            <Input border="none" color='#000000' size={isMobile?"16px":"20px"}  weight="300" type="textArea" styles={{borderRadius:"12px",resize:"none", height:"50px"}} value={editInputValue} onChange={(e)=>setEditInputValue(e.target.value)}/>
             <ButtonsWrapper><BsEmojiLaughingFill onClick={()=>setOpenEmoji(!openEmoji)} cursor="pointer" color='#bbb' size={24}/>
             
-
-            {
-              isMobile?<IoSend color='#06062A' onClick={handleAddReplyReply}/>: <Button background='#06062A' color='#FFFFFF' onClick={handleAddReplyReply}>Send</Button>
-            }
+<Button height={isMobile?"30px":"40px"} width={isMobile?"80px":""} background='#06062A' color='#FFFFFF' onClick={handleAddReplyReply}>Send</Button>
+            
            
             
             </ButtonsWrapper>

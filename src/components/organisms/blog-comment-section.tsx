@@ -94,14 +94,14 @@ const [showAllComments, setShowAllComments] = useState(false);
        <Text type="p" text="Write Comment" weight={600} size={24} margin="50px 0 16px 0"/>
 
          <InputWrapper>
-            <Input border="none"   color='#000000' size="20px" weight="300" type="textArea" styles={{borderRadius:"12px", resize:"none",height:'120px'}} value={inputValue} onChange={(e)=>setInputValue(e.target.value)}/>
+            <Input border="none"   color='#000000' size={isMobile?"16px":"20px"}  weight="300" type="textArea" styles={{borderRadius:"12px", resize:"none",height:'120px'}} value={inputValue} onChange={(e)=>setInputValue(e.target.value)}/>
             <ButtonsWrapper><BsEmojiLaughingFill onClick={()=>setOpenEmoji(!openEmoji)} cursor="pointer" color='#bbb' size={24}/> 
              
              
         
              
-               {isMobile?<IoSend color="#06062A" size={24} onClick={handleAddComment}/>: <Button background='#06062A' color='#FFFFFF' onClick={handleAddComment}>Send</Button>
-            }
+            <Button height={isMobile?"30px":"40px"} width={isMobile?"80px":""} background='#06062A' color='#FFFFFF' onClick={handleAddComment}>Send</Button>
+            
              
              </ButtonsWrapper>
               {
