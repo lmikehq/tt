@@ -11,7 +11,8 @@ import EmojiPicker from '../molecules/blog/emoji-picker'
 import apiService from '@/lib/extensions/hook/apiService'
 import toast from 'react-hot-toast'
 import { useBlogStore } from '@/lib/store/blog.store'
-
+import { IoSend } from "react-icons/io5";
+import { useScreenResolution } from '@/lib/extensions/hook/useScreenResolution'
 interface Props {
    blog:BlogInterface
    inputfield:boolean;
@@ -48,6 +49,7 @@ const [openEmoji, setOpenEmoji]= useState(false)
 const [inputValue, setInputValue]= useState("");
 const [showAllComments, setShowAllComments] = useState(false);
   const [numCommentsToShow, setNumCommentsToShow] = useState(5);
+     const { isMobile } = useScreenResolution();
  const {setBlog} = useBlogStore(
         (state) => state);
 
@@ -93,7 +95,15 @@ const [showAllComments, setShowAllComments] = useState(false);
 
          <InputWrapper>
             <Input border="none"   color='#000000' size="20px" weight="300" type="textArea" styles={{borderRadius:"12px", resize:"none",height:'120px'}} value={inputValue} onChange={(e)=>setInputValue(e.target.value)}/>
-            <ButtonsWrapper><BsEmojiLaughingFill onClick={()=>setOpenEmoji(!openEmoji)} cursor="pointer" color='#bbb' size={24}/>  <Button background='#06062A' color='#FFFFFF' onClick={handleAddComment}>Send</Button></ButtonsWrapper>
+            <ButtonsWrapper><BsEmojiLaughingFill onClick={()=>setOpenEmoji(!openEmoji)} cursor="pointer" color='#bbb' size={24}/> 
+             
+             
+        
+             
+               {isMobile?<IoSend color="#06062A" size={24} onClick={handleAddComment}/>: <Button background='#06062A' color='#FFFFFF' onClick={handleAddComment}>Send</Button>
+            }
+             
+             </ButtonsWrapper>
               {
             openEmoji &&    <EmojiPicker handleCloseEmoji={()=>setOpenEmoji(false)} onSelect={handleSelectEmoji}/>
          }

@@ -18,6 +18,8 @@ import toast from 'react-hot-toast'
 import { ClickAwayListener } from '@mui/material'
 import useLikedByUser from './use-like-by-user'
 import { useUserStore } from '@/lib/store/useStore'
+import { IoSend } from "react-icons/io5";
+import { useScreenResolution } from '@/lib/extensions/hook/useScreenResolution'
 interface Props {
    comment:any
    blogId:string;
@@ -68,6 +70,7 @@ const [editInputValue, setEditInputValue]= useState("");
 const [openReplies, setOpenReplies] =useState(false)
 const { user, setUser } = useUserStore();
  const { likedByUser} = useLikedByUser(replyreply, user?._id);
+  const { isMobile } = useScreenResolution();
  const {setBlog} = useBlogStore(
         (state) => state);
 
@@ -138,7 +141,7 @@ const handleAddReplyReply =async()=>{
 
 
      {
-     replyreply?.likes?.length ?  <p style={{ whiteSpace: 'nowrap' }}>{`${replyreply?.likes?.length} ${replyreply?.likes?.length === 1 ? 'like' : 'likes'}`}</p>
+     replyreply?.likes?.length ?  <p style={{ whiteSpace: 'nowrap' }}>{`${replyreply?.likes?.length} ${isMobile?"":replyreply?.likes?.length === 1 ? 'like' : 'likes'}`}</p>
      :""}
     
     </div>
@@ -149,12 +152,15 @@ const handleAddReplyReply =async()=>{
         {/* <FaRegComment/> */}
 
            {
-      replyreply?.replies?.length ?  <p style={{ whiteSpace: 'nowrap' }}>{`${replyreply?.replies?.length}    ${replyreply?.replies?.length === 1 ? 'comment' : 'comments'}`}</p>
+      replyreply?.replies?.length ?  <p style={{ whiteSpace: 'nowrap' }}>{`${replyreply?.replies?.length}    ${isMobile?"":replyreply?.replies?.length === 1 ? 'comment' : 'comments'}`}</p>
      :""}
 
     </div>
  </Flex>
-  {/* <Button background='#06062A' color='#FFFFFF' onClick={()=>{setOpenInput(true),setOpenEmoji(false), setEditInputValue(""), setMode("reply")}}>Reply</Button> */}
+
+ {/* {
+  isMobile?<IoSend color="#06062A" size={24} onClick={()=>{setOpenInput(true),setOpenEmoji(false), setEditInputValue(""), setMode("reply")}}/>:  <Button background='#06062A' color='#FFFFFF' onClick={()=>{setOpenInput(true),setOpenEmoji(false), setEditInputValue(""), setMode("reply")}}>Reply</Button>
+} */}
 </Flex>
 
 {
@@ -163,7 +169,15 @@ const handleAddReplyReply =async()=>{
       
       <InputWrapper>
             <Input border="none" color='#000000' size="20px" weight="300" type="textArea" styles={{borderRadius:"12px",resize:"none", height:"50px"}} value={editInputValue} onChange={(e)=>setEditInputValue(e.target.value)}/>
-            <ButtonsWrapper><BsEmojiLaughingFill onClick={()=>setOpenEmoji(!openEmoji)} cursor="pointer" color='#bbb' size={24}/>  <Button background='#06062A' color='#FFFFFF' onClick={handleAddReplyReply}>Send</Button></ButtonsWrapper>
+            <ButtonsWrapper><BsEmojiLaughingFill onClick={()=>setOpenEmoji(!openEmoji)} cursor="pointer" color='#bbb' size={24}/>
+            
+
+            {
+              isMobile?<IoSend color='#06062A' onClick={handleAddReplyReply}/>: <Button background='#06062A' color='#FFFFFF' onClick={handleAddReplyReply}>Send</Button>
+            }
+           
+            
+            </ButtonsWrapper>
               {
             openEmoji &&    <EmojiPicker handleCloseEmoji={()=>setOpenEmoji(false)} onSelect={handleEditSelectEmoji}/>
          }

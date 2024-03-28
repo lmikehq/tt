@@ -19,6 +19,8 @@ import { ClickAwayListener } from '@mui/material'
 import useLikedByUser from './use-like-by-user'
 import { useUserStore } from '@/lib/store/useStore'
 import BlogReply from './blogreply'
+import { IoSend } from "react-icons/io5";
+import { useScreenResolution } from '@/lib/extensions/hook/useScreenResolution'
 interface Props {
    comment:any
    blogId:string;
@@ -70,6 +72,7 @@ const { user, setUser } = useUserStore();
  const { likedByUser, dislikedByUser } = useLikedByUser(comment, user?._id);
  const {setBlog} = useBlogStore(
         (state) => state);
+          const { isMobile } = useScreenResolution();
 
 
         console.log(comment,"comment")
@@ -149,10 +152,11 @@ const { user, setUser } = useUserStore();
     <div style={{alignItems:'center', display:"flex", flexDirection:"row", gap:'10px', cursor:'pointer'}} >
      <BiSolidLike color={likedByUser?"#7BBBD6":"#929292"} onClick={handleLikeAndUnlikeComment}/>
 
-
-     {
-      comment?.likes?.length ?  <p style={{ whiteSpace: 'nowrap' }}>{`${comment?.likes?.length} ${comment?.likes?.length === 1 ? 'like' : 'likes'}`}</p>
+ {
+      comment?.likes?.length ?  <p style={{ whiteSpace: 'nowrap' }}>{`${comment?.likes?.length}  ${isMobile?"" :comment?.likes?.length === 1 ? 'like' : 'likes'} `}</p>
      :""}
+
+    
     
     </div>
 
@@ -162,12 +166,16 @@ const { user, setUser } = useUserStore();
         <FaRegComment/>
 
            {
-      comment?.replies?.length ?  <p style={{ whiteSpace: 'nowrap' }}>{`${comment?.replies?.length}    ${comment?.replies?.length === 1 ? 'reply' : 'replies'}`}</p>
+      comment?.replies?.length ?  <p style={{ whiteSpace: 'nowrap' }}>{`${comment?.replies?.length}    ${isMobile?"" : comment?.replies?.length === 1 ? 'reply' : 'replies'}`}</p>
      :""}
 
     </div>
  </Flex>
-  <Button background='#06062A' color='#FFFFFF' onClick={()=>{setOpenInput(true),setOpenEmoji(false), setEditInputValue(""), setMode("reply")}}>Reply</Button>
+{
+  isMobile?<IoSend color="#06062A" size={24} onClick={()=>{setOpenInput(true),setOpenEmoji(false), setEditInputValue(""), setMode("reply")}}/>:<Button background='#06062A' color='#FFFFFF' onClick={()=>{setOpenInput(true),setOpenEmoji(false), setEditInputValue(""), setMode("reply")}}>Reply</Button>
+}
+ 
+  
 </Flex>
 
 {
@@ -176,7 +184,15 @@ const { user, setUser } = useUserStore();
       
       <InputWrapper>
             <Input border="none" color='#000000' size="20px" weight="300" type="textArea" styles={{borderRadius:"12px",resize:"none", height:"50px"}} value={editInputValue} onChange={(e)=>setEditInputValue(e.target.value)}/>
-            <ButtonsWrapper><BsEmojiLaughingFill onClick={()=>setOpenEmoji(!openEmoji)} cursor="pointer" color='#bbb' size={24}/>  <Button background='#06062A' color='#FFFFFF' onClick={handleAddReply}>Send</Button></ButtonsWrapper>
+            <ButtonsWrapper><BsEmojiLaughingFill onClick={()=>setOpenEmoji(!openEmoji)} cursor="pointer" color='#bbb' size={24}/>
+            
+             {isMobile?<IoSend color="#06062A" size={24} onClick={handleAddReply}/>: <Button background='#06062A' color='#FFFFFF' onClick={handleAddReply}>Send</Button>
+            }
+            
+         
+              
+              
+              </ButtonsWrapper>
               {
             openEmoji &&    <EmojiPicker handleCloseEmoji={()=>setOpenEmoji(false)} onSelect={handleEditSelectEmoji}/>
          }
