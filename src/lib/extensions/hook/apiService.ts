@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import { toast } from "react-hot-toast";
 const globalAxios = axios.create({
-  baseURL:"http://localhost:5001",
+  baseURL:process.env.NEXT_PUBLIC_API_SERVER,
   withCredentials: true,
 });
 
