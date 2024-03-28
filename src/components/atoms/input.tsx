@@ -152,6 +152,7 @@ const Input = ({
           borderRadius: br || "4px",
           ...styles,
         }}
+         value={value}
         onChange={onChange}
       ></textarea>
     );

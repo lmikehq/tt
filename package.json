@@ -11,6 +11,8 @@
     "build+push": "yarn build && git add . && git commit -am 'built for push' && git pull origin main && git push"
   },
   "dependencies": {
+    "@emoji-mart/data": "^1.1.2",
+    "@emoji-mart/react": "^1.1.1",
     "@emotion/react": "^11.11.0",
     "@emotion/styled": "^11.11.0",
     "@frogress/line": "^1.2.2",
@@ -44,6 +46,8 @@
     "date-fns": "^2.30.0",
     "dayjs": "^1.11.10",
     "debounce": "^1.2.1",
+    "emoji-mart": "^5.5.2",
+    "emoji-picker-react": "^4.9.2",
     "eslint": "8.41.0",
     "eslint-config-next": "13.4.3",
     "formik": "^2.4.1",
