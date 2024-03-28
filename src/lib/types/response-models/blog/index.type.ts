@@ -6,6 +6,8 @@ export interface BlogInterface {
     tags: string[];
     likes: string[];
     dislikes: any[];
+    comments:any[];
+    feedbacks:any[];
     title: string;
     content: string;
     createdAt: string;

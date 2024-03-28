@@ -11,6 +11,10 @@ import dayjs from "dayjs";
 import PropTypes from "prop-types";
 import User from "../../../../../public/assets/images/blog/user.png";
 import Section from "../../section";
+import { useEffect, useState } from "react";
+
+import { useUserStore } from "@/lib/store/useStore";
+import { useBlogStore } from "@/lib/store/blog.store";
 
 interface BlogArticleProps {
     blog: BlogInterface;
@@ -109,7 +113,7 @@ export const BlogArticle = ({ blog }: BlogArticleProps) => {
                             <LiaThumbsUpSolid color="#929292" size="19.25px" />
                             <Text type="p" text="1.3k" color="#929292" />
                             <LiaThumbsDown color="#929292" size="19.25px" />
-                            <BsBoxArrowUp color="#929292" size="19.25px" />
+                            {/* <BsBoxArrowUp color="#929292" size="19.25px" /> */}
                         </Flex>
                     </Flex>
                 </Flex>
@@ -132,9 +136,36 @@ const BlogCardMini: React.FC<BlogCardMiniProps> = ({ blog }) => {
     const { isMobile } = useScreenResolution();
     const previewUrl = `/blogs/${blog.slug}`;
 
+
+                const [userIp, setUserIp] = useState<string>("");
+const { user, setUser } = useUserStore();
+  const { blogs,setBlogs,likeModal, setLikeModal, setDislikeModal, dislikeModal,feedbackModal, setFeedbackModal,setFeedbackSuccessModal,feedbackSuccessModal,shareModal, setShareModal} = useBlogStore(
+        (state) => state);
+      useEffect(() => {
+         
+    const fetchUserIp = async () => {
+      try {
+        const ipResponse = await fetch("https://api.ipify.org/?format=json");
+        const ipData = await ipResponse.json();
+        setUserIp(ipData.ip);
+        console.log("ip", ipData.ip)
+      } catch (error) {
+        console.error(" ip Error fetching user IP", error);
+      }
+    };
+    fetchUserIp();
+  }, [blogs]);
+
+  
+
+
+
+  
+
+
     return (
         <Section
-            width="30%"
+            width="100%"
             styles={{
                 minWidth: "300px",
             }}
@@ -236,7 +267,7 @@ const BlogCardMini: React.FC<BlogCardMiniProps> = ({ blog }) => {
                         </Flex>
                     </Flex>
                 </Flex>
-                <BsBoxArrowUp color="#929292" size="19.25px" />
+                {/* <BsBoxArrowUp color="#929292" size="19.25px"/> */}
             </Flex>
 
             <Flex direction="column" gap="1rem" margin="0.5rem 0">
@@ -277,7 +308,7 @@ const BlogCardMini: React.FC<BlogCardMiniProps> = ({ blog }) => {
                     />
 
                     <Flex width="fit-content" gap=".5rem">
-                        <Flex cursor="pointer">
+                        <Flex cursor="pointer" >
                             <Text
                                 type="p"
                                 text={blog.likes.length + ""}
@@ -286,7 +317,7 @@ const BlogCardMini: React.FC<BlogCardMiniProps> = ({ blog }) => {
                             />
                             <LiaThumbsUpSolid color="#929292" size="22px" />
                         </Flex>
-                        <Flex cursor="pointer">
+                        <Flex cursor="pointer" >
                             <LiaThumbsDown color="#929292" size="22px" />
                         </Flex>
                     </Flex>
@@ -319,6 +350,7 @@ const BlogCardMini: React.FC<BlogCardMiniProps> = ({ blog }) => {
                     <BsBoxArrowUp color="#929292" size="18px" />
                 </Flex>
             </Flex>
+      
         </Section>
     );
 };

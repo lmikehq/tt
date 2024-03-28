@@ -3,19 +3,36 @@
 import Image from "@/components/atoms/image";
 import Text from "@/components/atoms/text";
 import BlogCardMini from "@/components/molecules/blog/component/blogArticle";
+import DislikeModal from "@/components/molecules/blog/component/modals/dislikemodal";
+import BlogFeedbackModal from "@/components/molecules/blog/component/modals/feedback-reaction";
+import LikeModal from "@/components/molecules/blog/component/modals/likemodal";
+import ShareModal from "@/components/molecules/blog/component/modals/sharemodal";
+import SuccessModal from "@/components/molecules/blog/component/modals/successmodal";
+import useLikedByUser from "@/components/molecules/blog/component/use-like-by-user";
 import CountryArticle from "@/components/molecules/countryArticle";
 import Spinner from "@/components/molecules/icons/spinner";
 import SectionLayout from "@/components/templates/SectionLayout";
 import Center from "@/components/templates/center";
 import Flex from "@/components/templates/flex";
+import apiService from "@/lib/extensions/hook/apiService";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { useFetchBlogBySlug, useFetchBlogs } from "@/lib/hooks/blog/index.hook";
+import { useBlogStore } from "@/lib/store/blog.store";
+import { useUserStore } from "@/lib/store/useStore";
 import { ttColors } from "@/lib/theme/colors";
 import dayjs from "dayjs";
+import { usePathname } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
+import toast from "react-hot-toast";
 import { BsBoxArrowUp } from "react-icons/bs";
 import { GoDotFill } from "react-icons/go";
-import { LiaThumbsDown, LiaThumbsUpSolid } from "react-icons/lia";
+import { FaRegComment } from "react-icons/fa";
+import { BiSolidLike, BiSolidDislike  } from "react-icons/bi";
+
 import styled from "styled-components";
+import UserAvatar from "@/components/atoms/user-avatar";
+import BlogCommentSection from "@/components/organisms/blog-comment-section";
+import { Grid } from "@/components/templates/grid";
 
 const Box = styled.div`
     width: 886px;
@@ -27,9 +44,123 @@ const Box = styled.div`
 
 const Preview = ({ params }: { params: any }) => {
     const { isMobile } = useScreenResolution();
-    const { data } = useFetchBlogBySlug(params?.title);
-    const { data: blogs = [] } = useFetchBlogs({});
-    if (!data)
+     const {mode,getBlog, blog,setBlogs,likeModal,getAllBlogs, setLikeModal, setDislikeModal,blogs,setBlog, dislikeModal,feedbackModal, setFeedbackModal,setFeedbackSuccessModal,feedbackSuccessModal,shareModal, setShareModal} = useBlogStore(
+        (state) => state);
+          const pathname = usePathname();
+        const commentSectionRef = useRef<HTMLDivElement>(null);
+  const fullUrl = window.location.origin + pathname;
+  const { user, setUser } = useUserStore();
+          const { likedByUser, dislikedByUser } = useLikedByUser(blog, user?._id);
+        const [userIp, setUserIp] = useState<string>("");
+         const [openCommentField, setOpenCommentField] = useState(false);
+
+          const scrollToCommentSection = () => {
+    if (commentSectionRef.current) {
+      commentSectionRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+    setOpenCommentField(true)
+  };
+
+    // const { data } = useFetchBlogBySlug(params?.title);
+    // const { data: blogs = [] } = useFetchBlogs({});
+    useEffect(()=>{
+        getBlog(params?.title)
+          getAllBlogs()
+    },[])
+
+          useEffect(() => {
+    const fetchUserIp = async () => {
+      try {
+        const ipResponse = await fetch("https://api.ipify.org/?format=json");
+        const ipData = await ipResponse.json();
+        setUserIp(ipData.ip);
+      } catch (error) {
+        console.error(" ip Error fetching user IP", error);
+      }
+    };
+    fetchUserIp();
+  }, [blog]);
+
+
+
+const handleLike = async (blogId: string) => {
+  try {
+    if (!blog) {
+      console.error("Blog is null");
+      return;
+    }
+    if (!user?._id) {
+      setLikeModal(true);
+      return;
+    }
+    if (blog.likes.includes(user._id)) {
+      // If the user already liked the post, return
+      return;
+    }
+
+    const updatedBlog = { ...blog };
+    
+    // Check if the user already disliked the post
+    if (blog.dislikes.includes(user._id)) {
+      // Remove user's dislike
+      updatedBlog.dislikes = updatedBlog.dislikes.filter((id) => id !== user._id);
+    }
+
+    const response = await apiService(`/blog/${blogId}/like`, "POST", {
+      ip: user._id,
+    });
+
+    if (response && response.data.success) {
+      updatedBlog.likes.push(user._id);
+      setBlog(updatedBlog);
+      setFeedbackModal(true);
+    }
+  } catch (error) {
+    toast.error("Failed to like the post. Please try again.");
+  }
+}
+const handleDislike = async (blogId: string) => {
+  try {
+    if (!blog) {
+      console.error("Blog is null");
+      return;
+    }
+
+    if (!user?._id) {
+      setLikeModal(true);
+      return;
+    }
+
+    const updatedBlog = { ...blog };
+
+    // Check if the user has already disliked the blog
+    if (blog.dislikes.includes(user._id)) {
+      // User has already disliked the blog, do nothing
+      return;
+    }
+
+    // Remove like if the user has already liked the blog
+    if (blog.likes.includes(user._id)) {
+      const updatedLikes = blog.likes.filter((like) => like !== user._id);
+      updatedBlog.likes = updatedLikes;
+    }
+
+    // Add user to dislikes
+    const response = await apiService(`/blog/${blogId}/dislike`, "POST", {
+      ip: user._id,
+    });
+
+    if (response && response.data.success) {
+      updatedBlog.dislikes.push(user._id);
+      setBlog(updatedBlog);
+      setFeedbackModal(true);
+    }
+  } catch (error) {
+    toast.error("Failed to dislike the post. Please try again.");
+  }
+};
+
+    if (!blog)
         return (
             <Center height="calc(100vh - 70px)">
                 <Spinner size="40px" fill={ttColors.primary} />{" "}
@@ -37,33 +168,34 @@ const Preview = ({ params }: { params: any }) => {
         );
 
     return (
-        <SectionLayout>
-            <Flex direction="column" gap="30px" margin="2rem 0 0 ">
+        <SectionLayout style={{width:isMobile?"90%":"59.02%"}}>
+            <Flex direction="column"  margin="111px 0 120px 0">
+                {/* <Text type="h3" text="ENJOY TRAVEL EXPERIENCE IN FORM OF A STORY" size={isMobile?45:64} weight={700} textAlign="center" margin={0}/> */}
                 <Image
-                    src={data?.blogImage}
+                    // src={blog?.blogImage}
+                        src={"/assets/images/blog-dummy-img.svg"}
                     alt="blogImage"
                     styles={{
                         borderRadius: "8px",
                         maxWidth: "100%",
                         height: "auto",
+                        margin:"0px 0 64px 0"
                     }}
                 />
 
                 <Text
                     type="h1"
-                    text={data?.title}
-                    size={isMobile ? "20px" : "45px"}
+                    text={blog?.title}
+                    size={isMobile ? "20px" : "40px"}
                     weight="700"
                 />
-
-                <Flex justify="space-between">
+                <Flex justify="space-between" margin="0 0 40px 0">
                     <Flex justify="flex-start" align="center" gap="10px">
-                        <Image
-                            src={data?.author.picture}
-                            width={isMobile ? 54 : 78}
-                            height={isMobile ? 54 : 78}
-                            alt=""
-                            styles={{ borderRadius: "50%" }}
+                        <UserAvatar
+                          img={blog?.author.picture}
+                          initial={blog?.author.name}
+                      
+                         
                         />
                         <Flex
                             justify="flex-start"
@@ -77,7 +209,7 @@ const Preview = ({ params }: { params: any }) => {
                             >
                                 <Text
                                     type="h3"
-                                    text={data?.author.name}
+                                    text={blog?.author.name}
                                     weight={600}
                                     size={isMobile ? "18px" : "20px"}
                                     color="#000000"
@@ -103,10 +235,10 @@ const Preview = ({ params }: { params: any }) => {
                                         <Text
                                             type="p"
                                             text={`${Math.ceil(
-                                                data?.readingTimeInMins
+                                                blog?.readingTimeInMins
                                             )} min${
                                                 Math.ceil(
-                                                    data?.readingTimeInMins
+                                                    blog?.readingTimeInMins
                                                 ) == 1
                                                     ? ""
                                                     : "s"
@@ -131,7 +263,7 @@ const Preview = ({ params }: { params: any }) => {
                                         />
                                         <Text
                                             type="p"
-                                            text={dayjs(data.createdAt).format(
+                                            text={dayjs(blog.createdAt).format(
                                                 "MMMM D"
                                             )}
                                             weight={400}
@@ -143,33 +275,51 @@ const Preview = ({ params }: { params: any }) => {
                                     <Flex
                                         justify="flex-end"
                                         align="center"
-                                        gap="10px"
+                                        gap="36px"
                                         styles={{
                                             display: isMobile ? "none" : "flex",
                                         }}
+                                       
                                     >
-                                        <LiaThumbsUpSolid
-                                            color="#929292"
+                                        <div style={{display:"flex", alignItems:"center", gap:"10px"}}>
+  <BiSolidLike cursor="pointer"
+                                            color={likedByUser?"#7BBBD6":"#929292"}
                                             size="24px"
+                
+                                             onClick={()=>handleLike(blog._id)}
                                         />
                                         <Text
                                             type="p"
-                                            text={`${data?.likes.length}`}
+                                            text={`${blog?.likes.length}`}
                                             color="#929292"
+                                            margin={0}
                                         />
-                                        <LiaThumbsDown
-                                            color="#929292"
+                                        </div>
+                                      
+                                        <BiSolidDislike  cursor="pointer"
+                                             color={dislikedByUser?"#7BBBD6":"#929292"}
                                             size="24px"
+                                              onClick={()=>handleDislike(blog._id)}
                                         />
+                                        <div style={{display:"flex", alignItems:"center", gap:"10px"}} onClick={scrollToCommentSection}>   <FaRegComment color="#929292"  size="20px"/>
+                                         <Text
+                                            type="p"
+                                            text={`${blog?.comments.length}`}
+                                            color="#929292"
+                                            margin={0}
+                                        /></div>
+                                     
                                         <BsBoxArrowUp
                                             color="#929292"
                                             size="20px"
+                                            onClick={()=>setShareModal(true)}
+                                          
                                         />
                                     </Flex>
                                 </Flex>
                                 <Text
                                     type="h3"
-                                    text={data?.topic}
+                                    text={blog?.topic}
                                     size="18px"
                                     weight={400}
                                     color="#0D00A0"
@@ -204,35 +354,56 @@ const Preview = ({ params }: { params: any }) => {
                             <Flex
                                 justify="flex-start"
                                 align="flex-start"
-                                gap="10px"
+                                gap="36px"
+                                margin="0 0 30px 0"
                                 styles={{ display: isMobile ? "flex" : "none" }}
                             >
-                                <LiaThumbsUpSolid color="#929292" size="24px" />
-                                <Text
-                                    type="p"
-                                    text={`${data?.likes.length}`}
-                                    color="#929292"
-                                    cursor="pointer"
-                                />
-                                <LiaThumbsDown color="#929292" size="24px" />
-                                <BsBoxArrowUp color="#929292" size="20px" />
+                               <div style={{display:"flex", alignItems:"center", gap:"10px"}}>
+  <BiSolidLike cursor="pointer"
+                                            color={likedByUser?"#7BBBD6":"#929292"}
+                                            size="24px"
+                
+                                             onClick={()=>handleLike(blog._id)}
+                                        />
+                                        <Text
+                                            type="p"
+                                            text={`${blog?.likes.length}`}
+                                            color="#929292"
+                                            margin={0}
+                                        />
+                                        </div>
+                                <BiSolidDislike   cursor="pointer"  color={dislikedByUser?"#7BBBD6":"#929292"} size="24px"     onClick={()=>handleDislike(blog._id)}/>
+                               <div style={{display:"flex", alignItems:"center", gap:"10px"}} onClick={scrollToCommentSection}>   <FaRegComment color="#929292"  size="20px"/>
+                                         <Text
+                                            type="p"
+                                            text={`${blog?.comments.length}`}
+                                            color="#929292"
+                                            margin={0}
+                                        /></div>
+                                <BsBoxArrowUp color="#929292" size="20px" onClick={()=>setShareModal(true)} />
                             </Flex>
                         </Flex>
                     </Flex>
                 </Flex>
 
-                <CountryArticle article={{ body: data?.content }} />
+                <CountryArticle article={{ body: blog?.content }} />
+<div ref={commentSectionRef}>
+<BlogCommentSection blog={blog} inputfield={openCommentField} />
+</div>
+            
 
                 <Text
                     type="h2"
-                    text="Recent Articles"
+                    text="More Blog Posts"
                     size="24px"
                     weight={600}
+                    margin={"0 0 48px 0"}
                 />
-                <Flex gap={isMobile ? "30" : "28px"} wrap="wrap">
-                    {blogs.slice(0, 5).map((blog, index) => (
+                {/* <Flex gap={isMobile ? "30" : "28px"} wrap="wrap"> */}
+                    <Grid columns={isMobile ? "1": "2"}>{blogs.slice(0, 4).map((blog, index) => (
                         <BlogCardMini key={index} blog={blog} />
-                    ))}
+                    ))} </Grid>
+                    
                     {/* <Flex
                         justify="space-between"
                         direction={isMobile ? "column" : "row"}
@@ -325,7 +496,7 @@ const Preview = ({ params }: { params: any }) => {
                                     align="center"
                                     gap="10px"
                                 >
-                                    <LiaThumbsUpSolid
+                                    <BiSolidLike
                                         color="#929292"
                                         size="24px"
                                     />
@@ -335,7 +506,7 @@ const Preview = ({ params }: { params: any }) => {
                                         color="#929292"
                                         cursor="pointer"
                                     />
-                                    <LiaThumbsDown
+                                    <BiSolidDislike 
                                         color="#929292"
                                         size="24px"
                                     />
@@ -434,7 +605,7 @@ const Preview = ({ params }: { params: any }) => {
                                     align="center"
                                     gap="10px"
                                 >
-                                    <LiaThumbsUpSolid
+                                    <BiSolidLike
                                         color="#929292"
                                         size="24px"
                                     />
@@ -444,7 +615,7 @@ const Preview = ({ params }: { params: any }) => {
                                         color="#929292"
                                         cursor="pointer"
                                     />
-                                    <LiaThumbsDown
+                                    <BiSolidDislike 
                                         color="#929292"
                                         size="24px"
                                     />
@@ -545,7 +716,7 @@ const Preview = ({ params }: { params: any }) => {
                                     align="center"
                                     gap="10px"
                                 >
-                                    <LiaThumbsUpSolid
+                                    <BiSolidLike
                                         color="#929292"
                                         size="24px"
                                     />
@@ -555,7 +726,7 @@ const Preview = ({ params }: { params: any }) => {
                                         color="#929292"
                                         cursor="pointer"
                                     />
-                                    <LiaThumbsDown
+                                    <BiSolidDislike 
                                         color="#929292"
                                         size="24px"
                                     />
@@ -650,7 +821,7 @@ const Preview = ({ params }: { params: any }) => {
                                     align="center"
                                     gap="10px"
                                 >
-                                    <LiaThumbsUpSolid
+                                    <BiSolidLike
                                         color="#929292"
                                         size="24px"
                                     />
@@ -660,7 +831,7 @@ const Preview = ({ params }: { params: any }) => {
                                         color="#929292"
                                         cursor="pointer"
                                     />
-                                    <LiaThumbsDown
+                                    <BiSolidDislike 
                                         color="#929292"
                                         size="24px"
                                     />
@@ -669,8 +840,14 @@ const Preview = ({ params }: { params: any }) => {
                             </Flex>
                         </Flex>
                     </Flex> */}
-                </Flex>
+                {/* </Flex> */}
             </Flex>
+                  <LikeModal open={likeModal} onClose={()=>setLikeModal(false)}/>
+            {/* <DislikeModal open={dislikeModal} onClose={()=>setDislikeModal(false)}/> */}
+
+                  <BlogFeedbackModal open={feedbackModal} blog={blog} onClose={()=>setFeedbackModal(false)}/>
+                  <SuccessModal open={feedbackSuccessModal} onClose={()=>setFeedbackSuccessModal(false)}/>
+            <ShareModal open={shareModal} onClose={()=>setShareModal(false)} url={fullUrl} title={blog.title}/>
         </SectionLayout>
     );
 };

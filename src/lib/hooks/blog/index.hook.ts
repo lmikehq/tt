@@ -17,7 +17,7 @@ export const useFetchBlogs = (
 ) => {
     return useQuery({
         queryKey: ["fetch-blogs", params],
-        queryFn: () => BlogService.fetchBlogs(params),
+        queryFn: () => BlogService.fetchBlogs(),
         ...options,
     });
 };
