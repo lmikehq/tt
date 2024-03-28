@@ -165,7 +165,7 @@ const { user, setUser } = useUserStore();
 
     return (
         <Section
-            width="30%"
+            width="100%"
             styles={{
                 minWidth: "300px",
             }}

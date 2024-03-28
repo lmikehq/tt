@@ -32,6 +32,7 @@ import { BiSolidLike, BiSolidDislike  } from "react-icons/bi";
 import styled from "styled-components";
 import UserAvatar from "@/components/atoms/user-avatar";
 import BlogCommentSection from "@/components/organisms/blog-comment-section";
+import { Grid } from "@/components/templates/grid";
 
 const Box = styled.div`
     width: 886px;
@@ -168,7 +169,7 @@ const handleDislike = async (blogId: string) => {
 
     return (
         <SectionLayout style={{width:"59.02%"}}>
-            <Flex direction="column"  margin="111px 0 0">
+            <Flex direction="column"  margin="111px 0 120px 0">
                 {/* <Text type="h3" text="ENJOY TRAVEL EXPERIENCE IN FORM OF A STORY" size={isMobile?45:64} weight={700} textAlign="center" margin={0}/> */}
                 <Image
                     // src={blog?.blogImage}
@@ -393,14 +394,16 @@ const handleDislike = async (blogId: string) => {
 
                 <Text
                     type="h2"
-                    text="Recent Articles"
+                    text="More Blog Posts"
                     size="24px"
                     weight={600}
+                    margin={"0 0 48px 0"}
                 />
-                <Flex gap={isMobile ? "30" : "28px"} wrap="wrap">
-                    {blogs.slice(0, 5).map((blog, index) => (
+                {/* <Flex gap={isMobile ? "30" : "28px"} wrap="wrap"> */}
+                    <Grid columns={isMobile ? "1": "2"}>{blogs.slice(0, 4).map((blog, index) => (
                         <BlogCardMini key={index} blog={blog} />
-                    ))}
+                    ))} </Grid>
+                    
                     {/* <Flex
                         justify="space-between"
                         direction={isMobile ? "column" : "row"}
@@ -837,7 +840,7 @@ const handleDislike = async (blogId: string) => {
                             </Flex>
                         </Flex>
                     </Flex> */}
-                </Flex>
+                {/* </Flex> */}
             </Flex>
                   <LikeModal open={likeModal} onClose={()=>setLikeModal(false)}/>
             {/* <DislikeModal open={dislikeModal} onClose={()=>setDislikeModal(false)}/> */}

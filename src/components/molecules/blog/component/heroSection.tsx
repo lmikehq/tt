@@ -17,6 +17,7 @@ import Spinner from "../../icons/spinner";
 import { ttColors } from "@/lib/theme/colors";
 import { useBlogStore } from "@/lib/store/blog.store";
 import { Mode } from "@/lib/types";
+import { Grid } from "@/components/templates/grid";
 const Box = styled.div`
     width: 886px;
     @media (max-width: 900px) {
@@ -79,7 +80,7 @@ const SearchResultItem = styled.div`
 `;
 
 export const BlogHeroSection = () => {
-    const { isMobile } = useScreenResolution();
+    const { isMobile ,isTablet} = useScreenResolution();
 
     const [searchTerm, setSearchTerm] = useState<string>("");
     const [searchTriggered, setSearchTriggered] = useState(false);
@@ -320,11 +321,15 @@ export const BlogHeroSection = () => {
                         <Spinner size="40px" fill={ttColors.primary} />{" "}
                     </Center>
                 ) : activeTab !== 1 && blogs?.length ? (
-                    <Flex wrap="wrap" gap="2rem">
-                        {blogs?.map((blog, index) => (
-                            <BlogCardMini key={index} blog={blog} />
-                        ))}
-                    </Flex>
+
+                      <Grid columns={isMobile ? "1":isTablet?"2":"3"}>{blogs.map((blog, index) => (
+                        <BlogCardMini key={index} blog={blog} />
+                    ))} </Grid>
+                    // <Flex wrap="wrap" gap="2rem">
+                    //     {blogs?.map((blog, index) => (
+                    //         <BlogCardMini key={index} blog={blog} />
+                    //     ))}
+                    // </Flex>
                 ) : (
                     <Section
                         maxWidth={isMobile ? "100%" : "525px"}
