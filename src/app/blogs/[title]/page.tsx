@@ -304,7 +304,7 @@ const handleDislike = async (blogId: string) => {
                                         <div style={{display:"flex", alignItems:"center", gap:"10px"}} onClick={scrollToCommentSection}>   <FaRegComment color="#929292"  size="20px"/>
                                          <Text
                                             type="p"
-                                            text={`${blog?.comments.length}`}
+                                            text={`${blog?.comments?.length}`}
                                             color="#929292"
                                             margin={0}
                                         /></div>
@@ -376,7 +376,7 @@ const handleDislike = async (blogId: string) => {
                                <div style={{display:"flex", alignItems:"center", gap:"10px"}} onClick={scrollToCommentSection}>   <FaRegComment color="#929292"  size="20px"/>
                                          <Text
                                             type="p"
-                                            text={`${blog?.comments.length}`}
+                                            text={`${blog?.comments?.length}`}
                                             color="#929292"
                                             margin={0}
                                         /></div>
