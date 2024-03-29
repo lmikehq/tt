@@ -115,10 +115,10 @@ const [showAllComments, setShowAllComments] = useState(false);
        
       
 
-      <Text type="p" text={`Comments (${blog.comments.length})`} weight={600} margin={"56px 0 37px 0"} size={24}/>
+      <Text type="p" text={`Comments (${blog?.comments?.length})`} weight={600} margin={"56px 0 37px 0"} size={24}/>
 <Comments >
     {
-        blog.comments.slice(0, numCommentsToShow).map((comment, i)=>
+        blog?.comments?.slice(0, numCommentsToShow).map((comment, i)=>
         <div key={i}>
              <BlogComment blogId={blog._id} comment={comment}/>
         </div>
@@ -126,7 +126,7 @@ const [showAllComments, setShowAllComments] = useState(false);
       }
 </Comments>
   
-   {(blog.comments.length > numCommentsToShow || showAllComments) && (
+   {(blog?.comments?.length > numCommentsToShow || showAllComments) && (
         <Button
           background='#06062A'
           color='#FFFFFF'
