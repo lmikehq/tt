@@ -403,7 +403,7 @@ function LoginPage() {
                   ? "#87ceeb36"
                   : ttColors.primary
               }
-              // onClick={handleSubmit}
+               onClick={handleSubmit}
             >
               {submissionState.loading ? (
                 <Spinner size="40px" fill={ttColors.primary} />
