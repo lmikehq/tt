@@ -54,11 +54,15 @@ const Preview = ({ params }: { params: any }) => {
         const [userIp, setUserIp] = useState<string>("");
          const [openCommentField, setOpenCommentField] = useState(false);
 
-          const scrollToCommentSection = () => {
-    if (commentSectionRef.current) {
+const scrollToCommentSection = () => {
+
+  if (!user?._id) {
+      setLikeModal(true);
+      return;
+    }else if (commentSectionRef.current) {
+          setOpenCommentField(true)
       commentSectionRef.current.scrollIntoView({ behavior: 'smooth' });
     }
-    setOpenCommentField(true)
   };
 
     // const { data } = useFetchBlogBySlug(params?.title);
@@ -304,7 +308,7 @@ const handleDislike = async (blogId: string) => {
                                         <div style={{display:"flex", alignItems:"center", gap:"10px"}} onClick={scrollToCommentSection}>   <FaRegComment color="#929292"  size="20px"/>
                                          <Text
                                             type="p"
-                                            text={`${blog?.comments?.length}`}
+                                            text={`${blog?.comments?.length?blog?.comments?.length:0}`}
                                             color="#929292"
                                             margin={0}
                                         /></div>
@@ -376,7 +380,7 @@ const handleDislike = async (blogId: string) => {
                                <div style={{display:"flex", alignItems:"center", gap:"10px"}} onClick={scrollToCommentSection}>   <FaRegComment color="#929292"  size="20px"/>
                                          <Text
                                             type="p"
-                                            text={`${blog?.comments?.length}`}
+                                            text={`${blog?.comments?.length?blog?.comments?.length:0}`}
                                             color="#929292"
                                             margin={0}
                                         /></div>
