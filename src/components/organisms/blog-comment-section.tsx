@@ -18,7 +18,7 @@ interface Props {
    inputfield:boolean;
 }
 const CommentsWrapper = styled.div`
-
+margin-bottom:40px;
 `;
 const InputWrapper = styled.div`
 border:1px solid #E7E7E7;
@@ -115,7 +115,7 @@ const [showAllComments, setShowAllComments] = useState(false);
        
       
 
-      <Text type="p" text={`Comments (${blog?.comments?.length? blog?.comments?.length:0})`} weight={600} margin={"56px 0 37px 0"} size={24}/>
+      <Text type="p" text={`Comments (${blog?.comments?.length? blog?.comments?.length:0})`} weight={600} margin={"56px 0 15px 0"} size={24}/>
 <Comments >
     {
         blog?.comments?.slice(0, numCommentsToShow).map((comment, i)=>
