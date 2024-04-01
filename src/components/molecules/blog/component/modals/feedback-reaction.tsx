@@ -122,7 +122,6 @@ console.log(response,"resp")
     
     if (response && response.success) {
    setFeedbackSuccessModal(true);
-   console.log("resp 2")
    onClose();
     }
 

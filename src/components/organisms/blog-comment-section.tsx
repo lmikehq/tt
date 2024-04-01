@@ -115,7 +115,7 @@ const [showAllComments, setShowAllComments] = useState(false);
        
       
 
-      <Text type="p" text={`Comments (${blog?.comments?.length})`} weight={600} margin={"56px 0 37px 0"} size={24}/>
+      <Text type="p" text={`Comments (${blog?.comments?.length? blog?.comments?.length:0})`} weight={600} margin={"56px 0 37px 0"} size={24}/>
 <Comments >
     {
         blog?.comments?.slice(0, numCommentsToShow).map((comment, i)=>
