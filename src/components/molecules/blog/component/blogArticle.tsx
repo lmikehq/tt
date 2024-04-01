@@ -2,7 +2,8 @@ import Image from "@/components/atoms/image";
 import Text from "@/components/atoms/text";
 import Flex from "@/components/templates/flex";
 import { BsBoxArrowUp } from "react-icons/bs";
-import { LiaThumbsDown, LiaThumbsUpSolid } from "react-icons/lia";
+import { BiSolidLike, BiSolidDislike  } from "react-icons/bi";
+
 
 import Link from "@/components/atoms/link";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
@@ -15,6 +16,7 @@ import { useEffect, useState } from "react";
 
 import { useUserStore } from "@/lib/store/useStore";
 import { useBlogStore } from "@/lib/store/blog.store";
+import useLikedByUser from "./use-like-by-user";
 
 interface BlogArticleProps {
     blog: BlogInterface;
@@ -110,9 +112,9 @@ export const BlogArticle = ({ blog }: BlogArticleProps) => {
                         </Flex>
 
                         <Flex justify="flex-end" align="center" gap="10px">
-                            <LiaThumbsUpSolid color="#929292" size="19.25px" />
+                            <BiSolidLike color="#929292" size="19.25px" />
                             <Text type="p" text="1.3k" color="#929292" />
-                            <LiaThumbsDown color="#929292" size="19.25px" />
+                            <BiSolidDislike color="#929292" size="19.25px" />
                             {/* <BsBoxArrowUp color="#929292" size="19.25px" /> */}
                         </Flex>
                     </Flex>
@@ -135,10 +137,12 @@ interface BlogCardMiniProps {
 const BlogCardMini: React.FC<BlogCardMiniProps> = ({ blog }) => {
     const { isMobile } = useScreenResolution();
     const previewUrl = `/blogs/${blog.slug}`;
+     const { user, setUser } = useUserStore();
+          const { likedByUser, dislikedByUser } = useLikedByUser(blog, user?._id);
 
 
                 const [userIp, setUserIp] = useState<string>("");
-const { user, setUser } = useUserStore();
+
   const { blogs,setBlogs,likeModal, setLikeModal, setDislikeModal, dislikeModal,feedbackModal, setFeedbackModal,setFeedbackSuccessModal,feedbackSuccessModal,shareModal, setShareModal} = useBlogStore(
         (state) => state);
       useEffect(() => {
@@ -308,17 +312,17 @@ const { user, setUser } = useUserStore();
                     />
 
                     <Flex width="fit-content" gap=".5rem">
-                        <Flex cursor="pointer" >
+                        <Flex cursor="pointer" gap="5px">
                             <Text
                                 type="p"
                                 text={blog.likes.length + ""}
                                 size="16px"
                                 color="#929292"
                             />
-                            <LiaThumbsUpSolid color="#929292" size="22px" />
+                            <BiSolidLike  color={likedByUser?"#7BBBD6":"#929292"} size="22px" />
                         </Flex>
                         <Flex cursor="pointer" >
-                            <LiaThumbsDown color="#929292" size="22px" />
+                            <BiSolidDislike  color={dislikedByUser?"#7BBBD6":"#929292"} size="22px" />
                         </Flex>
                     </Flex>
                 </Flex>
@@ -344,9 +348,9 @@ const { user, setUser } = useUserStore();
                     />
                 </Flex>
                 <Flex justify="flex-end" align="center" gap="10px">
-                    <LiaThumbsUpSolid color="#929292" size="19.25px" />
-                    <Text type="p" text="1.3k" color="#929292" />
-                    <LiaThumbsDown color="#929292" size="19.25px" />
+                    <BiSolidLike color="#929292" size="19.25px" style={{marginRight:"5px"}} />
+                    <Text type="p" text={blog.likes.length + ""} color={likedByUser?"#7BBBD6":"#929292"}/>
+                    <BiSolidDislike color={dislikedByUser?"#7BBBD6":"#929292"} size="19.25px" />
                     <BsBoxArrowUp color="#929292" size="18px" />
                 </Flex>
             </Flex>

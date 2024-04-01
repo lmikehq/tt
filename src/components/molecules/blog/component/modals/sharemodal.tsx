@@ -52,7 +52,7 @@ const {handleClick, hasCopiedValue}= useShareModal();
       onClose={onClose}
       description=""
       maxWidth="600px"
-      width="60%"
+      width={isMobile?"80%":"60%"}
       showlogo={false}
 
     >
