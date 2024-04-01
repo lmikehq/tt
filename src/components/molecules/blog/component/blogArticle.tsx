@@ -345,7 +345,7 @@ const { user, setUser } = useUserStore();
                 </Flex>
                 <Flex justify="flex-end" align="center" gap="10px">
                     <LiaThumbsUpSolid color="#929292" size="19.25px" />
-                    <Text type="p" text="1.3k" color="#929292" />
+                    <Text type="p" text={blog.likes.length + ""} color="#929292" />
                     <LiaThumbsDown color="#929292" size="19.25px" />
                     <BsBoxArrowUp color="#929292" size="18px" />
                 </Flex>
