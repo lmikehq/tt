@@ -113,7 +113,6 @@ const handleSubmit =async ()=>{
  reaction: feedbackData.reaction,
     comment: feedbackData.comment
     });
-console.log(response,"resp")
     if (response.statusCode ===400){
         toast.error("User already submitted feedback on this blog.");
            onClose();
@@ -140,7 +139,7 @@ console.log(response,"resp")
       onClose={onClose}
       description=""
       maxWidth="600px"
-      width="60%"
+      width={isMobile?"80%":"60%"}
 
     >
       <Box styles={{display:"flex", flexDirection:"column", padding:isMobile?"2rem 0 0 0":"4rem 0 0 0", position:"relative"}}>

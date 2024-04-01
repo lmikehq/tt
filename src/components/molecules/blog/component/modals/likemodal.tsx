@@ -251,7 +251,7 @@ setErrorMessage("");
       width="60%"
     
     >
-      <Box styles={{ padding:isMobile?"2rem 0 0 0":"6rem 0 0 0", position:"relative"}}>
+      <Box styles={{ padding:isMobile?"2rem 0 0 0":"3.5rem 0 0 0", position:"relative"}}>
 
 
 {
