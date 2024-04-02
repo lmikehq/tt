@@ -156,9 +156,11 @@ function MobileNavigationDrawer({ isOpen, setIsOpen, pathArray }: Props) {
         },
         {
             name: "Logout",
-            action: () => {
+            action:() => {
                 handleLogout();
+                setUser(null);
                 router.push("/");
+                console.log("logout")
             },
         },
         {

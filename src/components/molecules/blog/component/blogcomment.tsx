@@ -29,6 +29,7 @@ interface Props {
 
 const CommentWrapper = styled.div`
 position:relative;
+word-break: break-all;
 
 `;
 
@@ -146,8 +147,8 @@ const { user, setUser } = useUserStore();
 </Flex>
 {/* <CiMenuKebab style={{marginTop:"12px"}} onClick={()=>setOpenOption(!openOption)} cursor="pointer" color='#000000' size={24}/> */}
 </Flex>
- <Text type='' text={comment.text} size={16} weight={400} margin={"0 0 24px 0"}/>
-<Flex justify='space-between' align='center'>
+ <Text type='' text={comment.text} size={16} weight={400} margin={"0 0 30px 0"}/>
+<Flex justify='space-between' align='center' margin='10px 0 0 0'>
  <Flex align='center'justify='flex-start' gap="36px" width='50%'>
     <div style={{alignItems:'center', display:"flex", flexDirection:"row", gap:'10px', cursor:'pointer'}} >
      <BiSolidLike color={likedByUser?"#7BBBD6":"#929292"} onClick={handleLikeAndUnlikeComment}/>

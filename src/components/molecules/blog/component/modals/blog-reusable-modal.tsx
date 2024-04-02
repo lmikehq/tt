@@ -71,6 +71,21 @@ const ModalIcon = styled.div`
   cursor: pointer;
 `;
 
+const LogoIcon = styled.div`
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 51px;
+  width: 49px;
+  background: #f3f3ff;
+  border-radius: 4px;
+  cursor: pointer;
+`;
+
+
 
 const ChildrenContainer = styled.div`
  margin-top:2rem;
@@ -81,6 +96,7 @@ interface ReusableModalProps {
   open: boolean;
   onClose: () => void;
   headerText?: string;
+  logo?:string;
   description?: string;
   descriptionColor?: string;
   children?: React.ReactNode;
@@ -106,10 +122,10 @@ const BlogReusableModal: React.FC<ReusableModalProps> = ({
   descriptionColor,
   height,
   width,
+  logo,
   maxWidth,
   maxHeight,
   children,
-  showlogo,
   loading = false,
   setLoading = () => { },
   buttonProps = {
@@ -128,6 +144,13 @@ const BlogReusableModal: React.FC<ReusableModalProps> = ({
         maxWidth={maxWidth}
       >
        
+{
+  isMobile ?  <LogoIcon>
+            <Image src={logo?logo:""} alt="" height={70} width={70}/>
+          <IoMdClose />
+        </LogoIcon>:""
+}
+        
 
            <ModalIcon onClick={onClose}>
           <IoMdClose />

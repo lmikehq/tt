@@ -137,6 +137,7 @@ const handleSubmit =async ()=>{
     <BlogReusableModal
       open={open}
       onClose={onClose}
+      logo={"/assets/images/blog/ttlogo.svg"}
       description=""
       maxWidth="600px"
    width={isMobile?"90%":"60%"}
