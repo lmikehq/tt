@@ -21,6 +21,7 @@ const AvatarWrapper = styled.div<AvatarWrapperProps>`
     background: #3733FF;
     color: white;
     display: flex;
+    flex:none;
     align-items: center;
     justify-content: center;
     font-weight: 600;

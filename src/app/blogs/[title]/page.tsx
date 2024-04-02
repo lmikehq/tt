@@ -302,7 +302,8 @@ const handleDislike = async (blogId: string) => {
                                             text={`${blog?.comments?.length?blog?.comments?.length:0}`}
                                             color="#929292"
                                             margin={0}
-                                        /></div>
+                                        />
+                                        </div>
                                      
                                         <BsBoxArrowUp
                                             color="#929292"

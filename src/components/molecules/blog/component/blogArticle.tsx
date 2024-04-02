@@ -18,6 +18,7 @@ import { useUserStore } from "@/lib/store/useStore";
 import { useBlogStore } from "@/lib/store/blog.store";
 import useLikedByUser from "./use-like-by-user";
 import UserAvatar from "@/components/atoms/user-avatar";
+import { FaRegComment } from "react-icons/fa";
 
 interface BlogArticleProps {
     blog: BlogInterface;
@@ -112,11 +113,19 @@ export const BlogArticle = ({ blog }: BlogArticleProps) => {
                             />
                         </Flex>
 
-                        <Flex justify="flex-end" align="center" gap="10px">
+                        <Flex justify="flex-end" align="center" gap="10px" border="1px solid red">
                             <BiSolidLike color="#929292" size="19.25px" />
                             <Text type="p" text="1.3k" color="#929292" />
                             <BiSolidDislike color="#929292" size="19.25px" />
-                            {/* <BsBoxArrowUp color="#929292" size="19.25px" /> */}
+                                     <Text
+                                            type="p"
+                                            text={`${blog?.comments?.length?blog?.comments?.length:0}`}
+                                            color="#929292"
+                                            margin={0}
+                                        />
+                                <FaRegComment color="#929292"  size="19.25px"/>
+                                    
+                                      
                         </Flex>
                     </Flex>
                 </Flex>
@@ -139,6 +148,7 @@ const BlogCardMini: React.FC<BlogCardMiniProps> = ({ blog }) => {
     const { isMobile } = useScreenResolution();
     const previewUrl = `/blogs/${blog.slug}`;
      const { user, setUser } = useUserStore();
+     
           const { likedByUser, dislikedByUser } = useLikedByUser(blog, user?._id);
 
 
@@ -146,8 +156,10 @@ const BlogCardMini: React.FC<BlogCardMiniProps> = ({ blog }) => {
 
   const { blogs,setBlogs,likeModal, setLikeModal, setDislikeModal, dislikeModal,feedbackModal, setFeedbackModal,setFeedbackSuccessModal,feedbackSuccessModal,shareModal, setShareModal} = useBlogStore(
         (state) => state);
+
+
+        
       useEffect(() => {
-         
     const fetchUserIp = async () => {
       try {
         const ipResponse = await fetch("https://api.ipify.org/?format=json");
@@ -313,11 +325,11 @@ const BlogCardMini: React.FC<BlogCardMiniProps> = ({ blog }) => {
                         color="#00E717"
                     />
 
-                    <Flex width="fit-content" gap=".5rem">
+                    <Flex width="fit-content" gap="10px">
                         <Flex cursor="pointer" gap="5px">
                             <Text
                                 type="p"
-                                text={blog.likes.length + ""}
+                                text={blog.likes.length +""}
                                 size="16px"
                                 color="#929292"
                             />
@@ -326,6 +338,17 @@ const BlogCardMini: React.FC<BlogCardMiniProps> = ({ blog }) => {
                         <Flex cursor="pointer" >
                             <BiSolidDislike  color={dislikedByUser?"#7BBBD6":"#929292"} size="22px" />
                         </Flex>
+                              <Flex cursor="pointer" gap="5px">
+                                
+                                     <Text
+                                            type="p"
+                                            text={`${blog?.comments?.length?blog?.comments?.length:0}`}
+                                            color="#929292"
+                                            margin={0}
+                                        />
+                                <FaRegComment color="#929292"  size="20px"/>
+                                    
+                                        </Flex>
                     </Flex>
                 </Flex>
             </Flex>
@@ -353,6 +376,17 @@ const BlogCardMini: React.FC<BlogCardMiniProps> = ({ blog }) => {
                     <BiSolidLike color="#929292" size="19.25px" />
                     <Text type="p" text={blog.likes.length + ""} color={likedByUser?"#7BBBD6":"#929292"} margin={"0 10px 0 0"}/>
                     <BiSolidDislike color={dislikedByUser?"#7BBBD6":"#929292"} size="19.25px" />
+                     <div style={{display:"flex", alignItems:"center", gap:"10px"}}>
+                                
+                                     <Text
+                                            type="p"
+                                            text={`${blog?.comments?.length?blog?.comments?.length:0}`}
+                                            color="#929292"
+                                            margin={0}
+                                        />
+                                <FaRegComment color="#929292"  size="20px"/>
+                                    
+                                        </div>
                     {/* <BsBoxArrowUp color="#929292" size="18px" /> */}
                 </Flex>
             </Flex>
