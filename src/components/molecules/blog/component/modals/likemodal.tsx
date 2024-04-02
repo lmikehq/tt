@@ -248,7 +248,7 @@ setErrorMessage("");
       onClose={onClose}
       description=""
       maxWidth="600px"
-      width={isMobile?"80%":"60%"}
+      width={isMobile?"90%":"60%"}
     
     >
       <Box styles={{ padding:isMobile?"2rem 0 0 0":"3.5rem 0 0 0", position:"relative"}}>

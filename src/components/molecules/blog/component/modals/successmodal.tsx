@@ -85,7 +85,7 @@ const SuccessModal = ({ open, onClose }: Props) => {
       onClose={onClose}
       description=""
       maxWidth="600px"
-      width="60%"
+   width={isMobile?"90%":"60%"}
 
     >
       <Box styles={{display:"flex", flexDirection:"column", alignItems:"center"}}>

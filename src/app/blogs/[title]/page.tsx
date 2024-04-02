@@ -173,11 +173,11 @@ const handleDislike = async (blogId: string) => {
 
     return (
         <SectionLayout style={{width:isMobile?"90%":"59.02%"}}>
-            <Flex direction="column"  margin="111px 0 120px 0">
+            <Flex direction="column"  margin={isMobile?"80px 0 120px 0":"111px 0 120px 0"}>
                 {/* <Text type="h3" text="ENJOY TRAVEL EXPERIENCE IN FORM OF A STORY" size={isMobile?45:64} weight={700} textAlign="center" margin={0}/> */}
                 <Image
                     // src={blog?.blogImage}
-                        src={"/assets/images/blog-dummy-img.svg"}
+                        src={blog?.blogImage}
                     alt="blogImage"
                     styles={{
                         borderRadius: "8px",
