@@ -17,6 +17,7 @@ import { useEffect, useState } from "react";
 import { useUserStore } from "@/lib/store/useStore";
 import { useBlogStore } from "@/lib/store/blog.store";
 import useLikedByUser from "./use-like-by-user";
+import UserAvatar from "@/components/atoms/user-avatar";
 
 interface BlogArticleProps {
     blog: BlogInterface;
@@ -168,10 +169,11 @@ const BlogCardMini: React.FC<BlogCardMiniProps> = ({ blog }) => {
 
 
     return (
-        <Section
-            width="100%"
-            styles={{
-                minWidth: "300px",
+        <div
+           
+            style={{
+                 width:"100%",
+                height:isMobile?"400px":"430px"
             }}
         >
             <Flex
@@ -181,13 +183,13 @@ const BlogCardMini: React.FC<BlogCardMiniProps> = ({ blog }) => {
                     width: "initial",
                 }}
             >
-                <Flex justify="flex-start" gap="10px" align="center">
-                    <Image
-                        src={blog.author.picture}
-                        width={20}
-                        height={20}
-                        alt=""
-                    />
+                <Flex justify="flex-start" gap="10px" align="center" margin="0 0 15px 0">
+                  <UserAvatar
+                          img={blog?.author.picture}
+                          initial={blog?.author.name}
+                      
+                         
+                        />
                     <Flex justify="flex-start" direction="column" gap="0px">
                         <Text
                             type="h3"
@@ -238,13 +240,10 @@ const BlogCardMini: React.FC<BlogCardMiniProps> = ({ blog }) => {
                 margin="0.5rem 0"
             >
                 <Flex justify="flex-start" align="center" gap="10px">
-                    <Image
-                        src={blog.author.picture}
-                        width={30}
-                        height={30}
-                        alt=""
-                        styles={{ borderRadius: "50%" }}
-                    />
+                     <UserAvatar
+                          img={blog?.author.picture}
+                          initial={blog?.author.name}                       
+                        />
                     <Flex justify="flex-start" direction="column" gap="0px">
                         <Text
                             type="h3"
@@ -348,14 +347,14 @@ const BlogCardMini: React.FC<BlogCardMiniProps> = ({ blog }) => {
                     />
                 </Flex>
                 <Flex justify="flex-end" align="center" gap="10px">
-                    <BiSolidLike color="#929292" size="19.25px" style={{marginRight:"5px"}} />
-                    <Text type="p" text={blog.likes.length + ""} color={likedByUser?"#7BBBD6":"#929292"}/>
+                    <BiSolidLike color="#929292" size="19.25px" />
+                    <Text type="p" text={blog.likes.length + ""} color={likedByUser?"#7BBBD6":"#929292"} margin={"0 10px 0 0"}/>
                     <BiSolidDislike color={dislikedByUser?"#7BBBD6":"#929292"} size="19.25px" />
-                    <BsBoxArrowUp color="#929292" size="18px" />
+                    {/* <BsBoxArrowUp color="#929292" size="18px" /> */}
                 </Flex>
             </Flex>
       
-        </Section>
+        </div>
     );
 };
 

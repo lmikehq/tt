@@ -255,7 +255,7 @@ setFeedbackModal(true);
       onClose={onClose}
       description=""
       maxWidth="600px"
-      width="60%"
+    width={isMobile?"90%":"60%"}
 
     >
       <Box styles={{ padding:isMobile?"2rem 0 0 0":"6rem 0 0 0", position:"relative"}}>

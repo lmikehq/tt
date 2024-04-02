@@ -322,9 +322,9 @@ export const BlogHeroSection = () => {
                     </Center>
                 ) : activeTab !== 1 && blogs?.length ? (
 
-                      <Grid columns={isMobile ? "1":isTablet?"2":"3"} style={{gridRowGap:"1.5rem"}}>{blogs?.map((blog, index) => (
-                        <BlogCardMini key={index} blog={blog} />
-                    ))} </Grid>
+                        <Grid columns={isMobile ? "1":isTablet?"2":"3"} gap="20rem"> {blogs?.map((blog, index) => (
+                            <BlogCardMini key={index} blog={blog} />
+                        ))} </Grid>
                     // <Flex wrap="wrap" gap="2rem">
                     //     {blogs?.map((blog, index) => (
                     //         <BlogCardMini key={index} blog={blog} />

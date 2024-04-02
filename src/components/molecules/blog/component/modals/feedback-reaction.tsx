@@ -139,7 +139,7 @@ const handleSubmit =async ()=>{
       onClose={onClose}
       description=""
       maxWidth="600px"
-      width={isMobile?"80%":"60%"}
+   width={isMobile?"90%":"60%"}
 
     >
       <Box styles={{display:"flex", flexDirection:"column", padding:isMobile?"2rem 0 0 0":"4rem 0 0 0", position:"relative"}}>
