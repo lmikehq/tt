@@ -173,6 +173,7 @@ const BlogCardMini: React.FC<BlogCardMiniProps> = ({ blog }) => {
            
             style={{
                  width:"100%",
+                 minWidth:"300px",
                 height:isMobile?"400px":"430px"
             }}
         >
@@ -223,7 +224,8 @@ const BlogCardMini: React.FC<BlogCardMiniProps> = ({ blog }) => {
             <Link href={previewUrl}>
                 <Image
                     src={blog.blogImage}
-                    alt=""
+                    // src={"/assets/images/blog-dummy-img.svg"}
+                    alt="blogImg"
                     // height={252}
                     // width={252}
                     styles={{
