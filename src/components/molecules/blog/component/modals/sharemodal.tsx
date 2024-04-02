@@ -50,6 +50,7 @@ const {handleClick, hasCopiedValue}= useShareModal();
     <BlogReusableModal
       open={open}
       onClose={onClose}
+      logo={"/assets/images/blog/share.svg"}
       description=""
       maxWidth="600px"
      width={isMobile?"90%":"60%"}

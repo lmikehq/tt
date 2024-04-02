@@ -83,6 +83,7 @@ const SuccessModal = ({ open, onClose }: Props) => {
     <BlogReusableModal
       open={open}
       onClose={onClose}
+      logo={"/assets/images/blog/success.svg"}
       description=""
       maxWidth="600px"
    width={isMobile?"90%":"60%"}

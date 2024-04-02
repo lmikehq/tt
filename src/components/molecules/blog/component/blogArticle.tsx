@@ -28,12 +28,12 @@ export const BlogArticle = ({ blog }: BlogArticleProps) => {
     return (
         <>
             <Link href={previewUrl}>
-                <Flex direction="column" gap="1.5rem">
+                <Flex direction="column" gap="1.5rem" styles={{ wordBreak: 'break-all' }}>
                     <Image
                         src={blog.blogImage}
                         alt=""
                         height={252}
-                        styles={{ borderRadius: "8px" }}
+                        styles={{borderRadius: "8px" }}
                     />
                     <Flex justify="space-between">
                         <Flex justify="flex-start" gap="10px">
@@ -186,6 +186,7 @@ const BlogCardMini: React.FC<BlogCardMiniProps> = ({ blog }) => {
             >
                 <Flex justify="flex-start" gap="10px" align="center" margin="0 0 15px 0">
                   <UserAvatar
+                  
                           img={blog?.author.picture}
                           initial={blog?.author.name}
                       

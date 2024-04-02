@@ -156,7 +156,7 @@ function MobileNavigationDrawer({ isOpen, setIsOpen, pathArray }: Props) {
         },
         {
             name: "Logout",
-            action: () => {
+            action:() => {
                 handleLogout();
                 router.push("/auth/login");
             },

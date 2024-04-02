@@ -29,6 +29,7 @@ interface Props {
 
 const CommentWrapper = styled.div`
 position:relative;
+word-break: break-all;
 
 `;
 
@@ -155,7 +156,7 @@ const { user, setUser } = useUserStore();
 {/* <CiMenuKebab style={{marginTop:"12px"}} onClick={()=>setOpenOption(!openOption)} cursor="pointer" color='#000000' size={24}/> */}
 </Flex>
  <Text type='' text={reply.text} size={16} weight={400} margin={"0 0 24px 0"}/>
-<Flex justify='space-between' align='center'>
+<Flex justify='space-between' align='center' margin='10px 0 0 0'>
  <Flex align='center'justify='flex-start' gap="36px" width='25%' >
 
 
