@@ -401,10 +401,10 @@ const handleDislike = async (blogId: string) => {
                     text="More Blog Posts"
                     size="24px"
                     weight={600}
-                    margin={"0 0 30px 0"}
+                    margin={"0 0 15px 0"}
                 />
                 {/* <Flex gap={isMobile ? "30" : "28px"} wrap="wrap"> */}
-                    <Grid columns={isMobile ? "1": "2"}>{blogs.slice(0, 4).map((blog, index) => (
+                    <Grid columns={isMobile ? "1": "2"} gap="1rem">{blogs.slice(0, 4).map((blog, index) => (
                         <BlogCardMini key={index} blog={blog} />
                     ))} </Grid>
                     
