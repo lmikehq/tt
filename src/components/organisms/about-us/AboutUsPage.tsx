@@ -3,7 +3,7 @@
 import Text from '@/components/atoms/text';
 import Flex, { FlexProps } from '@/components/templates/flex';
 import { useScreenResolution } from '@/lib/extensions/hook/useScreenResolution';
-import React, { ReactNode, forwardRef } from 'react';
+import React, { ReactNode, forwardRef, useEffect } from 'react';
 import styled from "styled-components";
 import PostCard from './components/PostCard';
 import { Box } from '@mui/material';
@@ -19,6 +19,7 @@ import Link from 'next/link';
 import BlogCarousel from './components/BlogCarousel';
 import dayjs from 'dayjs';
 import Timeline from './components/Timeline';
+import { useBlogStore } from '@/lib/store/blog.store';
 
 const postCard = {
     heading: 'Embark on Unforgettable Journeys with Thrillers Travels:  Your Passport to Limitless Exploration',
@@ -167,7 +168,12 @@ function SubHeading({ title, text, sub }: { title: string; text: string; sub?: R
 
 function AboutUsPage() {
     const { isMobile } = useScreenResolution();
-
+     const {getAllBlogs,blogs} = useBlogStore(
+        (state) => state);
+         useEffect(()=>{
+      
+          getAllBlogs()
+    },[])
     return (
         <Wrapper style={{ padding: isMobile ? '0 .5rem 4rem' : '0 0 4rem' }}>
             <Flex
@@ -273,7 +279,7 @@ function AboutUsPage() {
                         text='Find very interesting stories ralting to Thrillers and Travel in general'
                     />
                     <BlogCarousel
-                        items={blogPages}
+                        items={blogs}
                     />
                 </Section>
             </Flex>

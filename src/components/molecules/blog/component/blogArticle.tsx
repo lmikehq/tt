@@ -142,9 +142,10 @@ const imagePropTypes = {
 };
 interface BlogCardMiniProps {
     blog: BlogInterface;
+    page?:string;
 }
 
-const BlogCardMini: React.FC<BlogCardMiniProps> = ({ blog }) => {
+const BlogCardMini: React.FC<BlogCardMiniProps> = ({ blog ,page}) => {
     const { isMobile } = useScreenResolution();
     const previewUrl = `/blogs/${blog.slug}`;
      const { user, setUser } = useUserStore();
@@ -183,11 +184,12 @@ const BlogCardMini: React.FC<BlogCardMiniProps> = ({ blog }) => {
     return (
         <div
            
-            style={{
-                 width:"100%",
-                 minWidth:"300px",
-                height:isMobile?"400px":"430px"
-            }}
+     style={{
+    // border: "1px solid red",
+    width: "100%",
+    minWidth: "300px",
+    height: isMobile ? "400px" : page === "aboutUs" ? "450px" : "430px"
+}}
         >
             <Flex
                 justify="space-between"
@@ -236,7 +238,7 @@ const BlogCardMini: React.FC<BlogCardMiniProps> = ({ blog }) => {
             </Flex>
             <Link href={previewUrl}>
                 <Image
-                    src={blog.blogImage}
+                src={blog.blogImage}
                     // src={"/assets/images/blog-dummy-img.svg"}
                     alt="blogImg"
                     // height={252}
@@ -297,19 +299,19 @@ const BlogCardMini: React.FC<BlogCardMiniProps> = ({ blog }) => {
                         weight="600"
                         padding="0 0 .5rem"
                     />
-                    <Text
-                        type="p"
-                        text={
-                            blog.content
-                                .replace(/&nbsp;/g, " ")
-                                .replace(/(<([^>]+)>)/gi, "")
-                                .substring(0, 100) + "..."
-                        }
-                        size="14px"
-                        weight="400"
-                        color="#121212"
-                        styles={{ display: isMobile ? "none" : "flex" }}
-                    />
+             <Text
+    type="p"
+    text={
+        blog.content
+            .replace(/&nbsp;/g, " ")
+            .replace(/(<([^>]+)>)/gi, "")
+            .substring(0, 100) + "..."
+    }
+    size="14px"
+    weight="400"
+    color="#121212"
+    styles={{display:isMobile ? "none" : "flex"}}
+/>
                 </Link>
             </Flex>
             <Flex
@@ -373,8 +375,9 @@ const BlogCardMini: React.FC<BlogCardMiniProps> = ({ blog }) => {
                     />
                 </Flex>
                 <Flex justify="flex-end" align="center" gap="10px">
+                        <Text type="p" text={blog.likes.length + ""} color={likedByUser?"#7BBBD6":"#929292"} />
                     <BiSolidLike color="#929292" size="19.25px" />
-                    <Text type="p" text={blog.likes.length + ""} color={likedByUser?"#7BBBD6":"#929292"} margin={"0 10px 0 0"}/>
+                
                     <BiSolidDislike color={dislikedByUser?"#7BBBD6":"#929292"} size="19.25px" />
                      <div style={{display:"flex", alignItems:"center", gap:"10px"}}>
                                 

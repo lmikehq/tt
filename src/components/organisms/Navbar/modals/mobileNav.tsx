@@ -98,11 +98,11 @@ function MobileNavigationDrawer({ isOpen, setIsOpen, pathArray }: Props) {
                         {[
                             {
                                 name: "Help Center",
-                                url: "",
+                                url: "contact",
                             },
                             {
                                 name: "Contact Us",
-                                url: "",
+                                url: "contact",
                             },
                         ].map((el, index) => (
                             <CollapsedItem
@@ -117,8 +117,8 @@ function MobileNavigationDrawer({ isOpen, setIsOpen, pathArray }: Props) {
             ),
         },
         {
-            name: "Company",
-            url: "stay",
+            name: "About Us",
+            url: "about-us",
             icon: <BiSolidBusiness size={19} />,
             hasCollapse: true,
         },

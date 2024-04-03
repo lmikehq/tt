@@ -146,7 +146,7 @@ const BlogReusableModal: React.FC<ReusableModalProps> = ({
        
 {
   isMobile ?  <LogoIcon>
-            <Image src={logo?logo:""} alt="" height={70} width={70}/>
+            <Image src={logo?logo:""} alt="" height={51} width={49}/>
           <IoMdClose />
         </LogoIcon>:""
 }

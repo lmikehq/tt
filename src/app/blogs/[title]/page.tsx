@@ -314,6 +314,14 @@ const handleDislike = async (blogId: string) => {
                                     </Flex>
                                         
                                         </Flex>
+                                             <Text
+                                        type="h3"
+                                        text="Entertainment"
+                                        size="18px"
+                                        styles={{display:isMobile?"none":"flex"}}
+                                        weight={400}
+                                        color="#0D00A0"
+                                    />
                               
 
 
@@ -338,7 +346,7 @@ const handleDislike = async (blogId: string) => {
                                     gap="5px"
                                     align="center"
                                     styles={{
-                                        display: isMobile ? "flex" : "none",
+                                        display: isMobile ? "flex" : "none", marginLeft:"60px"
                                     }}
                                 >
                                     <Text
@@ -391,14 +399,7 @@ const handleDislike = async (blogId: string) => {
                                 <BsBoxArrowUp color="#929292" size="20px" onClick={()=>setShareModal(true)} />
                             </Flex>
 
-                             <Text
-                                        type="h3"
-                                        text="Entertainment"
-                                        size="18px"
-                                        styles={{display:isMobile?"none":"flex"}}
-                                        weight={400}
-                                        color="#0D00A0"
-                                    />
+                        
                 </Flex>
                 {/* <Flex justify="space-between" margin="0 0 40px 0">
                     <Flex justify="flex-start" align="center" gap="10px">
