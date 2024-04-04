@@ -139,9 +139,9 @@ const Wrapper = styled.section `
     margin-top: 1rem;
 `;
 
-const Section = forwardRef(function Section({ children, id, background, padding, overflow }: { children: ReactNode; id?: string; background?: string; padding?: string; overflow?: FlexProps['overflowX']; }, ref: any) {
+const Section = forwardRef(function Section({ children, id, background, padding, overflow, border }: { children: ReactNode; id?: string; background?: string; padding?: string; overflow?: FlexProps['overflowX']; border?:string}, ref: any) {
     return (
-        <Flex direction='column' id={id} padding={padding ?? '1.5rem 0'} gap='2.5rem' position='relative' background={background} overflowX={overflow ?? 'initial'} overflowY={overflow ?? 'initial'} ref={ref}>
+        <Flex direction='column' id={id} padding={padding ?? '1.5rem 0'} gap='2.5rem' position='relative' background={background} overflowX={overflow ?? 'initial'} overflowY={overflow ?? 'initial'} ref={ref} border={border}>
             {children}
         </Flex>
     )
@@ -263,13 +263,17 @@ function AboutUsPage() {
                             </Link>
                         }
                     />
-                    <Box width='100%' height='700px' borderRadius='1rem' overflow='hidden'>
-                        <img
+                    {/* <Box width='100%' height='700px' borderRadius='1rem' overflow='hidden'> */}
+                        <Image
                             alt='people-team'
                             src='/assets/images/about-us/tt-team-1.jpg'
-                            style={{ width: '100%', objectFit: 'cover', transform: 'translateY(50px)' }}
+                            styles={{ width: '100%',
+                             objectFit: 'cover',
+                             borderRadius:"1rem",
+                              height:"auto", 
+                            transform: 'translateY(50px)' }}
                         />
-                    </Box>
+                    {/* </Box> */}
 
                 </Section>
 

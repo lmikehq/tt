@@ -73,8 +73,8 @@ const ModalIcon = styled.div`
 
 const LogoIcon = styled.div`
   position: absolute;
-  left: 20px;
-  top: 20px;
+  left: 10px;
+  top: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
