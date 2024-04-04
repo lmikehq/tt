@@ -661,9 +661,13 @@ const handleDislike = async (blogId: string) => {
                     margin={"0 0 15px 0"}
                 />
                 {/* <Flex gap={isMobile ? "30" : "28px"} wrap="wrap"> */}
-                    <Grid columns={isMobile ? "1": "2"} gap={isMobile?"2.5rem":""}>{blogs.slice(0, 4).map((blog, index) => (
-                        <BlogCardMini key={index} blog={blog} />
-                    ))} </Grid>
+                    <Grid columns={isMobile ? "1": "2"} gap={isMobile?"2.5rem":""}>   {blogs
+        .slice(0, 5)
+        .filter(itemBlog => itemBlog._id !== blog._id)
+        .map((itemBlog, index) => (
+            <BlogCardMini key={index} blog={itemBlog} />
+        ))
+    } </Grid>
                     
                     {/* <Flex
                         justify="space-between"
