@@ -1110,9 +1110,33 @@ const handleDislike = async (blogId: string) => {
                   <LikeModal open={likeModal} onClose={()=>setLikeModal(false)}/>
             {/* <DislikeModal open={dislikeModal} onClose={()=>setDislikeModal(false)}/> */}
 
+<<<<<<< HEAD
                   <BlogFeedbackModal open={feedbackModal} blog={blog} onClose={()=>setFeedbackModal(false)}/>
                   <SuccessModal open={feedbackSuccessModal} onClose={()=>setFeedbackSuccessModal(false)}/>
             <ShareModal open={shareModal} onClose={()=>setShareModal(false)} url={fullUrl} title={blog.title}/>
+=======
+            <BlogFeedbackModal
+                open={feedbackModal}
+                blog={blog}
+                onClose={() => setFeedbackModal(false)}
+            />
+            <SuccessModal
+                open={feedbackSuccessModal}
+                onClose={() => setFeedbackSuccessModal(false)}
+            />
+            <ShareModal
+                open={shareModal}
+                onClose={() => setShareModal(false)}
+                url={fullUrl}
+                title={blog.title}
+            />
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify(JSON.parse(blog.customJSONLDCode)),
+                }}
+            />
+>>>>>>> 6d661861394e037012c4ecac4c6b71ca2ed70b11
         </SectionLayout>
     );
 };
