@@ -6,14 +6,33 @@ export interface BlogInterface {
     tags: string[];
     likes: string[];
     dislikes: any[];
-    comments:any[];
-    feedbacks:any[];
+    comments: any[];
+    feedbacks: any[];
     title: string;
     content: string;
     createdAt: string;
     updatedAt: string;
     author: Author;
     slug: string;
+
+    metaDataTitle: string;
+    metaDataDesc: string;
+    redirect301: {
+        from: string;
+        to: string;
+    };
+    redirect302: {
+        from: string;
+        to: string;
+    };
+    metaKeywords: string[];
+    canonicalTag: string;
+    schemaType: string;
+    customJSONLDCode: string;
+    metaRobotsAdvanced: {
+        noindex: boolean;
+        nofollow: boolean;
+    };
 }
 
 export interface Author {

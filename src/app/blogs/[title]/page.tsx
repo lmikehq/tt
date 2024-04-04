@@ -213,75 +213,80 @@ const handleDislike = async (blogId: string) => {
                                     color="#000000"
                                 />
 
-                                <Flex>
-                                    
-                                      <Flex  justify="flex-start"
-                                        align="center"
-                                        gap="10px" >  <Text
-                                            type="p"
-                                            text="Thrillers Travels Editor"
-                                            weight={400}
-                                            size="16px"
-                                            color="#929292"
-                                        />
-                                        <GoDotFill color="#929292" size="6px" />
-                                        <Text
-                                            type="p"
-                                            text={`${Math.ceil(
+                            <Flex>
+                                <Flex
+                                    justify="flex-start"
+                                    align="center"
+                                    gap="10px"
+                                >
+                                    {" "}
+                                    <Text
+                                        type="p"
+                                        text="Thrillers Travels Editor"
+                                        weight={400}
+                                        size="16px"
+                                        color="#929292"
+                                    />
+                                    <GoDotFill color="#929292" size="6px" />
+                                    <Text
+                                        type="p"
+                                        text={`${Math.ceil(
+                                            blog?.readingTimeInMins
+                                        )} min${
+                                            Math.ceil(
                                                 blog?.readingTimeInMins
-                                            )} min${
-                                                Math.ceil(
-                                                    blog?.readingTimeInMins
-                                                ) == 1
-                                                    ? ""
-                                                    : "s"
-                                            }`}
-                                            weight={400}
-                                            size="16px"
-                                            color="#929292"
-                                            styles={{
-                                                display: isMobile
-                                                    ? "none"
-                                                    : "flex",
-                                            }}
-                                        />
-                                        <GoDotFill
-                                            color="#929292"
-                                            size="6px"
-                                            style={{
-                                                display: isMobile
-                                                    ? "none"
-                                                    : "flex",
-                                            }}
-                                        />
-                                        <Text
-                                            type="p"
-                                            text={dayjs(blog.createdAt).format(
-                                                "MMMM D"
-                                            )}
-                                            weight={400}
-                                            size="16px"
-                                            color="#929292"
-                                        />
-                                   
-                                        
-                                        </Flex>
-                                              <Flex
-                                        justify="flex-end"
-                                        align="center"
-                                     
-                                        gap="36px"
+                                            ) == 1
+                                                ? ""
+                                                : "s"
+                                        }`}
+                                        weight={400}
+                                        size="16px"
+                                        color="#929292"
                                         styles={{
                                             display: isMobile ? "none" : "flex",
                                         }}
-                                       
+                                    />
+                                    <GoDotFill
+                                        color="#929292"
+                                        size="6px"
+                                        style={{
+                                            display: isMobile ? "none" : "flex",
+                                        }}
+                                    />
+                                    <Text
+                                        type="p"
+                                        text={dayjs(blog.createdAt).format(
+                                            "MMMM D"
+                                        )}
+                                        weight={400}
+                                        size="16px"
+                                        color="#929292"
+                                    />
+                                </Flex>
+                                <Flex
+                                    justify="flex-end"
+                                    align="center"
+                                    gap="36px"
+                                    styles={{
+                                        display: isMobile ? "none" : "flex",
+                                    }}
+                                >
+                                    <div
+                                        style={{
+                                            display: "flex",
+                                            alignItems: "center",
+                                            gap: "10px",
+                                        }}
                                     >
-                                        <div style={{display:"flex", alignItems:"center", gap:"10px"}}>
-  <BiSolidLike cursor="pointer"
-                                            color={likedByUser?"#7BBBD6":"#929292"}
+                                        <BiSolidLike
+                                            cursor="pointer"
+                                            color={
+                                                likedByUser
+                                                    ? "#7BBBD6"
+                                                    : "#929292"
+                                            }
                                             size="24px"
-                
-                                             onClick={()=>handleLike(blog._id)}
+                                            onClick={() => handleLike(blog._id)}
                                         />
                                         <Text
                                             type="p"
@@ -289,17 +294,38 @@ const handleDislike = async (blogId: string) => {
                                             color="#929292"
                                             margin={0}
                                         />
-                                        </div>
-                                      
-                                        <BiSolidDislike  cursor="pointer"
-                                             color={dislikedByUser?"#7BBBD6":"#929292"}
-                                            size="24px"
-                                              onClick={()=>handleDislike(blog._id)}
+                                    </div>
+
+                                    <BiSolidDislike
+                                        cursor="pointer"
+                                        color={
+                                            dislikedByUser
+                                                ? "#7BBBD6"
+                                                : "#929292"
+                                        }
+                                        size="24px"
+                                        onClick={() => handleDislike(blog._id)}
+                                    />
+                                    <div
+                                        style={{
+                                            display: "flex",
+                                            alignItems: "center",
+                                            gap: "10px",
+                                        }}
+                                        onClick={scrollToCommentSection}
+                                    >
+                                        {" "}
+                                        <FaRegComment
+                                            color="#929292"
+                                            size="20px"
                                         />
-                                        <div style={{display:"flex", alignItems:"center", gap:"10px"}} onClick={scrollToCommentSection}>   <FaRegComment color="#929292"  size="20px"/>
-                                         <Text
+                                        <Text
                                             type="p"
-                                            text={`${blog?.comments?.length?blog?.comments?.length:0}`}
+                                            text={`${
+                                                blog?.comments?.length
+                                                    ? blog?.comments?.length
+                                                    : 0
+                                            }`}
                                             color="#929292"
                                             margin={0}
                                         />
@@ -366,6 +392,29 @@ const handleDislike = async (blogId: string) => {
                                     />
                                 </Flex>
 
+                    <Flex
+                        gap="5px"
+                        align="center"
+                        styles={{
+                            display: isMobile ? "flex" : "none",
+                        }}
+                    >
+                        <Text
+                            type="p"
+                            text="5mins read"
+                            weight={400}
+                            size="16px"
+                            color="#929292"
+                        />
+                        <GoDotFill color="#929292" size="6px" />
+                        <Text
+                            type="h3"
+                            text="Entertainment"
+                            size="18px"
+                            weight={400}
+                            color="#0D00A0"
+                        />
+                    </Flex>
 
                                    <Flex
                                 justify="flex-start"
@@ -612,13 +661,9 @@ const handleDislike = async (blogId: string) => {
                     margin={"0 0 15px 0"}
                 />
                 {/* <Flex gap={isMobile ? "30" : "28px"} wrap="wrap"> */}
-                    <Grid columns={isMobile ? "1": "2"} gap={isMobile?"2.5rem":""}>    {blogs
-        .slice(0, 5)
-        .filter(itemBlog => itemBlog._id !== blog._id)
-        .map((itemBlog, index) => (
-            <BlogCardMini key={index} blog={itemBlog} />
-        ))
-    }    </Grid>
+                    <Grid columns={isMobile ? "1": "2"} gap={isMobile?"2.5rem":""}>{blogs.slice(0, 4).map((blog, index) => (
+                        <BlogCardMini key={index} blog={blog} />
+                    ))} </Grid>
                     
                     {/* <Flex
                         justify="space-between"
