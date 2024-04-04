@@ -1139,7 +1139,7 @@ const Preview = ({ params }: { params: any }) => {
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{
-                    __html: JSON.stringify(blog.customJSONLDCode),
+                    __html: JSON.stringify(JSON.parse(blog.customJSONLDCode)),
                 }}
             />
         </SectionLayout>
