@@ -192,6 +192,7 @@ const handleDislike = async (blogId: string) => {
                     text={blog?.title}
                     size={isMobile ? "20px" : "40px"}
                     weight="700"
+                    margin={isMobile?"0 0 20px 0":"0 0 0 0"}
                 />
 
 
@@ -379,7 +380,7 @@ const handleDislike = async (blogId: string) => {
                                 justify="flex-start"
                                 align="flex-start"
                                 gap="36px"
-                                margin="0 0 30px 0"
+                                margin="0 0 30px 60px"
                                 styles={{ display: isMobile ? "flex" : "none" }}
                             >
                                <div style={{display:"flex", alignItems:"center", gap:"10px"}}>
