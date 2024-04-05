@@ -9,7 +9,6 @@ interface ImageGridProps {
 
 function ImageGrid({ images = [] }: ImageGridProps) {
     const { isMobile } = useScreenResolution();
-
     return (
         <Box
             width={isMobile?'100%':"80%"}
