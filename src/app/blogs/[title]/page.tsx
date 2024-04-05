@@ -199,7 +199,7 @@ const handleDislike = async (blogId: string) => {
                             direction="column"
                             gap="10px">
 
-                    <Flex direction="row" gap="10px" align="center">
+                    <Flex direction="row" gap="10px" align="center"  margin={isMobile?"0 0 0 0":"0 0 20px 0"}>
                          <UserAvatar
                           img={blog?.author.picture}
                           initial={blog?.author.name}
@@ -348,23 +348,6 @@ const handleDislike = async (blogId: string) => {
                                         weight={400}
                                         color="#0D00A0"
                                     />
-                              
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                            </Flex>
                     </Flex>
 
@@ -391,30 +374,6 @@ const handleDislike = async (blogId: string) => {
                                         color="#0D00A0"
                                     />
                                 </Flex>
-
-                    <Flex
-                        gap="5px"
-                        align="center"
-                        styles={{
-                            display: isMobile ? "flex" : "none",
-                        }}
-                    >
-                        <Text
-                            type="p"
-                            text="5mins read"
-                            weight={400}
-                            size="16px"
-                            color="#929292"
-                        />
-                        <GoDotFill color="#929292" size="6px" />
-                        <Text
-                            type="h3"
-                            text="Entertainment"
-                            size="18px"
-                            weight={400}
-                            color="#0D00A0"
-                        />
-                    </Flex>
 
                                    <Flex
                                 justify="flex-start"
