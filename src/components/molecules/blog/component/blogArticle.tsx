@@ -26,6 +26,8 @@ interface BlogArticleProps {
 export const BlogArticle = ({ blog }: BlogArticleProps) => {
     const { isMobile } = useScreenResolution();
     const previewUrl = `/blogs/${blog.slug}`;
+         const { user, setUser } = useUserStore();
+           const { likedByUser, dislikedByUser } = useLikedByUser(blog, user?._id);
     return (
         <>
             <Link href={previewUrl}>
@@ -114,16 +116,17 @@ export const BlogArticle = ({ blog }: BlogArticleProps) => {
                         </Flex>
 
                         <Flex justify="flex-end" align="center" gap="10px" border="1px solid red">
-                            <BiSolidLike color="#929292" size="19.25px" />
-                            <Text type="p" text="1.3k" color="#929292" />
-                            <BiSolidDislike color="#929292" size="19.25px" />
+                            <BiSolidLike color={likedByUser?"#7BBBD6":"#929292"}  size="19.25px" />
+                            <Text type="p" text={`${blog?.likes?.length?blog?.likes?.length:0}`}color="#929292" />
+                            <BiSolidDislike color={dislikedByUser?"#7BBBD6":"#929292"} size="19.25px" />
+                                 <FaRegComment color="#929292"  size="19.25px"/>
                                      <Text
                                             type="p"
                                             text={`${blog?.comments?.length?blog?.comments?.length:0}`}
                                             color="#929292"
                                             margin={0}
                                         />
-                                <FaRegComment color="#929292"  size="19.25px"/>
+                           
                                     
                                       
                         </Flex>
@@ -327,28 +330,29 @@ const BlogCardMini: React.FC<BlogCardMiniProps> = ({ blog ,page}) => {
                         color="#00E717"
                     />
 
-                    <Flex width="fit-content" gap="10px">
-                        <Flex cursor="pointer" gap="5px">
+                    <Flex width="fit-content" gap="18px" align="center">
+                        <Flex cursor="pointer" gap="5px" align="center">
+                            <BiSolidLike  color={likedByUser?"#7BBBD6":"#929292"} size="22px" />
                             <Text
                                 type="p"
                                 text={blog.likes.length +""}
                                 size="16px"
                                 color="#929292"
                             />
-                            <BiSolidLike  color={likedByUser?"#7BBBD6":"#929292"} size="22px" />
+                            
                         </Flex>
                         <Flex cursor="pointer" >
                             <BiSolidDislike  color={dislikedByUser?"#7BBBD6":"#929292"} size="22px" />
                         </Flex>
-                              <Flex cursor="pointer" gap="5px">
-                                
+                              <Flex cursor="pointer" gap="5px" align="center">
+                                 <FaRegComment color="#929292"  size="20px"/>
                                      <Text
                                             type="p"
                                             text={`${blog?.comments?.length?blog?.comments?.length:0}`}
                                             color="#929292"
                                             margin={0}
                                         />
-                                <FaRegComment color="#929292"  size="20px"/>
+                               
                                     
                                         </Flex>
                     </Flex>
@@ -374,24 +378,32 @@ const BlogCardMini: React.FC<BlogCardMiniProps> = ({ blog ,page}) => {
                         styles={{ display: isMobile ? "none" : "flex" }}
                     />
                 </Flex>
-                <Flex justify="flex-end" align="center" gap="10px">
-                        <Text type="p" text={blog.likes.length + ""} color={likedByUser?"#7BBBD6":"#929292"} />
-                    <BiSolidLike color="#929292" size="19.25px" />
-                
-                    <BiSolidDislike color={dislikedByUser?"#7BBBD6":"#929292"} size="19.25px" />
-                     <div style={{display:"flex", alignItems:"center", gap:"10px"}}>
-                                
+                 <Flex width="fit-content" gap="18px" align="center">
+                        <Flex cursor="pointer" gap="5px" align="center">
+                            <BiSolidLike  color={likedByUser?"#7BBBD6":"#929292"} size="22px" />
+                            <Text
+                                type="p"
+                                text={blog.likes.length +""}
+                                size="16px"
+                                color="#929292"
+                            />
+                            
+                        </Flex>
+                        <Flex cursor="pointer" >
+                            <BiSolidDislike  color={dislikedByUser?"#7BBBD6":"#929292"} size="22px" />
+                        </Flex>
+                              <Flex cursor="pointer" gap="5px" align="center">
+                                 <FaRegComment color="#929292"  size="20px"/>
                                      <Text
                                             type="p"
                                             text={`${blog?.comments?.length?blog?.comments?.length:0}`}
                                             color="#929292"
                                             margin={0}
                                         />
-                                <FaRegComment color="#929292"  size="20px"/>
+                               
                                     
-                                        </div>
-                    {/* <BsBoxArrowUp color="#929292" size="18px" /> */}
-                </Flex>
+                                        </Flex>
+                    </Flex>
             </Flex>
       
         </div>
