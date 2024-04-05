@@ -17,19 +17,23 @@ function PostCard({ heading, text, imgSrc = '/assets/images/empty-img.png' }: Po
 
     return (
         <Box
+        // border="1px solid red"
             display='grid'
             gridTemplateColumns={isMobile ? '1fr' : '1fr 1fr'}
             columnGap='4rem'
             rowGap='3rem'
-            padding='2rem 0'
+            padding={isMobile?"0 0 0 0":'2rem 0'}
             alignItems='center'
         >
             <Box overflow='hidden' borderRadius='1rem'>
                 <Image
                     alt='post-block'
                     src={imgSrc ?? '/assets/images/empty-img.png'}
-                    styles={{ width: '100%', objectFit: 'scale-down', transform: `scale(1.4) translateY(3rem)` }}
-                    height={400}
+                    styles={{ width: '100%',
+                    //  objectFit: 'scale-down',
+                    //   transform: `scale(1.4) translateY(3rem)`,
+                       height:"auto"}}
+                    // height={400}
                 />
             </Box>
             <Flex direction='column' gap='1.5rem'>

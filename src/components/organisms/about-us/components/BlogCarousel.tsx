@@ -9,23 +9,14 @@ import { ttColors } from "@lib/theme/colors";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import Flex from "@/components/templates/flex";
 import BlogCard, { BlogCardItem } from "./BlogCard";
+import { FetchBlogsResponse } from "@/lib/types/response-models/blog/index.type";
+import { Grid } from "@/components/templates/grid";
+import BlogCardMini from "@/components/molecules/blog/component/blogArticle";
 
 
 const CarouselWrapper = styled.div < { isMobile: boolean; width: number; itemCount: number; }>`
     .slick-slide div {
         outline: none;
-    }
-    .blog-title {
-        font-size: ${({ isMobile }) => isMobile ? '14px !important' : '20px !important'};
-    }
-    .blog-content {
-        font-size: ${({ isMobile }) => isMobile ? '10px !important' : '15px !important'};
-    }
-    .slick-list {
-        padding: ${({ isMobile, width }) => width < 530 ? '0 50px 0 28px !important' : isMobile ? '0 50px 0 0 !important' : ''}
-    }
-    .slick-track {
-        width: ${({ isMobile, itemCount }) => isMobile ? `calc(77vw * ${itemCount + 1}) !important` : ''};
     }
     & .slick-dots {
         transform: translateY(6rem);
@@ -79,10 +70,7 @@ const CarouselWrapper = styled.div < { isMobile: boolean; width: number; itemCou
     //         display: none;
     //     };
     // }
-    & h1 {
-        margin-bottom: 1rem;
-        font-weight: 600;
-        color: ${ttColors.primary};
+  
     }
 `;
 
@@ -93,22 +81,38 @@ const StyledSlider = styled(Slider)`
 `;
 
 interface BlogCarouselProps {
-    items: BlogCardItem[];
+    items:FetchBlogsResponse;
 }
+
+
+
+//   { 
+//         title: '10 Essential Travel Tips for a Stress-Free Vacation',
+//         content: "Traveling can be a breeze with the right preparation. From packing also a breeze ....",
+//         subject: "Travel Trips",
+//         headerImg: '/assets/images/about-us/blog-img.png',
+//         userImg: '/assets/images/about-us/blog-user.png',
+//         user: 'Seun Adebayo',
+//         position: 'Admin Thrillers',
+//         createdDate: dayjs().date(4).month(8).format(),
+//         length: '6 mins',
+//         likes: 1300,
+//         dislikes: 0,
+//     },
 function BlogCarousel({ items } : BlogCarouselProps) {
     const { isMobile, width } = useScreenResolution();
 
     const settings = {
-        dots: true,
-        infinite: false,
-        speed: 500,
-        slidesToShow: isMobile ? 1 : 3,
-        slidesToScroll: 1,
-        autoplay: true,
+      dots: true,
+  infinite: true,
+ slidesToShow: isMobile ? 1 : 3,
+  slidesToScroll: 1, 
+      autoplay: true,
+       
         autoplaySpeed: 10000,
         pauseOnFocus: true,
-        centerMode: isMobile ? true : false,
-        variableWidth: isMobile ? true : false,
+        // centerMode: isMobile ? true : false,
+        // variableWidth: isMobile ? true : false,
         // prevArrow: (
         //     <Flex
         //         width='max-content'
@@ -134,12 +138,13 @@ function BlogCarousel({ items } : BlogCarouselProps) {
     return (
         <CarouselWrapper isMobile={isMobile} width={width} itemCount={items.length}>
             <StyledSlider {...settings}>
-                {items.map((item, index) =>
-                    <Flex key={`caro-${index}`} width={isMobile ? '77vw' : '100%'}>
-                        <BlogCard
+                {items.map((item, i) =>
+                     <Grid columns={isMobile ? "1fr" : "repeat(3, 1fr)"} style={{gridColumnGap:"20px"}} key={i}>
+                       <BlogCardMini page="aboutUs"  blog={item} />
+                        {/* <BlogCard
                             {...item}
-                        />
-                    </Flex>
+                        /> */}
+                    </Grid>
                 )}
             </StyledSlider>
         </CarouselWrapper>

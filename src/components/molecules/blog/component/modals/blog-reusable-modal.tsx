@@ -73,8 +73,8 @@ const ModalIcon = styled.div`
 
 const LogoIcon = styled.div`
   position: absolute;
-  left: 20px;
-  top: 20px;
+  left: 10px;
+  top: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -146,7 +146,7 @@ const BlogReusableModal: React.FC<ReusableModalProps> = ({
        
 {
   isMobile ?  <LogoIcon>
-            <Image src={logo?logo:""} alt="" height={70} width={70}/>
+            <Image src={logo?logo:""} alt="" height={51} width={49}/>
           <IoMdClose />
         </LogoIcon>:""
 }

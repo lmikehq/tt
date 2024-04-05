@@ -3,7 +3,7 @@
 import Text from '@/components/atoms/text';
 import Flex, { FlexProps } from '@/components/templates/flex';
 import { useScreenResolution } from '@/lib/extensions/hook/useScreenResolution';
-import React, { ReactNode, forwardRef } from 'react';
+import React, { ReactNode, forwardRef, useEffect } from 'react';
 import styled from "styled-components";
 import PostCard from './components/PostCard';
 import { Box } from '@mui/material';
@@ -19,6 +19,7 @@ import Link from 'next/link';
 import BlogCarousel from './components/BlogCarousel';
 import dayjs from 'dayjs';
 import Timeline from './components/Timeline';
+import { useBlogStore } from '@/lib/store/blog.store';
 
 const postCard = {
     heading: 'Embark on Unforgettable Journeys with Thrillers Travels:  Your Passport to Limitless Exploration',
@@ -138,9 +139,9 @@ const Wrapper = styled.section `
     margin-top: 1rem;
 `;
 
-const Section = forwardRef(function Section({ children, id, background, padding, overflow }: { children: ReactNode; id?: string; background?: string; padding?: string; overflow?: FlexProps['overflowX']; }, ref: any) {
+const Section = forwardRef(function Section({ children, id, background, padding, overflow, border }: { children: ReactNode; id?: string; background?: string; padding?: string; overflow?: FlexProps['overflowX']; border?:string}, ref: any) {
     return (
-        <Flex direction='column' id={id} padding={padding ?? '1.5rem 0'} gap='2.5rem' position='relative' background={background} overflowX={overflow ?? 'initial'} overflowY={overflow ?? 'initial'} ref={ref}>
+        <Flex direction='column' id={id} padding={padding ?? '1.5rem 0'} gap='2.5rem' position='relative' background={background} overflowX={overflow ?? 'initial'} overflowY={overflow ?? 'initial'} ref={ref} border={border}>
             {children}
         </Flex>
     )
@@ -167,7 +168,12 @@ function SubHeading({ title, text, sub }: { title: string; text: string; sub?: R
 
 function AboutUsPage() {
     const { isMobile } = useScreenResolution();
-
+     const {getAllBlogs,blogs} = useBlogStore(
+        (state) => state);
+         useEffect(()=>{
+      
+          getAllBlogs()
+    },[])
     return (
         <Wrapper style={{ padding: isMobile ? '0 .5rem 4rem' : '0 0 4rem' }}>
             <Flex
@@ -257,13 +263,17 @@ function AboutUsPage() {
                             </Link>
                         }
                     />
-                    <Box width='100%' height='700px' borderRadius='1rem' overflow='hidden'>
-                        <img
+                    {/* <Box width='100%' height='700px' borderRadius='1rem' overflow='hidden'> */}
+                        <Image
                             alt='people-team'
                             src='/assets/images/about-us/tt-team-1.jpg'
-                            style={{ width: '100%', objectFit: 'cover', transform: 'translateY(50px)' }}
+                            styles={{ width: '100%',
+                             objectFit: 'cover',
+                             borderRadius:"1rem",
+                              height:"auto", 
+                            transform: 'translateY(50px)' }}
                         />
-                    </Box>
+                    {/* </Box> */}
 
                 </Section>
 
@@ -273,7 +283,7 @@ function AboutUsPage() {
                         text='Find very interesting stories ralting to Thrillers and Travel in general'
                     />
                     <BlogCarousel
-                        items={blogPages}
+                        items={blogs}
                     />
                 </Section>
             </Flex>

@@ -246,7 +246,7 @@ const ContactPage = () => {
                       text="Reach our support"
                       color="#ffffff"
                       weight={600}
-                      size={24}
+                      size={isMobile?20:24}
                     />
                     <Text
                       type="span"
@@ -278,7 +278,7 @@ const ContactPage = () => {
                       text="Call us"
                       color="#ffffff"
                       weight={600}
-                      size={24}
+                     size={isMobile?20:24}
                     />
                     <Text
                       type="span"
@@ -311,7 +311,7 @@ const ContactPage = () => {
                   text="Visit Us"
                   color="#ffffff"
                   weight={600}
-                  size={24}
+                 size={isMobile?20:24}
                 />
                 <Text
                   type="span"

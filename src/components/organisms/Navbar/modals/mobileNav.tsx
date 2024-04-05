@@ -98,11 +98,11 @@ function MobileNavigationDrawer({ isOpen, setIsOpen, pathArray }: Props) {
                         {[
                             {
                                 name: "Help Center",
-                                url: "",
+                                url: "contact",
                             },
                             {
                                 name: "Contact Us",
-                                url: "",
+                                url: "contact",
                             },
                         ].map((el, index) => (
                             <CollapsedItem
@@ -117,8 +117,8 @@ function MobileNavigationDrawer({ isOpen, setIsOpen, pathArray }: Props) {
             ),
         },
         {
-            name: "Company",
-            url: "stay",
+            name: "About Us",
+            url: "about-us",
             icon: <BiSolidBusiness size={19} />,
             hasCollapse: true,
         },
@@ -130,18 +130,18 @@ function MobileNavigationDrawer({ isOpen, setIsOpen, pathArray }: Props) {
             action: () => setTab(0),
         },
         {
-            name: "Payment History",
-            url: "/dashboard",
+            name: "Get Visa",
+            url: "/visa",
             action: () => setTab(1),
         },
         {
-            name: "Favourites",
-            url: "/dashboard",
+            name: "Find Ticket",
+            url: "/flight",
             action: () => setTab(2),
         },
         {
-            name: "Notifications",
-            url: "/dashboard",
+            name: "Rent Stay",
+            url: "/stay",
             action: () => setTab(3),
         },
         {
@@ -158,6 +158,7 @@ function MobileNavigationDrawer({ isOpen, setIsOpen, pathArray }: Props) {
             name: "Logout",
             action:() => {
                 handleLogout();
+                setUser(null);
                 router.push("/auth/login");
             },
         },
