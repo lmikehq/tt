@@ -130,18 +130,18 @@ function MobileNavigationDrawer({ isOpen, setIsOpen, pathArray }: Props) {
             action: () => setTab(0),
         },
         {
-            name: "Get Visa",
-            url: "/visa",
+            name: "Payment History",
+            url: "/dashboard",
             action: () => setTab(1),
         },
         {
-            name: "Find Ticket",
-            url: "/flight",
+            name: "Favourites",
+            url: "/dashboard",
             action: () => setTab(2),
         },
         {
-            name: "Rent Stay",
-            url: "/stay",
+            name: "Notifications",
+            url: "/dashboard",
             action: () => setTab(3),
         },
         {

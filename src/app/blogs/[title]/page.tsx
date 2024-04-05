@@ -1128,7 +1128,14 @@ const handleDislike = async (blogId: string) => {
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{
-                    __html: JSON.stringify(JSON.parse(blog.customJSONLDCode)),
+                    __html: JSON.stringify(()=>{
+try{
+    JSON.parse(blog.customJSONLDCode)
+} catch{
+
+}
+
+                    }),
                 }}
             />
         </SectionLayout>
