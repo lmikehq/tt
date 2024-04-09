@@ -98,7 +98,6 @@ const handleLike = async (blogId: string) => {
       return;
     }
     if (blog.likes.includes(user._id)) {
-      // If the user already liked the post, return
       return;
     }
 
@@ -117,7 +116,12 @@ const handleLike = async (blogId: string) => {
     if (response && response.data.success) {
       updatedBlog.likes.push(user._id);
       setBlog(updatedBlog);
-      setFeedbackModal(true);
+      if (blog.feedbacks.some(feedback=> feedback.userId === user._id)){
+    return;
+      }else{
+        setFeedbackModal(true);
+      }
+
     }
   } catch (error) {
     toast.error("Failed to like the post. Please try again.");
@@ -157,7 +161,11 @@ const handleDislike = async (blogId: string) => {
     if (response && response.data.success) {
       updatedBlog.dislikes.push(user._id);
       setBlog(updatedBlog);
-      setFeedbackModal(true);
+       if (blog.feedbacks.some(feedback=> feedback.userId === user._id)){
+      return;
+      }else{
+        setFeedbackModal(true);
+      }
     }
   } catch (error) {
     toast.error("Failed to dislike the post. Please try again.");
