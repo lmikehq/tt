@@ -47,28 +47,35 @@ function LoginPage() {
     password: "",
     rememberMe: false,
   });
-  const login = useGoogleLogin({
-    onSuccess: async (credentialResponse) => {
-      return await apiService("/auth/google", "POST", {
-        token: credentialResponse.access_token,
-      })
-        .then(async (res) => {
-          if (res.statusCode === 401) return;
-          setSubmissionState({
-            ...submissionState,
-            loadingGoogleAuth: true,
-          });
-          setUser(res?.user);
-          toast.success("You have successfully logged in!");
-          toast.loading("Redirecting to your dashboard...", {
-            duration: 3000,
-          });
-          router.push("/dashboard");
-        })
-        .catch((error) => { });
-    },
-    onError: () => { },
+
+    const [submissionState, setSubmissionState] = useState({
+    loading: false,
+    loadingGoogleAuth: false,
+    error: [] as any,
+    success: false,
   });
+  // const login = useGoogleLogin({
+  //   onSuccess: async (credentialResponse) => {
+  //     return await apiService("/auth/google", "POST", {
+  //       token: credentialResponse.access_token,
+  //     })
+  //       .then(async (res) => {
+  //         if (res.statusCode === 401) return;
+  //         setSubmissionState({
+  //           ...submissionState,
+  //           loadingGoogleAuth: true,
+  //         });
+  //         setUser(res?.user);
+  //         toast.success("You have successfully logged in!");
+  //         toast.loading("Redirecting to your dashboard...", {
+  //           duration: 3000,
+  //         });
+  //         router.push("/dashboard");
+  //       })
+  //       .catch((error) => { });
+  //   },
+  //   onError: () => { },
+  // });
   useEffect(() => {
     if (submissionState.error.length > 0) {
       setSubmissionState({
@@ -78,12 +85,7 @@ function LoginPage() {
     }
   }, [loginData, loginData]);
 
-  const [submissionState, setSubmissionState] = useState({
-    loading: false,
-    loadingGoogleAuth: false,
-    error: [] as any,
-    success: false,
-  });
+
 
   async function handleLogin(): Promise<any> {
     return await apiService("/auth/login", "POST", {
@@ -401,7 +403,7 @@ function LoginPage() {
                   ? "#87ceeb36"
                   : ttColors.primary
               }
-              onClick={handleSubmit}
+               onClick={handleSubmit}
             >
               {submissionState.loading ? (
                 <Spinner size="40px" fill={ttColors.primary} />
@@ -457,7 +459,7 @@ function LoginPage() {
               />
             </Flex>
             <Button
-              onClick={login}
+              // onClick={login}
               background="transparent"
               border={`1px solid ${ttColors.primary}`}
               width="100%"

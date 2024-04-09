@@ -85,7 +85,7 @@ function CareersPage() {
                 margin="0 0 2rem"
                 gap="2rem"
                 borderRadius=".5rem"
-                styles={{ backgroundSize: 'contain' }}
+                styles={{ backgroundSize: 'contain'}}
             >
                 <Flex direction='column' align="center" gap="1rem">
                     <Text
@@ -120,15 +120,18 @@ function CareersPage() {
             </Flex>
 
 
-            <Flex direction='column' gap="3.5rem" margin='3rem 0' padding="0 0 3rem">
+            <Flex direction='column' gap="3.5rem" margin='3rem 0' padding="0 0 3rem" >
                 <PostCard
                     imgSrc='/assets/images/about-us/tt-team-4.jpg'
                     {...postCard}
                 />
-                
-                <ImageGrid
+                <div style={{display:"flex", alignItems:"center", justifyContent:"center", width:"100%"}}>
+ <ImageGrid
                     images={gridImages}
                 />
+                </div>
+                
+               
 
                 <Section>
                     <SubHeading

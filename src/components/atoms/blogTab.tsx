@@ -51,12 +51,12 @@ const TabWrapper = styled.div<{
     }
   }
   .MuiTabs-flexContainer {
-    @media (max-width: 900px) {
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      gap: 1.5rem;
-    }
+    // @media (max-width: 900px) {
+    //   width: 100%;
+    //   display: flex;
+    //   justify-content: space-between;
+    //   gap: 1.5rem;
+    // }
   }
 `;
 

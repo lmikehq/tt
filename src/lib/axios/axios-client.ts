@@ -12,7 +12,7 @@ interface XAxiosInstance extends AxiosInstance {
   ): Promise<R>;
 }
 const axiosClient: AxiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_SERVER,
+  baseURL:process.env.NEXT_PUBLIC_API_SERVER,
   timeout: 15000,
   //   withCredentials: true,
   headers: {

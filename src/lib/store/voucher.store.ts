@@ -33,6 +33,7 @@ export const useVoucherStore = create<State & Actions>(
       }
 
       set({ mode: Mode.loading });
+      
       await VoucherService.checkVoucher({ promoCode })
         .then((response) => {
           set({ voucher: promoCode, applied: true, mode: Mode.loaded });
@@ -82,3 +83,31 @@ export const useVoucherStore = create<State & Actions>(
     },
   })
 );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// export const blogModalStore =create((set)={
+//   modalOpen:false,
+//   feedback:"",
+//   reaction:"excellent",
+//   setModalState:(newState)=>{
+//     set({modalOpen:newState})
+//   }
+// })

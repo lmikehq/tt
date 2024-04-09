@@ -5,7 +5,7 @@ import Flex from "@/components/templates/flex";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
 import { useFetchBlogs } from "@/lib/hooks/blog/index.hook";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AiOutlineClockCircle } from "react-icons/ai";
 import { CiSearch } from "react-icons/ci";
 import { LiaTimesSolid } from "react-icons/lia";
@@ -15,6 +15,9 @@ import BlogCardMini from "./blogArticle";
 import Center from "@/components/templates/center";
 import Spinner from "../../icons/spinner";
 import { ttColors } from "@/lib/theme/colors";
+import { useBlogStore } from "@/lib/store/blog.store";
+import { Mode } from "@/lib/types";
+import { Grid } from "@/components/templates/grid";
 const Box = styled.div`
     width: 886px;
     @media (max-width: 900px) {
@@ -77,7 +80,7 @@ const SearchResultItem = styled.div`
 `;
 
 export const BlogHeroSection = () => {
-    const { isMobile } = useScreenResolution();
+    const { isMobile ,isTablet} = useScreenResolution();
 
     const [searchTerm, setSearchTerm] = useState<string>("");
     const [searchTriggered, setSearchTriggered] = useState(false);
@@ -88,7 +91,15 @@ export const BlogHeroSection = () => {
     // const handleToggleSearchResults = () => {
     //   setSearchResultsVisible(!isSearchResultsVisible);
     // };
-    const { data = [], isFetching } = useFetchBlogs({});
+    // const {data = [], isFetching } = useFetchBlogs({});
+
+
+  const { blogs, mode, getAllBlogs } = useBlogStore(
+        (state) => state);
+ const isLoading = mode == Mode.loading;
+    useEffect(()=>{
+        getAllBlogs()
+    },[])
 
     const tabItems = [
         {
@@ -161,7 +172,7 @@ export const BlogHeroSection = () => {
         // setSearchResultsVisible(false);
     };
 
-    // const blogs = [
+    // const data = [
     //     {
     //         _id: "01",
     //         blogImage:
@@ -178,7 +189,7 @@ export const BlogHeroSection = () => {
     //         updatedAt: "2021-09-09T00:00:00.000Z",
     //         author: {
     //             name: "Seun Adebayo",
-    //             picture: User.src,
+    //             // picture: User.src,
     //         },
     //     },
     //     {
@@ -197,7 +208,7 @@ export const BlogHeroSection = () => {
     //         updatedAt: "2021-09-09T00:00:00.000Z",
     //         author: {
     //             name: "Seun Adebayo",
-    //             picture: User.src,
+    //             // picture: User.src,
     //         },
     //     },
     // ];
@@ -305,16 +316,20 @@ export const BlogHeroSection = () => {
                         setActiveTab={setActiveTab}
                     />
                 </Section>
-                {isFetching ? (
+                {isLoading ? (
                     <Center height="calc(100vh - 70px)">
                         <Spinner size="40px" fill={ttColors.primary} />{" "}
                     </Center>
-                ) : activeTab !== 1 && data?.length ? (
-                    <Flex wrap="wrap" gap="2rem">
-                        {data.map((blog, index) => (
+                ) : activeTab !== 1 && blogs?.length ? (
+
+                        <Grid columns={isMobile ? "1":isTablet?"2":"3"} gap={isMobile?"2.5rem":""}> {blogs?.map((blog, index) => (
                             <BlogCardMini key={index} blog={blog} />
-                        ))}
-                    </Flex>
+                        ))} </Grid>
+                    // <Flex wrap="wrap" gap="2rem">
+                    //     {blogs?.map((blog, index) => (
+                    //         <BlogCardMini key={index} blog={blog} />
+                    //     ))}
+                    // </Flex>
                 ) : (
                     <Section
                         maxWidth={isMobile ? "100%" : "525px"}

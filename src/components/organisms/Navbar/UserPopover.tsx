@@ -69,7 +69,9 @@ const CustomPopover = ({ user, isLoading, refetch }: Props) => {
   const { setUser } = useUserStore((state) => state);
   async function getUser(): Promise<User | any> {
     const res = await apiService("/user", "GET");
+    if(res){
     setUser(res);
+    }
     return res;
   }
 
