@@ -27,12 +27,13 @@ import toast from "react-hot-toast";
 import { BsBoxArrowUp } from "react-icons/bs";
 import { GoDotFill } from "react-icons/go";
 import { FaRegComment } from "react-icons/fa";
-import { BiSolidLike, BiSolidDislike  } from "react-icons/bi";
+import { BiSolidLike, BiSolidDislike } from "react-icons/bi";
 
 import styled from "styled-components";
 import UserAvatar from "@/components/atoms/user-avatar";
 import BlogCommentSection from "@/components/organisms/blog-comment-section";
 import { Grid } from "@/components/templates/grid";
+import { BlogStatus } from "@/lib/types/request-models/blog/index.type";
 
 const Box = styled.div`
     width: 886px;
@@ -44,133 +45,164 @@ const Box = styled.div`
 
 const Preview = ({ params }: { params: any }) => {
     const { isMobile } = useScreenResolution();
-     const {mode,getBlog, blog,setBlogs,likeModal,getAllBlogs, setLikeModal, setDislikeModal,blogs,setBlog, dislikeModal,feedbackModal, setFeedbackModal,setFeedbackSuccessModal,feedbackSuccessModal,shareModal, setShareModal} = useBlogStore(
-        (state) => state);
-          const pathname = usePathname();
-        const commentSectionRef = useRef<HTMLDivElement>(null);
-  const fullUrl = window.location.origin + pathname;
-  const { user, setUser } = useUserStore();
-          const { likedByUser, dislikedByUser } = useLikedByUser(blog, user?._id);
-        const [userIp, setUserIp] = useState<string>("");
-         const [openCommentField, setOpenCommentField] = useState(false);
+    const {
+        mode,
+        getBlog,
+        blog,
+        setBlogs,
+        likeModal,
+        getAllBlogs,
+        setLikeModal,
+        setDislikeModal,
+        blogs,
+        setBlog,
+        dislikeModal,
+        feedbackModal,
+        setFeedbackModal,
+        setFeedbackSuccessModal,
+        feedbackSuccessModal,
+        shareModal,
+        setShareModal,
+    } = useBlogStore((state) => state);
+    const pathname = usePathname();
+    const commentSectionRef = useRef<HTMLDivElement>(null);
+    const fullUrl = window.location.origin + pathname;
+    const { user, setUser } = useUserStore();
+    const { likedByUser, dislikedByUser } = useLikedByUser(blog, user?._id);
+    const [userIp, setUserIp] = useState<string>("");
+    const [openCommentField, setOpenCommentField] = useState(false);
 
-const scrollToCommentSection = () => {
-
-  if (!user?._id) {
-      setLikeModal(true);
-      return;
-    }else if (commentSectionRef.current) {
-          setOpenCommentField(true)
-      commentSectionRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
+    const scrollToCommentSection = () => {
+        if (!user?._id) {
+            setLikeModal(true);
+            return;
+        } else if (commentSectionRef.current) {
+            setOpenCommentField(true);
+            commentSectionRef.current.scrollIntoView({ behavior: "smooth" });
+        }
+    };
 
     // const { data } = useFetchBlogBySlug(params?.title);
     // const { data: blogs = [] } = useFetchBlogs({});
-    useEffect(()=>{
-        getBlog(params?.title)
-          getAllBlogs()
-    },[])
+    useEffect(() => {
+        getBlog(params?.title);
+        getAllBlogs({ query: { status: BlogStatus.PUBLISHED } });
+    }, []);
 
-          useEffect(() => {
-    const fetchUserIp = async () => {
-      try {
-        const ipResponse = await fetch("https://api.ipify.org/?format=json");
-        const ipData = await ipResponse.json();
-        setUserIp(ipData.ip);
-      } catch (error) {
-        console.error(" ip Error fetching user IP", error);
-      }
+    useEffect(() => {
+        const fetchUserIp = async () => {
+            try {
+                const ipResponse = await fetch(
+                    "https://api.ipify.org/?format=json"
+                );
+                const ipData = await ipResponse.json();
+                setUserIp(ipData.ip);
+            } catch (error) {
+                console.error(" ip Error fetching user IP", error);
+            }
+        };
+        fetchUserIp();
+    }, [blog]);
+
+    const handleLike = async (blogId: string) => {
+        try {
+            if (!blog) {
+                console.error("Blog is null");
+                return;
+            }
+            if (!user?._id) {
+                setLikeModal(true);
+                return;
+            }
+            if (blog.likes.includes(user._id)) {
+                return;
+            }
+
+            const updatedBlog = { ...blog };
+
+            // Check if the user already disliked the post
+            if (blog.dislikes.includes(user._id)) {
+                // Remove user's dislike
+                updatedBlog.dislikes = updatedBlog.dislikes.filter(
+                    (id) => id !== user._id
+                );
+            }
+
+            const response = await apiService(`/blog/${blogId}/like`, "POST", {
+                ip: user._id,
+            });
+
+            if (response && response.data.success) {
+                updatedBlog.likes.push(user._id);
+                setBlog(updatedBlog);
+                if (
+                    blog.feedbacks.some(
+                        (feedback) => feedback.userId === user._id
+                    )
+                ) {
+                    return;
+                } else {
+                    setFeedbackModal(true);
+                }
+            }
+        } catch (error) {
+            toast.error("Failed to like the post. Please try again.");
+        }
     };
-    fetchUserIp();
-  }, [blog]);
+    const handleDislike = async (blogId: string) => {
+        try {
+            if (!blog) {
+                console.error("Blog is null");
+                return;
+            }
 
+            if (!user?._id) {
+                setLikeModal(true);
+                return;
+            }
 
+            const updatedBlog = { ...blog };
 
-const handleLike = async (blogId: string) => {
-  try {
-    if (!blog) {
-      console.error("Blog is null");
-      return;
-    }
-    if (!user?._id) {
-      setLikeModal(true);
-      return;
-    }
-    if (blog.likes.includes(user._id)) {
-      return;
-    }
+            // Check if the user has already disliked the blog
+            if (blog.dislikes.includes(user._id)) {
+                // User has already disliked the blog, do nothing
+                return;
+            }
 
-    const updatedBlog = { ...blog };
-    
-    // Check if the user already disliked the post
-    if (blog.dislikes.includes(user._id)) {
-      // Remove user's dislike
-      updatedBlog.dislikes = updatedBlog.dislikes.filter((id) => id !== user._id);
-    }
+            // Remove like if the user has already liked the blog
+            if (blog.likes.includes(user._id)) {
+                const updatedLikes = blog.likes.filter(
+                    (like) => like !== user._id
+                );
+                updatedBlog.likes = updatedLikes;
+            }
 
-    const response = await apiService(`/blog/${blogId}/like`, "POST", {
-      ip: user._id,
-    });
+            // Add user to dislikes
+            const response = await apiService(
+                `/blog/${blogId}/dislike`,
+                "POST",
+                {
+                    ip: user._id,
+                }
+            );
 
-    if (response && response.data.success) {
-      updatedBlog.likes.push(user._id);
-      setBlog(updatedBlog);
-      if (blog.feedbacks.some(feedback=> feedback.userId === user._id)){
-    return;
-      }else{
-        setFeedbackModal(true);
-      }
-
-    }
-  } catch (error) {
-    toast.error("Failed to like the post. Please try again.");
-  }
-}
-const handleDislike = async (blogId: string) => {
-  try {
-    if (!blog) {
-      console.error("Blog is null");
-      return;
-    }
-
-    if (!user?._id) {
-      setLikeModal(true);
-      return;
-    }
-
-    const updatedBlog = { ...blog };
-
-    // Check if the user has already disliked the blog
-    if (blog.dislikes.includes(user._id)) {
-      // User has already disliked the blog, do nothing
-      return;
-    }
-
-    // Remove like if the user has already liked the blog
-    if (blog.likes.includes(user._id)) {
-      const updatedLikes = blog.likes.filter((like) => like !== user._id);
-      updatedBlog.likes = updatedLikes;
-    }
-
-    // Add user to dislikes
-    const response = await apiService(`/blog/${blogId}/dislike`, "POST", {
-      ip: user._id,
-    });
-
-    if (response && response.data.success) {
-      updatedBlog.dislikes.push(user._id);
-      setBlog(updatedBlog);
-       if (blog.feedbacks.some(feedback=> feedback.userId === user._id)){
-      return;
-      }else{
-        setFeedbackModal(true);
-      }
-    }
-  } catch (error) {
-    toast.error("Failed to dislike the post. Please try again.");
-  }
-};
+            if (response && response.data.success) {
+                updatedBlog.dislikes.push(user._id);
+                setBlog(updatedBlog);
+                if (
+                    blog.feedbacks.some(
+                        (feedback) => feedback.userId === user._id
+                    )
+                ) {
+                    return;
+                } else {
+                    setFeedbackModal(true);
+                }
+            }
+        } catch (error) {
+            toast.error("Failed to dislike the post. Please try again.");
+        }
+    };
 
     if (!blog)
         return (
@@ -180,47 +212,55 @@ const handleDislike = async (blogId: string) => {
         );
 
     return (
-        <SectionLayout style={{width:isMobile?"90%":"59.02%"}}>
-            <Flex direction="column"  margin={isMobile?"80px 0 120px 0":"111px 0 120px 0"}>
+        <SectionLayout style={{ width: isMobile ? "100%" : "59.02%" }}>
+            <Flex
+                direction="column"
+                margin={isMobile ? "1rem 0 3rem 0" : "111px 0 120px 0"}
+            >
                 {/* <Text type="h3" text="ENJOY TRAVEL EXPERIENCE IN FORM OF A STORY" size={isMobile?45:64} weight={700} textAlign="center" margin={0}/> */}
                 <Image
                     // src={blog?.blogImage}
-                        src={blog?.blogImage}
+                    src={blog?.blogImage}
                     alt="blogImage"
                     styles={{
                         borderRadius: "8px",
                         maxWidth: "100%",
                         height: "auto",
-                        margin:"0px 0 64px 0"
+                        margin: "0px 0 2rem 0",
                     }}
                 />
 
                 <Text
                     type="h1"
                     text={blog?.title}
-                    size={isMobile ? "20px" : "40px"}
+                    size={isMobile ? "2rem" : "40px"}
                     weight="700"
-                    margin={isMobile?"0 0 20px 0":"0 0 0 0"}
+                    margin={isMobile ? "0 0 20px 0" : "0 0 0 0"}
                 />
 
-
-                <Flex  justify="flex-start"
-                            direction="column"
-                            gap="10px">
-
-                    <Flex direction="row" gap="10px" align="center"  margin={isMobile?"0 0 0 0":"0 0 20px 0"}>
-                         <UserAvatar
-                          img={blog?.author.picture}
-                          initial={blog?.author.name}
+                <Flex
+                    justify="flex-start"
+                    direction="column"
+                    gap={isMobile ? "6px" : "10px"}
+                >
+                    <Flex
+                        direction="row"
+                        gap="10px"
+                        align="center"
+                        margin={isMobile ? "0 0 0 0" : "0 0 20px 0"}
+                    >
+                        <UserAvatar
+                            img={blog?.author.picture}
+                            initial={blog?.author.name}
                         />
-                           <Flex direction="column">
-                              <Text
-                                    type="h3"
-                                    text={blog?.author.name}
-                                    weight={600}
-                                    size={isMobile ? "18px" : "20px"}
-                                    color="#000000"
-                                />
+                        <Flex direction="column">
+                            <Text
+                                type="h3"
+                                text={blog?.author.name}
+                                weight={600}
+                                size={isMobile ? "18px" : "20px"}
+                                color="#000000"
+                            />
 
                             <Flex>
                                 <Flex
@@ -338,85 +378,111 @@ const handleDislike = async (blogId: string) => {
                                             color="#929292"
                                             margin={0}
                                         />
-                                        </div>
-                                     
-                                        <BsBoxArrowUp
-                                            color="#929292"
-                                            size="20px"
-                                            onClick={()=>setShareModal(true)}
-                                          
-                                        />
-                                    </Flex>
-                                        
-                                        </Flex>
-                                             <Text
-                                        type="h3"
-                                        text="Entertainment"
-                                        size="18px"
-                                        styles={{display:isMobile?"none":"flex"}}
-                                        weight={400}
-                                        color="#0D00A0"
-                                    />
-                           </Flex>
-                    </Flex>
+                                    </div>
 
- <Flex
-                                    gap="5px"
-                                    align="center"
-                                    styles={{
-                                        display: isMobile ? "flex" : "none", marginLeft:"60px"
-                                    }}
-                                >
-                                    <Text
-                                        type="p"
-                                        text="5mins read"
-                                        weight={400}
-                                        size="16px"
+                                    <BsBoxArrowUp
                                         color="#929292"
-                                    />
-                                    <GoDotFill color="#929292" size="6px" />
-                                    <Text
-                                        type="h3"
-                                        text="Entertainment"
-                                        size="18px"
-                                        weight={400}
-                                        color="#0D00A0"
+                                        size="20px"
+                                        onClick={() => setShareModal(true)}
                                     />
                                 </Flex>
-
-                                   <Flex
-                                justify="flex-start"
-                                align="flex-start"
-                                gap="36px"
-                                margin="0 0 30px 60px"
-                                styles={{ display: isMobile ? "flex" : "none" }}
-                            >
-                               <div style={{display:"flex", alignItems:"center", gap:"10px"}}>
-  <BiSolidLike cursor="pointer"
-                                            color={likedByUser?"#7BBBD6":"#929292"}
-                                            size="24px"
-                
-                                             onClick={()=>handleLike(blog._id)}
-                                        />
-                                        <Text
-                                            type="p"
-                                            text={`${blog?.likes.length}`}
-                                            color="#929292"
-                                            margin={0}
-                                        />
-                                        </div>
-                                <BiSolidDislike   cursor="pointer"  color={dislikedByUser?"#7BBBD6":"#929292"} size="24px"     onClick={()=>handleDislike(blog._id)}/>
-                               <div style={{display:"flex", alignItems:"center", gap:"10px"}} onClick={scrollToCommentSection}>   <FaRegComment color="#929292"  size="20px"/>
-                                         <Text
-                                            type="p"
-                                            text={`${blog?.comments?.length?blog?.comments?.length:0}`}
-                                            color="#929292"
-                                            margin={0}
-                                        /></div>
-                                <BsBoxArrowUp color="#929292" size="20px" onClick={()=>setShareModal(true)} />
                             </Flex>
+                            <Text
+                                type="h3"
+                                text="Entertainment"
+                                size="18px"
+                                styles={{ display: isMobile ? "none" : "flex" }}
+                                weight={400}
+                                color="#0D00A0"
+                            />
+                        </Flex>
+                    </Flex>
 
-                        
+                    <Flex
+                        gap="5px"
+                        align="center"
+                        styles={{
+                            display: isMobile ? "flex" : "none",
+                            marginLeft: "60px",
+                        }}
+                    >
+                        <Text
+                            type="p"
+                            text="5mins read"
+                            weight={400}
+                            size="16px"
+                            color="#929292"
+                        />
+                        <GoDotFill color="#929292" size="6px" />
+                        <Text
+                            type="h3"
+                            text="Entertainment"
+                            size="16px"
+                            weight={400}
+                            color="#0D00A0"
+                        />
+                    </Flex>
+
+                    <Flex
+                        justify="flex-start"
+                        align="flex-start"
+                        gap="36px"
+                        margin=".2rem 0 1rem 60px"
+                        styles={{ display: isMobile ? "flex" : "none" }}
+                    >
+                        <div
+                            style={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: "10px",
+                            }}
+                        >
+                            <BiSolidLike
+                                cursor="pointer"
+                                color={likedByUser ? "#7BBBD6" : "#929292"}
+                                size="24px"
+                                onClick={() => handleLike(blog._id)}
+                            />
+                            <Text
+                                type="p"
+                                text={`${blog?.likes.length}`}
+                                color="#929292"
+                                margin={0}
+                            />
+                        </div>
+                        <BiSolidDislike
+                            cursor="pointer"
+                            color={dislikedByUser ? "#7BBBD6" : "#929292"}
+                            size="24px"
+                            onClick={() => handleDislike(blog._id)}
+                        />
+                        <div
+                            style={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: "10px",
+                            }}
+                            onClick={scrollToCommentSection}
+                        >
+                            {" "}
+                            <FaRegComment color="#929292" size="20px" />
+                            <Text
+                                type="p"
+                                text={`${
+                                    blog?.comments?.length
+                                        ? blog?.comments?.length
+                                        : 0
+                                }`}
+                                color="#929292"
+                                margin={0}
+                            />
+                        </div>
+                        <BsBoxArrowUp
+                            color="#929292"
+                            size="20px"
+                            onClick={() => setShareModal(true)}
+                        />
+                    </Flex>
                 </Flex>
                 {/* <Flex justify="space-between" margin="0 0 40px 0">
                     <Flex justify="flex-start" align="center" gap="10px">
@@ -616,10 +682,12 @@ const handleDislike = async (blogId: string) => {
                 </Flex> */}
 
                 <CountryArticle article={{ body: blog?.content }} />
-<div ref={commentSectionRef}>
-<BlogCommentSection blog={blog} inputfield={openCommentField} />
-</div>
-            
+                <div ref={commentSectionRef}>
+                    <BlogCommentSection
+                        blog={blog}
+                        inputfield={openCommentField}
+                    />
+                </div>
 
                 <Text
                     type="h2"
@@ -629,15 +697,20 @@ const handleDislike = async (blogId: string) => {
                     margin={"0 0 15px 0"}
                 />
                 {/* <Flex gap={isMobile ? "30" : "28px"} wrap="wrap"> */}
-                    <Grid columns={isMobile ? "1": "2"} gap={isMobile?"2.5rem":""}>   {blogs
-        .slice(0, 5)
-        .filter(itemBlog => itemBlog._id !== blog._id)
-        .map((itemBlog, index) => (
-            <BlogCardMini key={index} blog={itemBlog} />
-        ))
-    } </Grid>
-                    
-                    {/* <Flex
+                <Grid
+                    columns={isMobile ? "1" : "2"}
+                    gap={isMobile ? "2.5rem" : ""}
+                >
+                    {" "}
+                    {blogs
+                        .slice(0, 5)
+                        .filter((itemBlog) => itemBlog._id !== blog._id)
+                        .map((itemBlog, index) => (
+                            <BlogCardMini key={index} blog={itemBlog} />
+                        ))}{" "}
+                </Grid>
+
+                {/* <Flex
                         justify="space-between"
                         direction={isMobile ? "column" : "row"}
                         gap={isMobile ? "30px" : "24px"}
@@ -1075,7 +1148,7 @@ const handleDislike = async (blogId: string) => {
                     </Flex> */}
                 {/* </Flex> */}
             </Flex>
-                  <LikeModal open={likeModal} onClose={()=>setLikeModal(false)}/>
+            <LikeModal open={likeModal} onClose={() => setLikeModal(false)} />
             {/* <DislikeModal open={dislikeModal} onClose={()=>setDislikeModal(false)}/> */}
 
             <BlogFeedbackModal
@@ -1096,13 +1169,10 @@ const handleDislike = async (blogId: string) => {
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{
-                    __html: JSON.stringify(()=>{
-try{
-    JSON.parse(blog.customJSONLDCode)
-} catch{
-
-}
-
+                    __html: JSON.stringify(() => {
+                        try {
+                            JSON.parse(blog.customJSONLDCode);
+                        } catch {}
                     }),
                 }}
             />

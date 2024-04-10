@@ -18,6 +18,8 @@ import { ttColors } from "@/lib/theme/colors";
 import { useBlogStore } from "@/lib/store/blog.store";
 import { Mode } from "@/lib/types";
 import { Grid } from "@/components/templates/grid";
+import { BlogStatus } from "@/lib/types/request-models/blog/index.type";
+import { debounce } from "debounce";
 const Box = styled.div`
     width: 886px;
     @media (max-width: 900px) {
@@ -80,9 +82,11 @@ const SearchResultItem = styled.div`
 `;
 
 export const BlogHeroSection = () => {
-    const { isMobile ,isTablet} = useScreenResolution();
+    const { isMobile, isTablet } = useScreenResolution();
 
     const [searchTerm, setSearchTerm] = useState<string>("");
+    const [searchText, setSearchText] = useState<string>("");
+
     const [searchTriggered, setSearchTriggered] = useState(false);
     const [searchResultText, setSearchResultText] = useState("");
     const [recentSearches, setRecentSearches] = useState<string[]>([]);
@@ -93,13 +97,16 @@ export const BlogHeroSection = () => {
     // };
     // const {data = [], isFetching } = useFetchBlogs({});
 
-
-  const { blogs, mode, getAllBlogs } = useBlogStore(
-        (state) => state);
- const isLoading = mode == Mode.loading;
-    useEffect(()=>{
-        getAllBlogs()
-    },[])
+    const { blogs, mode, getAllBlogs } = useBlogStore((state) => state);
+    const isLoading = mode == Mode.loading;
+    useEffect(() => {
+        getAllBlogs({
+            query: {
+                status: BlogStatus.PUBLISHED,
+                ...(searchText ? { title: searchText } : {}),
+            },
+        });
+    }, [searchText]);
 
     const tabItems = [
         {
@@ -138,6 +145,9 @@ export const BlogHeroSection = () => {
     ];
 
     const [activeTab, setActiveTab] = useState(0);
+    const handleSetSearchTextDebounce = debounce((value: string) => {
+        setSearchText(value);
+    }, 800);
 
     const handleSearch = () => {
         setSearchTriggered(true);
@@ -247,15 +257,9 @@ export const BlogHeroSection = () => {
                         width={isMobile ? "300px" : "575px"}
                         size="18px"
                         weight="400px"
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        onKeyDown={(e) => {
-                            if (e.key === "Enter") {
-                                // handleSearch();
-                                confirm(`want to search for ${searchTerm}?`);
-                                setSearchTerm("");
-                            }
-                        }}
+                        onChange={(e) =>
+                            handleSetSearchTextDebounce(e.target.value)
+                        }
                     />
                     {isSearchResultsVisible && recentSearches.length > 0 && (
                         <SearchResultsContainer>
@@ -321,16 +325,21 @@ export const BlogHeroSection = () => {
                         <Spinner size="40px" fill={ttColors.primary} />{" "}
                     </Center>
                 ) : activeTab !== 1 && blogs?.length ? (
-
-                        <Grid columns={isMobile ? "1":isTablet?"2":"3"} gap={isMobile?"2.5rem":""}> {blogs?.map((blog, index) => (
+                    <Grid
+                        columns={isMobile ? "1" : isTablet ? "2" : "3"}
+                        gap={isMobile ? "2.5rem" : ""}
+                    >
+                        {" "}
+                        {blogs?.map((blog, index) => (
                             <BlogCardMini key={index} blog={blog} />
-                        ))} </Grid>
+                        ))}{" "}
+                    </Grid>
+                ) : (
                     // <Flex wrap="wrap" gap="2rem">
                     //     {blogs?.map((blog, index) => (
                     //         <BlogCardMini key={index} blog={blog} />
                     //     ))}
                     // </Flex>
-                ) : (
                     <Section
                         maxWidth={isMobile ? "100%" : "525px"}
                         margin="auto"
