@@ -212,10 +212,10 @@ const Preview = ({ params }: { params: any }) => {
         );
 
     return (
-        <SectionLayout style={{ width: isMobile ? "90%" : "59.02%" }}>
+        <SectionLayout style={{ width: isMobile ? "100%" : "59.02%" }}>
             <Flex
                 direction="column"
-                margin={isMobile ? "80px 0 120px 0" : "111px 0 120px 0"}
+                margin={isMobile ? "1rem 0 3rem 0" : "111px 0 120px 0"}
             >
                 {/* <Text type="h3" text="ENJOY TRAVEL EXPERIENCE IN FORM OF A STORY" size={isMobile?45:64} weight={700} textAlign="center" margin={0}/> */}
                 <Image
@@ -226,19 +226,23 @@ const Preview = ({ params }: { params: any }) => {
                         borderRadius: "8px",
                         maxWidth: "100%",
                         height: "auto",
-                        margin: "0px 0 64px 0",
+                        margin: "0px 0 2rem 0",
                     }}
                 />
 
                 <Text
                     type="h1"
                     text={blog?.title}
-                    size={isMobile ? "20px" : "40px"}
+                    size={isMobile ? "2rem" : "40px"}
                     weight="700"
                     margin={isMobile ? "0 0 20px 0" : "0 0 0 0"}
                 />
 
-                <Flex justify="flex-start" direction="column" gap="10px">
+                <Flex
+                    justify="flex-start"
+                    direction="column"
+                    gap={isMobile ? "6px" : "10px"}
+                >
                     <Flex
                         direction="row"
                         gap="10px"
@@ -413,7 +417,7 @@ const Preview = ({ params }: { params: any }) => {
                         <Text
                             type="h3"
                             text="Entertainment"
-                            size="18px"
+                            size="16px"
                             weight={400}
                             color="#0D00A0"
                         />
@@ -423,7 +427,7 @@ const Preview = ({ params }: { params: any }) => {
                         justify="flex-start"
                         align="flex-start"
                         gap="36px"
-                        margin="0 0 30px 60px"
+                        margin=".2rem 0 1rem 60px"
                         styles={{ display: isMobile ? "flex" : "none" }}
                     >
                         <div
