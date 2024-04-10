@@ -1,3 +1,4 @@
+import { replaceHTMLSpecialCharacters } from "@/lib/extensions/helpers/parseBlogContentToHTML";
 import "../../styles/article.css";
 interface Props {
     article: {
@@ -9,7 +10,11 @@ const CountryArticle = ({ article }: Props) => {
     return (
         <>
             <article id="blog" className="prose lg:prose-xl">
-                <div dangerouslySetInnerHTML={{ __html: article.body }} />
+                <div
+                    dangerouslySetInnerHTML={{
+                        __html: replaceHTMLSpecialCharacters(article.body),
+                    }}
+                />
             </article>
         </>
     );
