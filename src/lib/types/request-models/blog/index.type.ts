@@ -1,6 +1,6 @@
 export interface FetchBlogsRequestInput {
     status?: string;
-    title?: string;
+    search?: string;
 }
 export interface LikeBlogRequestInput {
     ip: string;
