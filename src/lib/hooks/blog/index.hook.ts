@@ -1,5 +1,8 @@
 import { BlogService } from "@/lib/services/blog/index.service";
-import { FetchBlogsRequestInput } from "@/lib/types/request-models/blog/index.type";
+import {
+    BlogStatus,
+    FetchBlogsRequestInput,
+} from "@/lib/types/request-models/blog/index.type";
 import {
     BlogInterface,
     FetchBlogsResponse,
@@ -17,7 +20,8 @@ export const useFetchBlogs = (
 ) => {
     return useQuery({
         queryKey: ["fetch-blogs", params],
-        queryFn: () => BlogService.fetchBlogs(),
+        queryFn: () =>
+            BlogService.fetchBlogs({ query: { status: BlogStatus.PUBLISHED } }),
         ...options,
     });
 };
