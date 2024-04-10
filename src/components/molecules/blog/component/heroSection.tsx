@@ -103,7 +103,7 @@ export const BlogHeroSection = () => {
         getAllBlogs({
             query: {
                 status: BlogStatus.PUBLISHED,
-                ...(searchText ? { title: searchText } : {}),
+                ...(searchText ? { search: searchText } : {}),
             },
         });
     }, [searchText]);
