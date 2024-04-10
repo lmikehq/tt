@@ -73,22 +73,22 @@ function MobileNavigationDrawer({ isOpen, setIsOpen, pathArray }: Props) {
     const menuListWithIcon = [
         {
             name: "Get visa",
-            url: "visa",
+            url: "/visa",
             icon: <GiPassport size={19} />,
         },
         {
             name: "Find flight",
-            url: "flight",
+            url: "/flight",
             icon: <IoAirplaneSharp size={19} />,
         },
         {
             name: "Find stay",
-            url: "stay",
+            url: "/stay",
             icon: <IoBedSharp size={19} />,
         },
         {
             name: "Support",
-            url: "stay",
+            url: "/stay",
             icon: <BiSupport size={19} />,
             action: () => setCollapseSupport(!collapseSupport),
             collapsed: collapseSupport,
@@ -98,11 +98,11 @@ function MobileNavigationDrawer({ isOpen, setIsOpen, pathArray }: Props) {
                         {[
                             {
                                 name: "Help Center",
-                                url: "contact",
+                                url: "/contact",
                             },
                             {
                                 name: "Contact Us",
-                                url: "contact",
+                                url: "/contact",
                             },
                         ].map((el, index) => (
                             <CollapsedItem
@@ -118,7 +118,7 @@ function MobileNavigationDrawer({ isOpen, setIsOpen, pathArray }: Props) {
         },
         {
             name: "About Us",
-            url: "about-us",
+            url: "/about-us",
             icon: <BiSolidBusiness size={19} />,
             hasCollapse: true,
         },
@@ -156,7 +156,7 @@ function MobileNavigationDrawer({ isOpen, setIsOpen, pathArray }: Props) {
         },
         {
             name: "Logout",
-            action:() => {
+            action: () => {
                 handleLogout();
                 setUser(null);
                 router.push("/auth/login");

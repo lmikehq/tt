@@ -34,6 +34,7 @@ import UserAvatar from "@/components/atoms/user-avatar";
 import BlogCommentSection from "@/components/organisms/blog-comment-section";
 import { Grid } from "@/components/templates/grid";
 import { BlogStatus } from "@/lib/types/request-models/blog/index.type";
+import Section from "@/components/molecules/section";
 
 const Box = styled.div`
     width: 886px;
@@ -398,11 +399,12 @@ const Preview = ({ params }: { params: any }) => {
                         </Flex>
                     </Flex>
 
-                    <Flex
-                        gap="5px"
-                        align="center"
+                    <Section
+                        width="fit-content"
                         styles={{
                             display: isMobile ? "flex" : "none",
+                            gap: "5px",
+                            alignItems: "center",
                             marginLeft: "60px",
                         }}
                     >
@@ -421,14 +423,18 @@ const Preview = ({ params }: { params: any }) => {
                             weight={400}
                             color="#0D00A0"
                         />
-                    </Flex>
+                    </Section>
 
-                    <Flex
-                        justify="flex-start"
-                        align="flex-start"
-                        gap="36px"
-                        margin=".2rem 0 1rem 60px"
-                        styles={{ display: isMobile ? "flex" : "none" }}
+                    <Section
+                        width="fit-content"
+                        styles={{
+                            display: isMobile ? "flex" : "none",
+                            width: "fit-content",
+                            margin: ".2rem 0 1rem 60px",
+                            justifyContent: "flex-start",
+                            alignItems: "flex-start",
+                            gap: "36px",
+                        }}
                     >
                         <div
                             style={{
@@ -482,7 +488,7 @@ const Preview = ({ params }: { params: any }) => {
                             size="20px"
                             onClick={() => setShareModal(true)}
                         />
-                    </Flex>
+                    </Section>
                 </Flex>
                 {/* <Flex justify="space-between" margin="0 0 40px 0">
                     <Flex justify="flex-start" align="center" gap="10px">
