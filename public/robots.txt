@@ -7,3 +7,4 @@ Host: https://thrillers.travel
 
 # Sitemaps
 Sitemap: https://thrillers.travel/sitemap.xml
+Sitemap: https://thrillers.travel/server-sitemap.xml

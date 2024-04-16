@@ -23,6 +23,20 @@ export class BlogService {
                 throw error;
             });
     };
+
+    static fetchBlogUrls = async () => {
+        return await axiosClient
+            .get<any, FetchBlogsResponse>(`/blog`)
+            .then((response) => {
+                return response.map(
+                    (el) =>
+                        process.env.NEXT_PUBLIC_SITE_URL + "/blogs/" + el.slug
+                );
+            })
+            .catch((error) => {
+                throw error;
+            });
+    };
     static blogBySlug = async (slug: string) => {
         return await axiosClient
             .get<any, BlogInterface>(`/blog/slug/${slug}`)
