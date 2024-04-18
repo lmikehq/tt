@@ -6,3 +6,27 @@ export const replaceHTMLSpecialCharacters = (htmlString: string) => {
     });
     return replacedString;
 };
+
+export const extractScripts = (htmlString: string) => {
+    const scriptTag = /<script[^>]*>([\s\S]*?)<\/script>/g;
+    let scripts: string[] = [];
+    const replaced = htmlString.replace(scriptTag, (match) => {
+        scripts = [...scripts, match];
+        return "";
+    });
+
+    const pattern: RegExp = /<script.*?src="(.*?)".*?>/;
+
+    const srcs: string[] = [];
+
+    scripts.forEach((scriptTag) => {
+        const matches: RegExpMatchArray | null = scriptTag.match(pattern);
+
+        if (matches && matches.length > 1) {
+            const srcValue: string = matches[1];
+            srcs.push(srcValue);
+        }
+    });
+
+    return { replaced, srcs };
+};
