@@ -1,14 +1,37 @@
 import { axiosClient } from "@/lib/axios/axios-client";
+import { constructQueryFromParams } from "@/lib/extensions/helpers/constructQuery";
 import { FetchBlogsRequestInput } from "@/lib/types/request-models/blog/index.type";
 
-import { BlogInterface, FetchBlogsResponse } from "@/lib/types/response-models/blog/index.type";
+import {
+    BlogInterface,
+    FetchBlogsResponse,
+} from "@/lib/types/response-models/blog/index.type";
 
 export class BlogService {
-    static fetchBlogs = async () => {
+    static fetchBlogs = async ({
+        query,
+    }: {
+        query: FetchBlogsRequestInput;
+    }) => {
+        const queryString = constructQueryFromParams(query);
+        return await axiosClient
+            .get<any, FetchBlogsResponse>(`/blog${queryString}`)
+            .then((response) => {
+                return response;
+            })
+            .catch((error) => {
+                throw error;
+            });
+    };
+
+    static fetchBlogUrls = async () => {
         return await axiosClient
             .get<any, FetchBlogsResponse>(`/blog`)
             .then((response) => {
-                                return response;
+                return response.map(
+                    (el) =>
+                        process.env.NEXT_PUBLIC_SITE_URL + "/blogs/" + el.slug
+                );
             })
             .catch((error) => {
                 throw error;
