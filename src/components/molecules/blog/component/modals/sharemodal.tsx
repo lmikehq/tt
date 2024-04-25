@@ -77,7 +77,7 @@ const {handleClick, hasCopiedValue}= useShareModal();
           
         >
           
-            <Text type="p" text={hasCopiedValue?"Copied":"Copy"} color="#fff" size="16px" weight={600} margin="22px" />
+            <Text type="p" text={ ?"Copied":"Copy"} color="#fff" size="16px" weight={600} margin="22px" />
         </Button>
            </div>
 
