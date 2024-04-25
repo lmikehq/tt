@@ -135,6 +135,7 @@ async function handleRegister(): Promise<any> {
 
    const handleSwitchForm = () => {
         setCreateForm(!createForm)
+        setErrorMessage("");
   };
 
   async function handleSubmitReg(e: React.FormEvent<HTMLFormElement>) {
@@ -446,7 +447,7 @@ setErrorMessage("");
                     : ""
                 }/>
         <FieldLabel>Password<span>*</span></FieldLabel>
-        <Input placeholder="Enter your Password" styles={{margin:"0 0 26px 0"}}   onChange={(e) =>
+        <Input placeholder="Enter your Password" type="password" styles={{margin:"0 0 26px 0"}}   onChange={(e) =>
                   setLoginData({
                     ...loginData,
                     password: e.target.value,
