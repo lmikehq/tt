@@ -49,7 +49,7 @@ function LoginPage() {
       return;
     }
     const res = (await apiService("/auth/forgot-password", "POST", {
-      email: email?.toLocaleLowerCase(),
+      email
     })) as any;
     switch (res?.statusCode) {
       case 200:
