@@ -321,19 +321,23 @@ function VisaDetail({
         // return setting;
     };
 
+    function dataForExtraction(data: any[]) {
+        return data?.length ? data : [];
+    }
+
     function getDependants() {
         if (isVisaApplication(visa)) {
             const data: VisaResponseProp = visa as VisaResponseProp;
             const allImmediateFamilyDependants =
-                data?.familyInformation?.immediateFamilyInfo?.filter(
+                dataForExtraction(data?.familyInformation?.immediateFamilyInfo)?.filter(
                     (immediateFamily) => immediateFamily?.accompanying === true
                 );
             const allParentDependants =
-                data?.familyInformation?.parentDetails?.filter(
+                dataForExtraction(data?.familyInformation?.parentDetails)?.filter(
                     (parent) => parent.accompanying === true
                 );
             const allSiblingDependants =
-                data?.familyInformation?.siblingDetails?.filter(
+                dataForExtraction(data?.familyInformation?.siblingDetails)?.filter(
                     (sibling) => sibling?.accompanying === true
                 );
             return [
