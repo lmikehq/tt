@@ -333,7 +333,7 @@ function VisaDetail({
                     (parent) => parent.accompanying === true
                 );
             const allSiblingDependants =
-                data?.familyInformation?.siblingDetails.filter(
+                data?.familyInformation?.siblingDetails?.filter(
                     (sibling) => sibling?.accompanying === true
                 );
             return [
