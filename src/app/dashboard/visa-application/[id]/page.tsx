@@ -30,15 +30,15 @@ function DownloadVisaApplicationPage() {
     if (isVisaApplication(data)) {
       switch (relationship) {
         case 'Sibling':
-          return data.familyInformation.siblingDetails;
+          return data?.familyInformation?.siblingDetails;
         case 'Parent':
-          return data.familyInformation.parentDetails;
+          return data?.familyInformation?.parentDetails;
         case 'Immediate':
-          return data.familyInformation.immediateFamilyInfo;
+          return data?.familyInformation?.immediateFamilyInfo;
       }
     } else {
       return data && data?.familyMembers?.filter((member: FamilyMember) => {
-        if (member.relationshipToPrimary === relationship) {
+        if (member?.relationshipToPrimary === relationship) {
           return member;
         }
       });
