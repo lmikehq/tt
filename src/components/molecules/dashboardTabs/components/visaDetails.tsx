@@ -326,15 +326,15 @@ function VisaDetail({
             const data: VisaResponseProp = visa as VisaResponseProp;
             const allImmediateFamilyDependants =
                 data?.familyInformation?.immediateFamilyInfo?.filter(
-                    (immediateFamily) => immediateFamily.accompanying === true
+                    (immediateFamily) => immediateFamily?.accompanying === true
                 );
             const allParentDependants =
                 data?.familyInformation?.parentDetails?.filter(
                     (parent) => parent.accompanying === true
                 );
             const allSiblingDependants =
-                data.familyInformation.siblingDetails.filter(
-                    (sibling) => sibling.accompanying === true
+                data?.familyInformation?.siblingDetails.filter(
+                    (sibling) => sibling?.accompanying === true
                 );
             return [
                 ...allImmediateFamilyDependants,

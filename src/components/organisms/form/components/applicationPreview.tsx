@@ -195,19 +195,19 @@ function ApplicationPreview({
                 )}
                 {step === 2 && (
                     <Two
-                        educationInfo={education.filter(e => e?.school)}
+                        educationInfo={education?.filter(e => e?.school)}
                         goToStep={goToFormStep}
                     />
                 )}
                 {step === 3 && (
                     <Three
-                        employmentInfo={employment.filter(e => e?.companyName)}
+                        employmentInfo={employment?.filter(e => e?.companyName)}
                         goToStep={goToFormStep}
                     />
                 )}
                 {step === 4 && (
                     <Four
-                        familyInfo={familyMembers.filter(e => e?.membersName)}
+                        familyInfo={familyMembers?.filter(e => e?.membersName)}
                         goToStep={goToFormStep}
                     />
                 )}
