@@ -59,7 +59,7 @@ export default function Error({
           />
           <Text
             type="h4"
-            text="Please try again later"
+            text="Please try again later or"
             color={ttColors.lighterGray}
             size={isMobile ? 16 : 20}
           />
