@@ -90,7 +90,7 @@ function LoginPage() {
   async function handleLogin(): Promise<any> {
     return await apiService("/auth/login", "POST", {
       ...loginData,
-      email: loginData.email.toLowerCase(),
+      email: loginData.email,
     });
   }
 
