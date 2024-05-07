@@ -20,7 +20,6 @@ export const extractFlightDataFromParams = ({
     const formattedData: any[] = flyFrom.split("~").map((e) => ({
         fly_from: e,
     }));
-    console.log(formattedData, "formm");
     let urlData = extractSearchParamsFromUrl({ url });
     const adults = Number(urlData.adults);
     const children = Number(urlData.children);
@@ -42,7 +41,6 @@ export const extractFlightDataFromParams = ({
     delete urlData.checkedBags;
     delete urlData.cabinBags;
 
-    console.log(flyFrom, urlData, formattedData);
     Object.keys(urlData).forEach((key) => {
         if (urlData[key].split("~").length > 1) {
             urlData[key].split("~").forEach((el, i) => {

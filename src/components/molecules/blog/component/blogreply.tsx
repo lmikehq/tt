@@ -89,7 +89,6 @@ const BlogReply = ({ comment, blogId, reply }: Props) => {
 
     const handleLikeAndUnlikeReply = async () => {
         try {
-            console.log(reply, "reply");
             const response = await apiService(
                 `/blog/${blogId}/comment/${comment._id}/reply/${reply._id}/like`,
                 "POST"
@@ -126,8 +125,6 @@ const BlogReply = ({ comment, blogId, reply }: Props) => {
                     setEditInputValue("");
                     setOpenInput(false);
                 }
-            } else {
-                console.log("Input value is empty.");
             }
         } catch (error) {
             setLoading(false);

@@ -560,12 +560,11 @@ function AvailableMultiFlights() {
 
     useEffect(() => {
         if (!flyFrom) return;
-        console.log("extracting data");
+
         const data = extractFlightDataFromParams({
             flyFrom,
             url: window.location.href,
         });
-        console.log("stays", data);
 
         if (data) {
             let requests = data;
@@ -581,7 +580,6 @@ function AvailableMultiFlights() {
 
     useEffect(() => {
         if (!flightState) return;
-        console.log("sss", `${flightState?.fleet[0].checkedBaggage}`);
         params.setQueryParams({
             checkedBags: `${flightState?.fleet[0].checkedBaggage}`,
             cabinBags: `${flightState?.fleet[0].cabinBaggage}`,
@@ -590,7 +588,7 @@ function AvailableMultiFlights() {
 
     useEffect(() => {
         const queryObject = parseMultiFlightFilters(searchMultiCityQuery);
-        console.log("sss", queryObject);
+
         if (Object.keys(queryObject).length === 0) return;
         params.setQueryParams(queryObject);
     }, [

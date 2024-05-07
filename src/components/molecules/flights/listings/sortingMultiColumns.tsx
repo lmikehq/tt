@@ -214,19 +214,16 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
     ): SearchMultiFlightRequestQuery => {
         const newQuery = searchMultiCityQuery;
         const urlParams = new URLSearchParams(queryParams);
-        console.log(queryParams, "pammm");
 
         for (const query of newQuery.requests) {
             for (const field of fieldsToRemove) {
                 delete query[field];
                 urlParams.delete(field);
-                console.log(urlParams, "pammm");
             }
         }
 
         const queryString = urlParams.toString();
         const path = `/flight/listings?${queryString}`;
-        console.log(path, "pammm");
 
         window.history.replaceState(null, "", path);
         return newQuery;
@@ -398,7 +395,7 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                         flight.departureCountry?.code)
             )
             .join("");
-        console.log("another", flight?.departureDate);
+
         const url = `flight/listings?fly_from=${flyFrom}&fly_to=${flights
             .map(
                 (flight, index) =>
@@ -416,7 +413,7 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
         }&cabin=${cabin}&adults=${adults}&children=${children}&infants=${infants}&cabinBags=${cabinBags}&checkedBags=${checkedBags}&multi=true
             `;
         const link = "https://localhost:3000/" + url;
-        console.log(link);
+
         const data = extractFlightDataFromParams({
             url: link,
             flyFrom,
@@ -429,7 +426,7 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                 sort: requests[0].sort ?? FlightSortEnum.best,
                 limit: 50,
             };
-            console.log(data, "data");
+
             updateSearchMultiCityQuery({ requests: data });
             window.history.replaceState(null, "", `/${url}`);
             // router.push("/flight/listings");
@@ -1218,10 +1215,7 @@ function SortingMultiColumns({ onClose }: SortingMultiColumnsProps) {
                                     ]}
                                     onChange={(event, value) => {
                                         // handleSlider(index, value, "price")
-                                        console.log(
-                                            (value as number[])[0],
-                                            "newnu"
-                                        );
+
                                         handleTwoSliderDebounce({
                                             min: (value as number[])[0] || 0,
                                             max: (value as number[])[1],

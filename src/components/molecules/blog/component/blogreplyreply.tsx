@@ -124,8 +124,6 @@ const BlogReplyReply = ({ comment, blogId, reply, replyreply }: Props) => {
                     setEditInputValue("");
                     setOpenInput(false);
                 }
-            } else {
-                console.log("Input value is empty.");
             }
         } catch (error) {
             setLoading(false);

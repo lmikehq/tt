@@ -229,11 +229,6 @@ function Flights() {
             const cabin = translateCabin(flight?.flightClass);
             const cabinBags = flight?.cabinBaggage;
             const checkedBags = flight?.checkedBaggage;
-            console.log("testing", flight.departureDate);
-            console.log(
-                "testingfl",
-                formatDate(flight?.departureDate ?? dayjs())
-            );
 
             return `
         /flight/listings?fly_from=${flights
@@ -357,7 +352,6 @@ function Flights() {
     const extractData = flyFromLocationsFinished && flyToLocationsFinished;
 
     useEffect(() => {
-        console.log(pathname, "pathname");
         dispatch &&
             dispatch({
                 type: "UPDATE_FLIGHT_STATE",
@@ -382,9 +376,6 @@ function Flights() {
                 flyToLocations[index].data?.locations[0];
 
             const departureDate = formatStringToDayjs(dateFrom);
-            console.log(departureCountry, "departureCountry");
-            console.log("testing2", departureDate);
-            console.log("testing2", dateFrom);
 
             return {
                 index,

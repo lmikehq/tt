@@ -23,9 +23,9 @@ const defaultPayment = {
     name: "United States of America",
     flag: "/assets/flags/us.svg",
     code: "US",
-    currencyCode: 'USD',
-    currency: 'United States Dollar'
-  }
+    currencyCode: "USD",
+    currency: "United States Dollar",
+};
 interface SelectPaymentMethodProps {
     paymentOptions: StayPaymentOption[];
     bookingId: string;
@@ -43,7 +43,10 @@ function SelectPaymentMethod({
 }: SelectPaymentMethodProps) {
     const { isMobile } = useScreenResolution();
 
-    const [payment, setPayment] = useState(paymentOptions?.find(e => e.currency_code === 'USD') ?? paymentOptions[0]);
+    const [payment, setPayment] = useState(
+        paymentOptions?.find((e) => e.currency_code === "USD") ??
+            paymentOptions[0]
+    );
 
     const handlePayment = (x: PaymentProps) => {
         setPayment((prev) => ({
@@ -59,8 +62,9 @@ function SelectPaymentMethod({
 
     const makePayment = () => {
         const amount = parseInt(
-            paymentOptions.find((el) => el.currency_code == payment.currency_code)
-                ?.amount ?? ""
+            paymentOptions.find(
+                (el) => el.currency_code == payment.currency_code
+            )?.amount ?? ""
         );
         if (!payment.amount) return;
         createPayment({
@@ -72,29 +76,33 @@ function SelectPaymentMethod({
             user: user?._id ?? "",
             amount: parseFloat(payment.amount),
         }).then((res) => {
-            console.log('ressss', res)
             window.open(res.data.link, "_blank");
         });
     };
 
-
     return (
-        <Section padding="2rem 2rem" margin="2rem 0 0" background="white" borderRadius=".5rem" styles={{ boxShadow: 'var(--box-shadow)' }}>
+        <Section
+            padding="2rem 2rem"
+            margin="2rem 0 0"
+            background="white"
+            borderRadius=".5rem"
+            styles={{ boxShadow: "var(--box-shadow)" }}
+        >
             {!isMobile && (
                 <FormTitleAndSubtitle
                     title={"Stay Overview & Payment"}
                     subTitle={"Make payment for your stay booking"}
                 />
             )}
-            <Flex justify="space-between" margin={isMobile ? '1rem 0 2.5rem' : "3.5rem 0 3rem"}>
+            <Flex
+                justify="space-between"
+                margin={isMobile ? "1rem 0 2.5rem" : "3.5rem 0 3rem"}
+            >
+                <Text text="Price" type="p" size={20} weight={600} />
                 <Text
-                    text="Price"
-                    type="p"
-                    size={20}
-                    weight={600}
-                />
-                <Text
-                    text={`${payment.currency_code} ${parseFloat(payment.amount).toFixed(2)}`}
+                    text={`${payment.currency_code} ${parseFloat(
+                        payment.amount
+                    ).toFixed(2)}`}
                     type="p"
                     size={24}
                     weight={600}
@@ -128,8 +136,11 @@ function SelectPaymentMethod({
                             <img
                                 src={
                                     COUNTRY_FLAGS.find(
-                                        (x) => (x.currencyCode === payment.currency_code) && (x.code === 'US')
-                                    )?.flag ?? ''
+                                        (x) =>
+                                            x.currencyCode ===
+                                                payment.currency_code &&
+                                            x.code === "US"
+                                    )?.flag ?? ""
                                 }
                                 alt="flag"
                                 style={{
@@ -141,7 +152,11 @@ function SelectPaymentMethod({
                             />
                             <Text
                                 type="p"
-                                text={`${payment.currency_code} - ${payment.currency_code === 'USD' ? defaultPayment.currency : ''} (Pay ${capCase(payment.type)})`}
+                                text={`${payment.currency_code} - ${
+                                    payment.currency_code === "USD"
+                                        ? defaultPayment.currency
+                                        : ""
+                                } (Pay ${capCase(payment.type)})`}
                             />
                         </Flex>
                         <IoIosArrowDown size={25} />
