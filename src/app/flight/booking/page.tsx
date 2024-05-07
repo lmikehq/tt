@@ -469,7 +469,6 @@ const FlightBookingPage = () => {
         };
     }, []);
     const showUnavailableModal = () => {
-        console.log(checkFlightsResponse, "checkFlightsResponse");
         if (
             checkFlightsResponse?.flights_checked == true &&
             checkFlightsResponse?.price_change == false &&

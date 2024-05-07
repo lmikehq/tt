@@ -56,7 +56,6 @@ const BlogCommentSection = ({ blog, inputfield }: Props) => {
 
     const handleSelectEmoji = (emoji: any) => {
         setInputValue((prevText) => prevText + emoji.emoji);
-        console.log(emoji.emoji, inputValue, "emoji");
     };
 
     function CircularIndeterminate() {
@@ -89,8 +88,6 @@ const BlogCommentSection = ({ blog, inputfield }: Props) => {
                     setInputValue("");
                     setLoading(false);
                 }
-            } else {
-                console.log("Input value is empty.");
             }
         } catch (error) {
             setLoading(false);

@@ -91,7 +91,7 @@ export const SortModal = ({
     const { staySearchSort, updateStaySearchSort } = useStaySearchStore(
         (state) => state
     );
-    
+
     useEffect(() => {
         const handleBodyOverflow = () => {
             document.documentElement.style.overflow = open ? "hidden" : "auto";
@@ -113,9 +113,9 @@ export const SortModal = ({
     ];
 
     const handleChange = (val: string) => {
-        updateStaySearchSort(val as StaySearchSortEnum)
-        handleClose()
-    }
+        updateStaySearchSort(val as StaySearchSortEnum);
+        handleClose();
+    };
 
     return (
         <Modal open={open} onClose={handleClose}>
@@ -141,7 +141,9 @@ export const SortModal = ({
                             <CustomRadioGroup
                                 options={options}
                                 name="room"
-                                onChange={(e: any, val) => handleChange(val ?? '')}
+                                onChange={(e: any, val) =>
+                                    handleChange(val ?? "")
+                                }
                                 value={staySearchSort}
                                 justifyContent="flex-end"
                                 align="flex-start"
@@ -188,17 +190,15 @@ export const PriceAlertModal = ({
     );
 };
 
-
 export const MapModal = ({
     location,
     open,
     handleClose,
 }: {
-    location?: LocationData | null,
+    location?: LocationData | null;
     open: boolean;
     handleClose: () => void;
 }) => {
-    console.log(location)
     useEffect(() => {
         const handleBodyOverflow = () => {
             document.documentElement.style.overflow = open ? "hidden" : "auto";
@@ -210,7 +210,6 @@ export const MapModal = ({
             document.body.style.overflow = "auto";
         };
     }, [open]);
-
 
     return (
         <Modal open={open} onClose={handleClose}>
@@ -233,10 +232,10 @@ export const MapModal = ({
                     </Flex>
                     <Section height="100%" padding="2rem 1.5rem">
                         <GoogleMap
-                            containerStyles={{ height: '90%' }}
+                            containerStyles={{ height: "90%" }}
                             lat={location?.latitude}
                             lng={location?.longitude}
-                        />  
+                        />
                     </Section>
                 </ModalWrapper>
             </Section>
