@@ -136,6 +136,7 @@ async function handleRegister(): Promise<any> {
    const handleSwitchForm = () => {
         setCreateForm(!createForm)
         setErrorMessage("");
+        setLoginErrorMessage("")
   };
 
   async function handleSubmitReg(e: React.FormEvent<HTMLFormElement>) {
