@@ -197,6 +197,7 @@ export interface FamilyInfoInterface {
     membersEmail?: string;
     membersOccupation?: string;
     accompanying: boolean;
+    isAlive?: boolean;
     maritalStatus?: string;
     issueYear?: string;
     expiryYear?: string;
@@ -204,6 +205,7 @@ export interface FamilyInfoInterface {
     passportNumber?: string;
     gender?: string;
     dateOfBirth?: string;
+    dateOfDeath?: string;
     section?: string;
     index?: number;
 }
@@ -473,6 +475,10 @@ export const mapVisaApplicationFormInterfaceToApplicationFormRequestInput = ({
                         membersEmail: member.membersEmail,
                         membersPhoneNumber: member.membersPhoneNumber,
                         accompanying: member.accompanying,
+                        isAlive: member.isAlive,
+                        ...(String(member.isAlive) === "false" && {
+                            dateOfDeath: member.dateOfBirth,
+                        }),
                         ...(String(member.accompanying) === "true" && {
                             dateOfBirth: member.dateOfBirth,
                             gender: member.gender,
