@@ -4,23 +4,33 @@ import Section from "@/components/molecules/section";
 import LoginForm from "./LoginForm";
 import SignUpForm from "./SignUpForm";
 
-
 const AuthModal = ({
     open,
     handleClose,
+    title,
+    subTitle,
 }: {
     open: boolean;
     handleClose: () => void;
+    title?: string;
+    subTitle?: string;
 }) => {
     const [loginView, setLoginView] = useState(true);
     return (
         <>
             <CustomAppModal open={open} handleClose={handleClose}>
-                <Section width="100%" padding={"1.25rem 2.5rem"} className="scroll-custom" styles={{ overflowY: 'auto', maxHeight: '90vh' }}>
+                <Section
+                    width="100%"
+                    padding={"1.25rem 2.5rem"}
+                    className="scroll-custom"
+                    styles={{ overflowY: "auto", maxHeight: "90vh" }}
+                >
                     {loginView ? (
                         <LoginForm
                             setLoginView={(value) => setLoginView(value)}
                             handleClose={handleClose}
+                            title={title}
+                            subTitle={subTitle}
                         />
                     ) : (
                         <SignUpForm
