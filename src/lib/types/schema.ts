@@ -395,25 +395,59 @@ export const singleFamilyInfoSchema: yup.ObjectSchema<FamilyInfoInterface> = yup
         index: yup.number(),
         section: yup.string(),
         accompanying: yup.boolean().required("Required"),
-        membersName: yup.string().when("accompanying", {
-            is: true,
-            then: (schema) => schema.required("Required"),
-        }),
-        address: yup.string().when("accompanying", {
-            is: true,
-            then: (schema) => schema.required("Required"),
-        }),
+        isAlive: yup.boolean(),
+        membersName: yup
+            .string()
+            .when("accompanying", {
+                is: true,
+                then: (schema) => schema.required("Required"),
+            })
+            .when("section", {
+                is: "A",
+                then: (schema) => schema.required("Required"),
+            }),
+
+        address: yup
+            .string()
+            .when("accompanying", {
+                is: true,
+                then: (schema) => schema.required("Required"),
+            })
+            .when("section", {
+                is: "A",
+                then: (schema) => schema.required("Required"),
+            }),
         membersPhoneNumber: yup.string().when("accompanying", {
             is: true,
-            then: (schema) => schema.required("Required"),
+            then: (schema) =>
+                schema.required("Required").when("section", {
+                    is: "A",
+                    then: (schema) => schema.required("Required"),
+                }),
         }),
-        membersEmail: yup.string().when("accompanying", {
-            is: true,
-            then: (schema) => schema.required("Required"),
-        }),
+        membersEmail: yup
+            .string()
+            .when("accompanying", {
+                is: true,
+                then: (schema) => schema.required("Required"),
+            })
+            .when("section", {
+                is: "A",
+                then: (schema) => schema.required("Required"),
+            }),
         membersOccupation: yup.string(),
-        relationshipToPrimary: yup.string().when("accompanying", {
-            is: true,
+        relationshipToPrimary: yup
+            .string()
+            .when("accompanying", {
+                is: true,
+                then: (schema) => schema.required("Required"),
+            })
+            .when("section", {
+                is: "A",
+                then: (schema) => schema.required("Required"),
+            }),
+        dateOfDeath: yup.string().when("isAlive", {
+            is: false,
             then: (schema) => schema.required("Required"),
         }),
         maritalStatus: yup.string(),
@@ -455,6 +489,7 @@ export const familyInforKeys: FamilyInfoInterface = {
     accompanying: false,
     section: "A",
     index: 0,
+    isAlive: true,
     maritalStatus: "",
     // membersName: "Alice Smith",
     // relationshipToPrimary: "Spouse",
@@ -528,6 +563,7 @@ export const educationsArr = {
 };
 export const familyInfoArr = {
     familyMembers: [
+        { ...familyInforKeys },
         { ...familyInforKeys },
         { ...familyInforKeys, section: "B" },
         { ...familyInforKeys, section: "C" },

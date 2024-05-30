@@ -29,25 +29,25 @@ import {
     StaySearchFilters,
 } from "@/lib/types/request-models/stay/search.type";
 import { debounce } from "debounce";
-import { useDebounce } from 'use-debounce';
+import { useDebounce } from "use-debounce";
 import { capCase } from "@/lib/utilFns";
 import RateHawkLocationSearchInput from "@/components/organisms/locationInputs/RateHawkLocationSearchSelectInput";
 import { RateHawkRegionType } from "@/lib/types/response-models/stay/location.type";
 import { MdCancel } from "react-icons/md";
-const maxPrice = 20000000
+const maxPrice = 20000000;
 const defaultFilter = {
-    amenity: { name: 'Amenities', value: [] },
-    apartmentType: { name: 'Apartment Type', value: [] },
-    meals: { name: 'Meals', value: '' },
-    minAmount: { name: 'Min Amount', value: 0 },
-    maxAmount: { name: 'Max Amount', value: maxPrice },
-    bedType: { name: 'Bedding Type', value: [] },
-    room: { name: 'Room', value: [] },
-    cancellationPolicy: { name: 'Cancellation Policy', value: '' },
-    star: { name: 'Stars', value: '' },
-    guestRating: { name: 'Guest Rating', value: [] },
-    popularTypes: { name: 'Popular Types', value: [] },
-}
+    amenity: { name: "Amenities", value: [] },
+    apartmentType: { name: "Apartment Type", value: [] },
+    meals: { name: "Meals", value: "" },
+    minAmount: { name: "Min Amount", value: 0 },
+    maxAmount: { name: "Max Amount", value: maxPrice },
+    bedType: { name: "Bedding Type", value: [] },
+    room: { name: "Room", value: [] },
+    cancellationPolicy: { name: "Cancellation Policy", value: "" },
+    star: { name: "Stars", value: "" },
+    guestRating: { name: "Guest Rating", value: [] },
+    popularTypes: { name: "Popular Types", value: [] },
+};
 
 const marks = [
     {
@@ -218,8 +218,8 @@ function SortingColumns() {
         BedType.length > threshold ? threshold : BedType.length
     );
 
-    const [prices, setPrices] = useState([0, maxPrice])
-    const [debouncedPrices] = useDebounce(prices, 1000)
+    const [prices, setPrices] = useState([0, maxPrice]);
+    const [debouncedPrices] = useDebounce(prices, 1000);
 
     const toggleColumn = (columnName: ColumnName) => {
         setColumnState((prevState) => ({
@@ -240,9 +240,14 @@ function SortingColumns() {
         }
     };
 
-    const { staySearchFilters, updateStaySearchFilters, updateStayTabInitialQuery, stayTabInitialSearchQuery, updateStaySearchMeta, staySearchMeta } = useStaySearchStore(
-        (state) => state
-    );
+    const {
+        staySearchFilters,
+        updateStaySearchFilters,
+        updateStayTabInitialQuery,
+        stayTabInitialSearchQuery,
+        updateStaySearchMeta,
+        staySearchMeta,
+    } = useStaySearchStore((state) => state);
 
     const handleUpdateStaySearchFilters = (params: StaySearchFilters) => {
         updateStaySearchFilters({
@@ -251,8 +256,8 @@ function SortingColumns() {
         });
         updateStaySearchMeta({
             ...staySearchMeta,
-            currentPage: 1
-        })
+            currentPage: 1,
+        });
     };
 
     const handlePriceChangeDebounce = debounce(
@@ -315,42 +320,49 @@ function SortingColumns() {
         value: string;
         field: string;
     }) => {
-        if (['amenity', 'cancellationPolicy'].includes(field)) {
+        if (["amenity", "cancellationPolicy"].includes(field)) {
             handleEnumCheckBoxGroupChanged({
                 value,
-                field: field
-            })
-        } else if (['meals'].includes(field)) {
+                field: field,
+            });
+        } else if (["meals"].includes(field)) {
             handleEnumCheckBoxSingleChanged({
                 value,
-                field: field
-            })
+                field: field,
+            });
         }
     };
 
     const activeFilters = useMemo(() => {
-        return Object.keys(defaultFilter)
-            .filter(key => (staySearchFilters[key] !== undefined) && (JSON.stringify(staySearchFilters[key])?.length !== JSON.stringify(defaultFilter[key as keyof typeof defaultFilter].value)?.length))
-    }, [staySearchFilters])
+        return Object.keys(defaultFilter).filter(
+            (key) =>
+                staySearchFilters[key] !== undefined &&
+                JSON.stringify(staySearchFilters[key])?.length !==
+                    JSON.stringify(
+                        defaultFilter[key as keyof typeof defaultFilter].value
+                    )?.length
+        );
+    }, [staySearchFilters]);
 
     const removeFilter = (k: keyof typeof defaultFilter) => {
-        console.log('kkkad', k)
         handleUpdateStaySearchFilters({
-            [k]: undefined
-        })
-    }
-    
+            [k]: undefined,
+        });
+    };
+
     useEffect(() => {
         handleUpdateStaySearchFilters({
             minAmount: debouncedPrices[0],
             maxAmount: debouncedPrices[1],
-        })
-    }, [debouncedPrices])
+        });
+    }, [debouncedPrices]);
 
     useEffect(() => {
-        setPrices(prev => [staySearchFilters?.minAmount ?? 0, staySearchFilters?.maxAmount ?? maxPrice])
-    }, [staySearchFilters?.minAmount, staySearchFilters?.maxAmount])
-
+        setPrices((prev) => [
+            staySearchFilters?.minAmount ?? 0,
+            staySearchFilters?.maxAmount ?? maxPrice,
+        ]);
+    }, [staySearchFilters?.minAmount, staySearchFilters?.maxAmount]);
 
     return (
         <ScrollBox
@@ -361,22 +373,42 @@ function SortingColumns() {
             }}
             className="scroll-custom"
         >
-            <Flex
-                direction="column"
-                styles={{ minWidth: "200px" }}
-            >
+            <Flex direction="column" styles={{ minWidth: "200px" }}>
                 <PriceAlerts />
                 <FavoriteHotels />
 
                 <Flex width="90%" wrap="wrap" gap=".5rem" margin="0 0 2rem">
-                    {activeFilters.map((filter: any, index) =>
-                        <Flex key={`active-filter-${index}`} width="max-content" padding=".8rem .8rem" gap=".5rem" background={ttColors.dark} borderRadius=".5rem">
-                            <Text type="p" text={defaultFilter[filter as keyof typeof defaultFilter].name} color="white" size={15} />
-                            <Flex width='min-content' onClick={() => removeFilter(filter)}>
-                                <MdCancel size={25} color="white" cursor="pointer"/>
+                    {activeFilters.map((filter: any, index) => (
+                        <Flex
+                            key={`active-filter-${index}`}
+                            width="max-content"
+                            padding=".8rem .8rem"
+                            gap=".5rem"
+                            background={ttColors.dark}
+                            borderRadius=".5rem"
+                        >
+                            <Text
+                                type="p"
+                                text={
+                                    defaultFilter[
+                                        filter as keyof typeof defaultFilter
+                                    ].name
+                                }
+                                color="white"
+                                size={15}
+                            />
+                            <Flex
+                                width="min-content"
+                                onClick={() => removeFilter(filter)}
+                            >
+                                <MdCancel
+                                    size={25}
+                                    color="white"
+                                    cursor="pointer"
+                                />
                             </Flex>
                         </Flex>
-                    )}
+                    ))}
                 </Flex>
 
                 <Flex
@@ -390,10 +422,10 @@ function SortingColumns() {
                             updateStayTabInitialQuery({
                                 ...stayTabInitialSearchQuery,
                                 location: x,
-                            })
+                            });
                             handleUpdateStaySearchFilters({
-                                regionId: String(x.id)
-                            })
+                                regionId: String(x.id),
+                            });
                         }}
                         value={stayTabInitialSearchQuery.location}
                         placeholder="Enter Destination or Hotel Name"
@@ -445,14 +477,35 @@ function SortingColumns() {
                                                 ]
                                             }
                                             onChange={(e) =>
-                                                handleEnumCheckBoxMultipleChanged({
-                                                    value: HotelPopularTypes[
-                                                        popularTypeKey as keyof typeof HotelPopularTypes
-                                                    ],
-                                                    field: ['free_cancellation'].includes(popularTypeKey) ? 'cancellationPolicy' :
-                                                        ['breakfast_included'].includes(popularTypeKey) ? 'meals' :
-                                                        ['has_internet', 'pet_friendly', 'has_fitness', 'has_parking'].includes(popularTypeKey) ? 'amenity' : ''
-                                                })
+                                                handleEnumCheckBoxMultipleChanged(
+                                                    {
+                                                        value: HotelPopularTypes[
+                                                            popularTypeKey as keyof typeof HotelPopularTypes
+                                                        ],
+                                                        field: [
+                                                            "free_cancellation",
+                                                        ].includes(
+                                                            popularTypeKey
+                                                        )
+                                                            ? "cancellationPolicy"
+                                                            : [
+                                                                  "breakfast_included",
+                                                              ].includes(
+                                                                  popularTypeKey
+                                                              )
+                                                            ? "meals"
+                                                            : [
+                                                                  "has_internet",
+                                                                  "pet_friendly",
+                                                                  "has_fitness",
+                                                                  "has_parking",
+                                                              ].includes(
+                                                                  popularTypeKey
+                                                              )
+                                                            ? "amenity"
+                                                            : "",
+                                                    }
+                                                )
                                             }
                                             control={
                                                 <Checkbox
@@ -542,7 +595,9 @@ function SortingColumns() {
                                         <FormControlLabel
                                             key={index}
                                             checked={staySearchFilters.apartmentType?.includes(
-                                                HotelPropertyTypes[propertyTypeKey as keyof typeof HotelPropertyTypes]
+                                                HotelPropertyTypes[
+                                                    propertyTypeKey as keyof typeof HotelPropertyTypes
+                                                ]
                                             )}
                                             value={
                                                 HotelPropertyTypes[
@@ -656,7 +711,12 @@ function SortingColumns() {
                                     <input
                                         type="number"
                                         value={prices[0]}
-                                        onChange={({ target }) => setPrices(prev => [parseInt(target.value), prev[1]])}
+                                        onChange={({ target }) =>
+                                            setPrices((prev) => [
+                                                parseInt(target.value),
+                                                prev[1],
+                                            ])
+                                        }
                                         min={0}
                                         max={maxPrice}
                                         style={{
@@ -673,7 +733,12 @@ function SortingColumns() {
                                     <input
                                         type="number"
                                         value={prices[1]}
-                                        onChange={({ target }) => setPrices(prev => [prev[0], parseInt(target.value)])}
+                                        onChange={({ target }) =>
+                                            setPrices((prev) => [
+                                                prev[0],
+                                                parseInt(target.value),
+                                            ])
+                                        }
                                         min={prices[0]}
                                         max={maxPrice}
                                         style={{
@@ -726,7 +791,9 @@ function SortingColumns() {
                             {ratings.map((item, index) => (
                                 <FormControlLabel
                                     key={index}
-                                    checked={staySearchFilters?.star?.includes(String(item.rating))}
+                                    checked={staySearchFilters?.star?.includes(
+                                        String(item.rating)
+                                    )}
                                     value={String(item.rating)}
                                     onChange={(e) =>
                                         handleEnumCheckBoxGroupChanged({
@@ -1087,7 +1154,9 @@ function SortingColumns() {
                                     (item, index) => (
                                         <FormControlLabel
                                             key={index}
-                                            checked={staySearchFilters.meals === HotelMealEnum[
+                                            checked={
+                                                staySearchFilters.meals ===
+                                                HotelMealEnum[
                                                     item as keyof typeof HotelMealEnum
                                                 ]
                                             }
@@ -1097,12 +1166,14 @@ function SortingColumns() {
                                                 ]
                                             }
                                             onChange={(e) =>
-                                                handleEnumCheckBoxSingleChanged({
-                                                    value: HotelMealEnum[
-                                                        item as keyof typeof HotelMealEnum
-                                                    ],
-                                                    field: "meals",
-                                                })
+                                                handleEnumCheckBoxSingleChanged(
+                                                    {
+                                                        value: HotelMealEnum[
+                                                            item as keyof typeof HotelMealEnum
+                                                        ],
+                                                        field: "meals",
+                                                    }
+                                                )
                                             }
                                             control={
                                                 <Checkbox
@@ -1219,7 +1290,11 @@ function SortingColumns() {
                                                 <Text
                                                     type="p"
                                                     transform="capitalize"
-                                                    text={HotelRoomEnum[item as keyof typeof HotelRoomEnum]}
+                                                    text={
+                                                        HotelRoomEnum[
+                                                            item as keyof typeof HotelRoomEnum
+                                                        ]
+                                                    }
                                                     styles={{
                                                         fontSize: "15px",
                                                         width: "fit-content",
@@ -1319,7 +1394,7 @@ function SortingColumns() {
                                             label={
                                                 <Text
                                                     type="p"
-                                                    text={capCase(item, '_')}
+                                                    text={capCase(item, "_")}
                                                     styles={{
                                                         fontSize: "15px",
                                                         width: "fit-content",
