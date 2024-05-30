@@ -188,6 +188,7 @@ function ApplicationForm() {
                 .then((res) => {})
                 .catch((err) => {});
             if (isLoading) return;
+            if (!guarantorFormik.isValid) return;
             nextStep({ data: { familyMembers: values.familyMembers } });
         },
         validateOnChange: true,

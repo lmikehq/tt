@@ -246,23 +246,12 @@ function FamilyInfo({
                     <ContinueButton
                         isLoading={isLoading}
                         onClick={() => {
-                            formik.validateForm();
+                            guarantorFormik.handleSubmit();
                             if (!formik.isValid || !guarantorFormik.isValid) {
-                                guarantorFormik.validateForm().then((res) => {
-                                    guarantorFormik.setTouched({
-                                        guarantorName: true,
-                                        relationshipToGuarantor: true,
-                                        guarantorAddress: true,
-                                        guarantorPhone: true,
-                                        guarantorWorth: true,
-                                    });
-                                });
                                 return ToastError();
-                            } else {
-                                formik.handleSubmit();
                             }
                         }}
-                        type="button"
+                        // type="button"
                         disabled={!formik.isValid || !guarantorFormik.isValid}
                         saveProgressAndContinueLater={persistForm}
                     />

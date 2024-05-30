@@ -452,55 +452,26 @@ export const singleFamilyInfoSchema: yup.ObjectSchema<FamilyInfoInterface> = yup
         }),
         maritalStatus: yup.string(),
         dateOfBirth: yup.string(),
-        gender: yup
-            .string()
-            .when("accompanying", {
-                is: true,
-                then: (schema) => schema.required("Required"),
-            })
-            .when("section", {
-                is: "A",
-                then: (schema) => schema.required("Required"),
-            }),
-        passportNumber: yup
-            .string()
-            .when("accompanying", {
-                is: true,
-                then: (schema) => schema.required("Required"),
-            })
-            .when("section", {
-                is: "A",
-                then: (schema) => schema.required("Required"),
-            }),
-        issueCountry: countrySchema
-            .when("accompanying", {
-                is: true,
-                then: (schema) => schema.required("Required"),
-            })
-            .when("section", {
-                is: "A",
-                then: (schema) => schema.required("Required"),
-            }),
-        issueYear: yup
-            .string()
-            .when("accompanying", {
-                is: true,
-                then: (schema) => schema.required("Required"),
-            })
-            .when("section", {
-                is: "A",
-                then: (schema) => schema.required("Required"),
-            }),
-        expiryYear: yup
-            .string()
-            .when("accompanying", {
-                is: true,
-                then: (schema) => schema.required("Required"),
-            })
-            .when("section", {
-                is: "A",
-                then: (schema) => schema.required("Required"),
-            }),
+        gender: yup.string().when("accompanying", {
+            is: true,
+            then: (schema) => schema.required("Required"),
+        }),
+        passportNumber: yup.string().when("accompanying", {
+            is: true,
+            then: (schema) => schema.required("Required"),
+        }),
+        issueCountry: countrySchema.when("accompanying", {
+            is: true,
+            then: (schema) => schema.required("Required"),
+        }),
+        issueYear: yup.string().when("accompanying", {
+            is: true,
+            then: (schema) => schema.required("Required"),
+        }),
+        expiryYear: yup.string().when("accompanying", {
+            is: true,
+            then: (schema) => schema.required("Required"),
+        }),
     });
 
 export const familyInforKeys: FamilyInfoInterface = {
