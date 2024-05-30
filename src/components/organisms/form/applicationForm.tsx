@@ -559,6 +559,10 @@ function ApplicationForm() {
             <AuthModal
                 open={showAuthModal}
                 handleClose={() => setShowAuthModal(false)}
+                title={"Kindly login to your account"}
+                subTitle={
+                    "There's already an account with the email address you provided, please login to continue"
+                }
             />
         </>
     );
