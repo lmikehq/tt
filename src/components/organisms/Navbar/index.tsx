@@ -7,14 +7,14 @@ import NavbarLayout from "@components/templates/SectionLayout";
 import Flex from "@components/templates/flex";
 import { Grid } from "@components/templates/grid";
 import RTQueryClient from "@components/templates/rtqWrapper";
-import apiService from "@lib/extensions/hook/apiService";
+//import apiService from "@lib/extensions/hook/apiService";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import { useUserStore } from "@lib/store/useStore";
 import { ttColors } from "@lib/theme/colors";
-import { User } from "@lib/types";
-import { ButtonBase, MenuItem, Select } from "@mui/material";
-import UserPopover from "@organism/Navbar/UserPopover";
-import { useQuery } from "@tanstack/react-query";
+//import { User } from "@lib/types";
+import { ButtonBase, /* MenuItem, Select */ } from "@mui/material";
+//import UserPopover from "@organism/Navbar/UserPopover";
+//import { useQuery } from "@tanstack/react-query";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { BiSolidUserCircle } from "react-icons/bi";
@@ -25,8 +25,8 @@ import styled from "styled-components";
 import { getIpDetails } from "../form/visaApis";
 import MobileNavigationDrawer from "./modals/mobileNav";
 import { useUserPreferencesStore } from "@/lib/store/preferences.store";
-import { PiCaretDownBold } from "react-icons/pi";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+//import { PiCaretDownBold } from "react-icons/pi";
+//import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { CircleFlagLanguage } from "react-circle-flags";
 import { IoIosArrowDown } from "react-icons/io";
 import { CurrencyModal, LanguageModal } from "../customModal";
@@ -34,6 +34,7 @@ import { useAccountDashboard } from "@/lib/hooks/dashboard/account.hook";
 import { AuthUser } from "@/lib/types/response-models/auth/auth.type";
 import Spinner from "@/components/molecules/icons/spinner";
 import CustomPopover from "@organism/Navbar/UserPopover";
+
 
 const NavbarWrapper = styled.div<{ page: string }>`
     position: relative;
@@ -292,12 +293,12 @@ const DesktopNavbar = ({ page, pathArray }: navbarProps) => {
                                     justify="flex-end"
                                     cursor="pointer"
                                     width="fit-content"
-                                    // onClick={() =>
-                                    //   setOpen((prev) => ({
-                                    //     ...prev,
-                                    //     language: true,
-                                    //   }))
-                                    // }
+                                // onClick={() =>
+                                //   setOpen((prev) => ({
+                                //     ...prev,
+                                //     language: true,
+                                //   }))
+                                // }
                                 >
                                     <CircleFlagLanguage
                                         languageCode={`${selectedLanguage}`}

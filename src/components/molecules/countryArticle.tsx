@@ -34,7 +34,7 @@ const CountryArticle = ({ article }: Props) => {
             <article id="blog" className="prose lg:prose-xl">
                 <div
                     dangerouslySetInnerHTML={{
-                        __html: replaced,
+                        __html: replaced.replaceAll('<img ', '<img alt="blog image" '),
                     }}
                 />
             </article>

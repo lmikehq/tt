@@ -2,21 +2,21 @@
 
 import Image from "@/components/atoms/image";
 import Text from "@/components/atoms/text";
-import BlogCardMini from "@/components/molecules/blog/component/blogArticle";
-import DislikeModal from "@/components/molecules/blog/component/modals/dislikemodal";
-import BlogFeedbackModal from "@/components/molecules/blog/component/modals/feedback-reaction";
-import LikeModal from "@/components/molecules/blog/component/modals/likemodal";
-import ShareModal from "@/components/molecules/blog/component/modals/sharemodal";
-import SuccessModal from "@/components/molecules/blog/component/modals/successmodal";
+//import BlogCardMini from "@/components/molecules/blog/component/blogArticle";
+//import DislikeModal from "@/components/molecules/blog/component/modals/dislikemodal";
+//import BlogFeedbackModal from "@/components/molecules/blog/component/modals/feedback-reaction";
+//import LikeModal from "@/components/molecules/blog/component/modals/likemodal";
+//import ShareModal from "@/components/molecules/blog/component/modals/sharemodal";
+//import SuccessModal from "@/components/molecules/blog/component/modals/successmodal";
 import useLikedByUser from "@/components/molecules/blog/component/use-like-by-user";
-import CountryArticle from "@/components/molecules/countryArticle";
-import Spinner from "@/components/molecules/icons/spinner";
-import SectionLayout from "@/components/templates/SectionLayout";
-import Center from "@/components/templates/center";
-import Flex from "@/components/templates/flex";
+//import CountryArticle from "@/components/molecules/countryArticle";
+//import Spinner from "@/components/molecules/icons/spinner";
+//import SectionLayout from "@/components/templates/SectionLayout";
+//import Center from "@/components/templates/center";
+//import Flex from "@/components/templates/flex";
 import apiService from "@/lib/extensions/hook/apiService";
 import { useScreenResolution } from "@/lib/extensions/hook/useScreenResolution";
-import { useFetchBlogBySlug, useFetchBlogs } from "@/lib/hooks/blog/index.hook";
+//import { useFetchBlogBySlug, useFetchBlogs } from "@/lib/hooks/blog/index.hook";
 import { useBlogStore } from "@/lib/store/blog.store";
 import { useUserStore } from "@/lib/store/useStore";
 import { ttColors } from "@/lib/theme/colors";
@@ -29,35 +29,58 @@ import { GoDotFill } from "react-icons/go";
 import { FaRegComment } from "react-icons/fa";
 import { BiSolidLike, BiSolidDislike } from "react-icons/bi";
 
-import styled from "styled-components";
-import UserAvatar from "@/components/atoms/user-avatar";
-import BlogCommentSection from "@/components/organisms/blog-comment-section";
-import { Grid } from "@/components/templates/grid";
+//import styled from "styled-components";
+//import UserAvatar from "@/components/atoms/user-avatar";
+//import BlogCommentSection from "@/components/organisms/blog-comment-section";
+//import { Grid } from "@/components/templates/grid";
 import { BlogStatus } from "@/lib/types/request-models/blog/index.type";
-import Section from "@/components/molecules/section";
+//import Section from "@/components/molecules/section";
+import dynamic from "next/dynamic";
 
-const Box = styled.div`
+
+const BlogCardMini = dynamic(() => import('@/components/molecules/blog/component/blogArticle'))
+const BlogFeedbackModal = dynamic(() => import('@/components/molecules/blog/component/modals/feedback-reaction'))
+const LikeModal = dynamic(() => import('@/components/molecules/blog/component/modals/likemodal'))
+const ShareModal = dynamic(() => import('@/components/molecules/blog/component/modals/sharemodal'))
+const SuccessModal = dynamic(() => import('@/components/molecules/blog/component/modals/successmodal'))
+const CountryArticle = dynamic(() => import('@/components/molecules/countryArticle'))
+const SectionLayout = dynamic(() => import('@/components/templates/SectionLayout'))
+
+
+const UserAvatar = dynamic(() => import('@/components/atoms/user-avatar'))
+const BlogCommentSection = dynamic(() => import('@/components/organisms/blog-comment-section'))
+const Grid = dynamic(() => import("@/components/templates/grid").then(module => module.Grid))
+const Section = dynamic(() => import('@/components/molecules/section'))
+
+
+//const Image = dynamic(() => import('@/components/atoms/image'))
+//const Text = dynamic(() => import('@/components/atoms/text'))
+const Center = dynamic(() => import('@/components/templates/center'))
+const Flex = dynamic(() => import('@/components/templates/flex'))
+const Spinner = dynamic(() => import('@/components/molecules/icons/spinner'))
+
+/* const Box = styled.div`
     width: 886px;
 
     @media (max-width: 768px) {
         width: 384px;
     }
-`;
+`; */
 
 const Preview = ({ params }: { params: any }) => {
     const { isMobile } = useScreenResolution();
     const {
-        mode,
+        //mode,
         getBlog,
         blog,
-        setBlogs,
+        //  setBlogs,
         likeModal,
         getAllBlogs,
         setLikeModal,
-        setDislikeModal,
+        //  setDislikeModal,
         blogs,
         setBlog,
-        dislikeModal,
+        // dislikeModal,
         feedbackModal,
         setFeedbackModal,
         setFeedbackSuccessModal,
@@ -65,6 +88,7 @@ const Preview = ({ params }: { params: any }) => {
         shareModal,
         setShareModal,
     } = useBlogStore((state) => state);
+
     const pathname = usePathname();
     const commentSectionRef = useRef<HTMLDivElement>(null);
     const fullUrl = window.location.origin + pathname;
@@ -282,13 +306,12 @@ const Preview = ({ params }: { params: any }) => {
                                         type="p"
                                         text={`${Math.ceil(
                                             blog?.readingTimeInMins
-                                        )} min${
-                                            Math.ceil(
-                                                blog?.readingTimeInMins
-                                            ) == 1
-                                                ? ""
-                                                : "s"
-                                        }`}
+                                        )} min${Math.ceil(
+                                            blog?.readingTimeInMins
+                                        ) == 1
+                                            ? ""
+                                            : "s"
+                                            }`}
                                         weight={400}
                                         size="16px"
                                         color="#929292"
@@ -371,11 +394,10 @@ const Preview = ({ params }: { params: any }) => {
                                         />
                                         <Text
                                             type="p"
-                                            text={`${
-                                                blog?.comments?.length
-                                                    ? blog?.comments?.length
-                                                    : 0
-                                            }`}
+                                            text={`${blog?.comments?.length
+                                                ? blog?.comments?.length
+                                                : 0
+                                                }`}
                                             color="#929292"
                                             margin={0}
                                         />
@@ -474,11 +496,10 @@ const Preview = ({ params }: { params: any }) => {
                             <FaRegComment color="#929292" size="20px" />
                             <Text
                                 type="p"
-                                text={`${
-                                    blog?.comments?.length
-                                        ? blog?.comments?.length
-                                        : 0
-                                }`}
+                                text={`${blog?.comments?.length
+                                    ? blog?.comments?.length
+                                    : 0
+                                    }`}
                                 color="#929292"
                                 margin={0}
                             />
@@ -1178,7 +1199,7 @@ const Preview = ({ params }: { params: any }) => {
                     __html: JSON.stringify(() => {
                         try {
                             JSON.parse(blog.customJSONLDCode);
-                        } catch {}
+                        } catch { }
                     }),
                 }}
             />

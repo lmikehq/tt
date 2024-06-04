@@ -4,7 +4,6 @@ import Flex from "@components/templates/flex";
 import { Grid } from "@components/templates/grid";
 import Link from "@atom/link";
 import Text from "@atom/text";
-// import SectionLayout from "@components/templates/SectionLayout";
 import SectionLayout from "@components/templates/SectionLayout";
 import NewsLetter from "@organism/NewsLetter";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
@@ -16,7 +15,18 @@ import { FaTiktok } from "react-icons/fa";
 import { ImLinkedin } from "react-icons/im";
 import { RiThreadsFill, RiWhatsappFill } from "react-icons/ri";
 import styled from "styled-components";
+//import dynamic from "next/dynamic";
 import Section from "@molecule/section";
+
+/* const Section = dynamic(() => import('@molecule/section'))
+const SectionLayout = dynamic(() => import('@components/templates/SectionLayout'))
+const NewsLetter = dynamic(() => import('@organism/NewsLetter'))
+const Image = dynamic(() => import('@atom/image'))
+
+const Text = dynamic(() => import('@/components/atoms/text'))
+const Flex = dynamic(() => import('@/components/templates/flex'))
+const Link = dynamic(() => import('@atom/link'))
+const Grid = dynamic(() => import('@components/templates/grid').then(i => i.Grid)) */
 
 const FooterWrapper = styled.footer`
     width: 100%;
@@ -32,6 +42,7 @@ const FooterWrapper = styled.footer`
     //   padding: 1rem 0;
     // }
 `;
+
 const FooterGrid = styled.div<{ isMobile?: boolean }>`
     background-color: var(--primary-color);
     padding: ${(props) => (props.isMobile ? "0rem" : "5.3125rem")};

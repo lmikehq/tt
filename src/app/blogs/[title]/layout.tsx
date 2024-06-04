@@ -1,12 +1,12 @@
-import { useBlogStore } from "@/lib/store/blog.store";
-import React, { useEffect } from "react";
-import { useParams } from "next/navigation";
+//import { useBlogStore } from "@/lib/store/blog.store";
+import React from "react";
+//import { useParams } from "next/navigation";
 import { BlogService } from "@/lib/services/blog/index.service";
-import { Metadata, ResolvingMetadata } from "next";
+import { Metadata, /* ResolvingMetadata */ } from "next";
 
 export async function generateMetadata({
     params,
-    searchParams,
+    // searchParams,
 }: any): Promise<Metadata> {
     const blog = await BlogService.blogBySlug(params.title).then((res) => res);
 
