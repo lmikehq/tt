@@ -9,8 +9,8 @@ import Button from "@atom/button";
 import { useScreenResolution } from "@lib/extensions/hook/useScreenResolution";
 import Input from "@atom/input";
 import Section from "@molecule/section";
-import { FieldInput } from "../fieldInput";
-import { Formik } from "formik";
+//import { FieldInput } from "../fieldInput";
+//import { Formik } from "formik";
 import { useState } from "react";
 import { ttColors } from "@/lib/theme/colors";
 import Spinner from "@/components/molecules/icons/spinner";
@@ -82,10 +82,12 @@ const Subcribe = styled.div`
 const NewsLetter = () => {
   const { isMobile } = useScreenResolution();
   const [email, setEmail] = useState("");
+
   const [submissionState, setSubmissionState] = useState({
     loading: false,
     error: "",
   });
+
   const handleSubmit = async () => {
     if (submissionState.loading) return;
     if (!email || !validateEmail(email))
@@ -114,6 +116,7 @@ const NewsLetter = () => {
       return toast.error(res.message);
     }
   };
+
   return (
     <SubscribeWrapper
       className="newsLetter"
@@ -222,7 +225,7 @@ const NewsLetter = () => {
             direction="column"
             gap="0.5rem"
             align={isMobile ? "flex-start" : "center"}
-            // padding={isMobile ? '0' : "1.5rem 0 1.5rem 1.85rem"}
+          // padding={isMobile ? '0' : "1.5rem 0 1.5rem 1.85rem"}
           >
             <Section
               height={isMobile ? "36.28px" : "65px"}

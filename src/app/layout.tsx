@@ -6,6 +6,8 @@ import "react-phone-input-2/lib/style.css";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 
+import "./globals.css";
+
 import { Siteconfig } from "@lib/extensions/config/site";
 import Script from "next/script";
 import { Toaster } from "react-hot-toast";
@@ -17,7 +19,7 @@ import RTQueryClient from "@/components/templates/rtqWrapper";
 import { ScrollToTop } from "@/components/atoms/scrollToTop";
 
 const poppins = Poppins({
-    weight: "400",
+    weight: ["300", "400", "500", "600", "700", "800", "900"],
     style: ["normal"],
     // display: "swap",
     subsets: ["latin-ext"],
@@ -34,14 +36,14 @@ export const generateMetadata = () => {
     };
 };
 
-const generateViewport = () => {
+/* const generateViewport = () => {
     return "width=device-width, initial-scale=1";
 };
 
 const generateThemeColor = () => {
     return [{ media: "(prefers-color-scheme: light)", color: "white" }];
 };
-
+ */
 export default function RootLayout({
     children,
 }: {
