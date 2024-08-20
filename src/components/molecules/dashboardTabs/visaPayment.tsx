@@ -48,11 +48,11 @@ const VisaPaymentModal: React.FC<VisaPaymentModalProps> = ({
     switch (visaDetails.intent) {
       case "PROCESSING FEE":
         const processingFee =
-          process.env.NEXT_PUBLIC_SINGLE_VISA_PROCESSING_FEE ||
+          // process.env.NEXT_PUBLIC_SINGLE_VISA_PROCESSING_FEE ||
           "300000";
         const acccompanyingFee =
-          process.env
-            .NEXT_PUBLIC_ADDITIONAL_ACCOMPANYING_VISA_PROCESSING_FEE ||
+          // process.env
+          //   .NEXT_PUBLIC_ADDITIONAL_ACCOMPANYING_VISA_PROCESSING_FEE ||
           "100000";
         return (
           parseInt(processingFee) +
@@ -274,7 +274,7 @@ const VisaPaymentModal: React.FC<VisaPaymentModalProps> = ({
                           // value={currencyFormatter(installmentAmount).replace('NGN', '')}
                           placeholder={`${Number(
                             paymentAmount()
-                          ) / 4
+                          ) / 2
                             }`}
                           formik={formik}
                           max={Number(
