@@ -49,11 +49,11 @@ const VisaPaymentModal: React.FC<VisaPaymentModalProps> = ({
       case "PROCESSING FEE":
         const processingFee =
           process.env.NEXT_PUBLIC_SINGLE_VISA_PROCESSING_FEE ||
-          "1000000";
+          "300000";
         const acccompanyingFee =
           process.env
             .NEXT_PUBLIC_ADDITIONAL_ACCOMPANYING_VISA_PROCESSING_FEE ||
-          "200000";
+          "100000";
         return (
           parseInt(processingFee) +
           parseInt(acccompanyingFee) * visaDetails.accompanying
@@ -62,7 +62,7 @@ const VisaPaymentModal: React.FC<VisaPaymentModalProps> = ({
       //   ? process.env.NEXT_PUBLIC_SINGLE_VISA_PROCESSING_FEE || "1000000"
       //   : process.env.NEXT_PUBLIC_FAMILY_VISA_PROCESSING_FEE || "2000";
       case "VISA FEE":
-        return "1000";
+        return "230000";
       case "FORM FEE":
         // const formFee =
         //   process.env.NEXT_PUBLIC_SINGLE_VISA_APPLICATION_FEE || "10000";
@@ -81,7 +81,7 @@ const VisaPaymentModal: React.FC<VisaPaymentModalProps> = ({
           );
       // return visaDetails.accompanying === 0 ? "200" : "250";
       default:
-        return "2500000";
+        return "300000";
     }
   }
   const [successModalOpen, setSuccessModalOpen] = useState(false);
@@ -250,12 +250,12 @@ const VisaPaymentModal: React.FC<VisaPaymentModalProps> = ({
                       <Text
                         type="p"
                         styles={{ display: "inline" }}
-                        text="You are expected to pay the Visa Processing fee Payment in not less than 4 Installments. The least amount should be "
+                        text="You are expected to pay the Visa Processing fee Payment in not less than 2 Installments. The least amount should be "
                       />
                       <Text
                         type="p"
                         text={currencyFormatter(
-                          Number(paymentAmount()) / 4
+                          Number(paymentAmount()) / 2
                         )}
                         styles={{ display: "inline" }}
                       />
