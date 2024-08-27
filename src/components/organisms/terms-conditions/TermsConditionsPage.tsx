@@ -6,12 +6,11 @@ import React from 'react'
 import PageLinks from './components/PageLinks';
 import dayjs from 'dayjs';
 import TermsAndConditions from './components/TermsAndConditions';
-export const lastUpdatedDate = dayjs().year(2023).month(9).day(10).format('MMMM DD, YYYY')
+export const lastUpdatedDate = dayjs().year(2024).month(6).day(28).format('MMMM DD, YYYY')
 const pageLinks = [
     { name: 'Privacy Policy', url: '/privacy-policy'},
-    { name: 'Terms of Service', url: '/terms-conditions'},
+    { name: 'Terms of Service', url: '/terms-of-service'},
 ]
-
 
 function TermsConditionsPage() {
     const { isMobile } = useScreenResolution();

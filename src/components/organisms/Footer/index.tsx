@@ -120,7 +120,7 @@ const FooterSection = ({ showNewsletter = true }) => {
         { href: "/contact", text: "Contact Us", color: "#06062A" },
         { href: "/privacy-policy", text: "Privacy Policy", color: "#06062A" },
         {
-            href: "/terms-conditions",
+            href: "/terms-of-service",
             text: "Terms of Service",
             color: "#06062A",
         },

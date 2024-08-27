@@ -9,7 +9,7 @@ import Policies from './components/Policies';
 export const lastUpdatedDate = dayjs().year(2023).month(9).day(10).format('MMMM DD, YYYY')
 const pageLinks = [
     { name: 'Privacy Policy', url: '/privacy-policy'},
-    { name: 'Terms of Service', url: '/terms-conditions'},
+    { name: 'Terms of Service', url: '/terms-of-service'},
 ]
 
 
