@@ -17,9 +17,8 @@ interface LayoutProps {
 
 const LoaderLayout: React.FC<LayoutProps> = ({ children }) => {
     const [isLoading, setIsLoading] = useState(true);
-    const [isWindowLoaded, setIsWindowLoaded] = useState(false);
     const { setConversionRate, showBackDropLoader } = useUserPreferencesStore(
-        (state) => state
+        (state) => state,
     );
 
     const initializeApp = () => {
@@ -28,16 +27,11 @@ const LoaderLayout: React.FC<LayoutProps> = ({ children }) => {
     };
 
     useEffect(() => {
-        // Simulate loading time for demonstration purposes
-        const timeout = setTimeout(() => {
-            if (typeof window !== "undefined") {
-                initializeApp();
-                setIsWindowLoaded(true);
-            }
-            setIsLoading(isWindowLoaded);
-        }, 500); // Adjust the loading time as needed
-        return () => clearTimeout(timeout);
-        //   eslint-disable-next-line react-hooks/exhaustive-deps
+        if (typeof window !== "undefined") {
+            initializeApp();
+        }
+        setIsLoading(false);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (

@@ -19,9 +19,9 @@ import RTQueryClient from "@/components/templates/rtqWrapper";
 import { ScrollToTop } from "@/components/atoms/scrollToTop";
 
 const poppins = Poppins({
-    weight: ["300", "400", "500", "600", "700", "800", "900"],
+    weight: ["400", "500", "600", "700"],
     style: ["normal"],
-    // display: "swap",
+    display: "swap",
     subsets: ["latin-ext"],
 });
 
@@ -56,12 +56,11 @@ export default function RootLayout({
                 src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}
             />
 
-            <script
+            <Script
+                strategy="lazyOnload"
                 src="https://cdn.popupsmart.com/bundle.js"
                 data-id={process.env.NEXT_PUBLIC_POPUPSMART_ID}
-                async
-                defer
-            ></script>
+            />
 
             <Script strategy="lazyOnload" id="analytics">
                 {`

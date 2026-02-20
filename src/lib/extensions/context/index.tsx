@@ -3,7 +3,7 @@
 import { KiwiLocation } from "@/lib/types/response-models/flight/location.type";
 import dayjs from "dayjs";
 import countries from "@/constants/countries.json";
-import {
+import React, {
     createContext,
     useContext,
     ReactNode,
@@ -18,19 +18,40 @@ type CountryDetails = {
     dial_code?: string;
 };
 
-const airports = require("airport-iata-codes");
-const airlines = require("airline-iata-code");
-const sortedAirports: { [k: string]: AirportInterface } = {};
-const sortedAirlines: { [k: string]: AirlineInterface } = {};
+let sortedAirports: { [k: string]: AirportInterface } = {};
+let sortedAirlines: { [k: string]: AirlineInterface } = {};
 const sortedCountries: { [k: string]: CountryDetails } = {};
-airports().forEach((e: AirportInterface) => {
-    sortedAirports[e.iata_code] = e;
-});
-airlines().forEach((e: AirlineInterface) => {
-    if (!NOT_ALLOWED_AIRLINES.includes(e?.IATACode)) {
-        sortedAirlines[e.IATACode] = e;
-    }
-});
+let _airportsLoaded = false;
+let _airlinesLoaded = false;
+
+// Lazy-load airports only when needed
+function loadAirports() {
+    if (_airportsLoaded) return sortedAirports;
+    try {
+        const airports = require("airport-iata-codes");
+        airports().forEach((e: AirportInterface) => {
+            sortedAirports[e.iata_code] = e;
+        });
+    } catch {}
+    _airportsLoaded = true;
+    return sortedAirports;
+}
+
+// Lazy-load airlines only when needed
+function loadAirlines() {
+    if (_airlinesLoaded) return sortedAirlines;
+    try {
+        const airlines = require("airline-iata-code");
+        airlines().forEach((e: AirlineInterface) => {
+            if (!NOT_ALLOWED_AIRLINES.includes(e?.IATACode)) {
+                sortedAirlines[e.IATACode] = e;
+            }
+        });
+    } catch {}
+    _airlinesLoaded = true;
+    return sortedAirlines;
+}
+
 countries.forEach((e: CountryDetails) => {
     sortedCountries[e.code] = { name: e.name, flag: e.flag, code: e.code };
 });
@@ -99,8 +120,8 @@ const initialValues: ContextType = {
     flightType: "international",
     stops: "one-way",
     fleet: [],
-    airports: sortedAirports,
-    airlines: sortedAirlines,
+    airports: {},
+    airlines: {},
     countries: sortedCountries,
 };
 
@@ -136,6 +157,8 @@ type Props = {
 
 const reducer = (state: ContextType, action: Action) => {
     switch (action.type) {
+        case "UPDATE_STATE":
+            return { ...state, ...action.payload };
         case "SET_FLIGHT_TYPE":
             return { ...state, flightType: action.payload };
         case "SET_STOPS":
@@ -149,7 +172,7 @@ const reducer = (state: ContextType, action: Action) => {
             return {
                 ...state,
                 fleet: state.fleet.map((e, index) =>
-                    e.index === action.payload.index ? action.payload : e
+                    e.index === action.payload.index ? action.payload : e,
                 ),
             };
         case "ADD_MULTI_FLIGHT":
@@ -166,7 +189,7 @@ const reducer = (state: ContextType, action: Action) => {
                 fleet: state.fleet.map((e, index) =>
                     e.index === action.payload.index
                         ? { ...e, ...action.payload.data }
-                        : e
+                        : e,
                 ),
             };
         case "REMOVE_MULTI_FLIGHT":
@@ -193,6 +216,19 @@ const reducer = (state: ContextType, action: Action) => {
 
 export function FlightProvider({ children }: Props) {
     const [state, dispatch] = useReducer(reducer, initialValues);
+
+    // Lazy-load airports and airlines data after mount
+    React.useEffect(() => {
+        const airports = loadAirports();
+        const airlines = loadAirlines();
+        if (Object.keys(airports).length || Object.keys(airlines).length) {
+            dispatch({
+                type: "UPDATE_STATE",
+                payload: { ...state, airports, airlines },
+            });
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <FlightContext.Provider value={{ state, dispatch }}>

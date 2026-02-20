@@ -3,34 +3,28 @@
 import { FlightProvider } from "@/lib/extensions/context";
 import apiService from "@/lib/extensions/hook/apiService";
 import { useUserStore } from "@/lib/store/useStore";
-import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
 function Providers({ children }: { children: React.ReactNode }) {
     const { user, setUser } = useUserStore();
-    const [initialized, setInitialized] = useState(false);
-    const router = useRouter();
 
     async function fetchUser() {
-        if (user) {
-            setInitialized(true);
-
-            return user;
+        if (user) return user;
+        try {
+            const res = (await apiService("/user")) as any;
+            if (res?._id) setUser(res);
+        } catch {
+            // User fetch failed — app still renders
         }
-        const res = (await apiService("/user")) as any;
-        // if (!res?._id) return router.push("/auth/login")
-        setInitialized(true);
-        setUser(res);
-        return res;
     }
 
     useEffect(() => {
-        if (typeof window !== "undefined") {
-            fetchUser();
-        }
+        fetchUser();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    return <FlightProvider>{initialized && children}</FlightProvider>;
+    // Always render children — don't block on user fetch
+    return <FlightProvider>{children}</FlightProvider>;
 }
 
 export default Providers;
